@@ -7,13 +7,21 @@
         xmlns:vm="clr-namespace:WpfAppES.ViewModel"
         mc:Ignorable="d"
         Title="Экспертная система" Height="450" Width="800">
+    <Window.CommandBindings>
+        <CommandBinding Command="New" Executed="NewCommand_Executed"/>
+        <CommandBinding Command="Open" Executed="OpenCommand_Executed"/>
+        <CommandBinding Command="Save" Executed="SaveCommand_Executed"/>
+        <CommandBinding Command="SaveAs" Executed="SaveAsCommand_Executed"/>
+        <CommandBinding Command="Close" Executed="CloseCommand_Executed"/>
+    </Window.CommandBindings>
     <DockPanel LastChildFill="True">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Файл">
-                <MenuItem Header="Создать"/>
-                <TextBlock Text="Открыть"/>
-                <TextBlock Text="Сохранить"/>
-                <TextBlock Text="Сохранить как"/>
+                <MenuItem Header="Создать" Command="New"/>
+                <MenuItem Header="Открыть" Command="Open"/>
+                <MenuItem Header="Сохранить" Command="Save"/>
+                <MenuItem Header="Сохранить как" Command="SaveAs"/>
+                <MenuItem Header="Закрыть" Command="Close"/>
             </MenuItem>
 
             <MenuItem Header="Интерфейс">

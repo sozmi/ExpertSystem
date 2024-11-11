@@ -1,5 +1,5 @@
 ﻿// Managers/IKnowledgeBase.cs
-namespace ExpertSystem.Managers
+namespace ClassLibraryES.Managers
 {
     public interface IKnowledgeBase
     {

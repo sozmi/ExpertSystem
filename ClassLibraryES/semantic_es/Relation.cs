@@ -1,6 +1,4 @@
-﻿using System.Data;
-
-namespace ClassLibraryES.Semantic
+﻿namespace ClassLibraryES.Semantic
 {
     public class Relation
     {

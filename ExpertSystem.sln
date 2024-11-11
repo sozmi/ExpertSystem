@@ -12,7 +12,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfAppES", "WpfAppES\WpfApp
 		{77024257-025C-49DD-B801-632BE50C2759} = {77024257-025C-49DD-B801-632BE50C2759}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTests", "ConsoleTests\ConsoleTests.csproj", "{9A4C8A1A-B605-400B-8ECD-69C01B71975B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleTests", "ConsoleTests\ConsoleTests.csproj", "{9A4C8A1A-B605-400B-8ECD-69C01B71975B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{77024257-025C-49DD-B801-632BE50C2759} = {77024257-025C-49DD-B801-632BE50C2759}
 	EndProjectSection
@@ -44,6 +44,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
+		RESX_NeutralResourcesLanguage = ru-RU
 		SolutionGuid = {585D2DA5-1F81-462C-88AA-1B98A6DD3F19}
 	EndGlobalSection
 EndGlobal
