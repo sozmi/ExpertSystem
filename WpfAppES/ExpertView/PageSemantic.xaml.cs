@@ -1,5 +1,4 @@
-﻿using ClassLibraryES.Semantic;
-using Microsoft.Msagl.Drawing;
+﻿using Microsoft.Msagl.Drawing;
 using System.Windows.Controls;
 using Microsoft.Msagl.WpfGraphControl;
 
@@ -13,6 +12,7 @@ namespace WpfAppES.ExpertView
         public PageSemantic()
         {
             InitializeComponent();
+            
             //relation.ItemsSource = RelationExtensions.GetRelatives();
 
             GraphViewer graphViewer = new GraphViewer();

@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
+using WpfAppES.ViewModel;
 
 namespace WpfAppES
 {
@@ -20,8 +20,9 @@ namespace WpfAppES
             dbLogical.Checked += KnowledgeDB_Checked;
             dbProduct.Checked += KnowledgeDB_Checked;
             dbSemantic.Checked += KnowledgeDB_Checked;
-            user.IsChecked = true;
-            dbLogical.IsChecked = true;
+
+            expert.IsChecked = true;
+            dbSemantic.IsChecked = true;
         }
         
         private void KnowledgeDB_Checked(object sender, RoutedEventArgs e)

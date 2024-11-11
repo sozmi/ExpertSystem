@@ -4,27 +4,35 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WpfAppES.ExpertView"
-      xmlns:vm="clr-namespace:WpfAppES.ViewModel.Expert.Semantic"
+      xmlns:vmes="clr-namespace:WpfAppES.ViewModel.Expert.Semantic"
+      xmlns:vm="clr-namespace:WpfAppES.ViewModel" xmlns:hc="https://handyorg.github.io/handycontrol"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="[Эксперт] Семантическая БД">
+    <Page.DataContext>
+        <vmes:MainViewModel/>
+    </Page.DataContext>
     <Page.Resources>
         <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter"/>
     </Page.Resources>
 
-    <Page.DataContext>
-        <vm:MainViewModel/>
-    </Page.DataContext>
-
     <DockPanel LastChildFill="True">
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="Вид">
-                <CheckBox x:Name="cbTree" Content="Дерево отношений" IsChecked="True"/>
-                <CheckBox x:Name="cbGraph" Content="Графическое представление" IsChecked="True"/>
-                <CheckBox x:Name="cbHelp" Content="Помощь" IsChecked="False"/>
-            </MenuItem>
-        </Menu>
-        <TreeView DockPanel.Dock="Left" Visibility="{Binding ElementName=cbTree, Path=IsChecked, Converter={StaticResource booleanToVisibilityConverter}}">
+        <ToolBar DockPanel.Dock="Top" ToolBarTray.IsLocked="True" Padding="10">
+            <TextBlock VerticalAlignment="Center" Style="{StaticResource TextBlockDefaultPrimary}">База знаний <LineBreak/> семантической сети</TextBlock>
+            <Separator Margin="10,0"/>
+            <ToggleButton x:Name="cbTree" Content="Дерево" Margin="5,0"/>
+            <ToggleButton x:Name="cbRel" Content="Отношения" Margin="5,0"/>
+            <ToggleButton x:Name="cbGraph" Content="Граф" Margin="5,0"/>
+
+        </ToolBar>
+        <TreeView DockPanel.Dock="Left" 
+                  Visibility="{Binding ElementName=cbTree, Path=IsChecked, Converter={StaticResource booleanToVisibilityConverter}}">
+            <TreeView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Добавить"/>
+                    <MenuItem Header="Удалить"/>
+                </ContextMenu>
+            </TreeView.ContextMenu>
             <TreeViewItem Header="Птица">
                 <TreeViewItem Header="Это"/>
                 <TreeViewItem Header="Разновидность"/>
@@ -33,31 +41,21 @@
                 <TreeViewItem Header="Не может"/>
                 <TreeViewItem Header="Свойство"/>
             </TreeViewItem>
-            <TreeViewItem>
-
-            </TreeViewItem>
-
         </TreeView>
 
         <DataGrid ItemsSource="{Binding Relations}" 
                   CanUserAddRows="True" 
                   CanUserDeleteRows="True" 
                   CanUserSortColumns="True" 
-                  CanUserReorderColumns="True">
+                  CanUserReorderColumns="True"
+                  Visibility="{Binding ElementName=cbRel, Path=IsChecked, Converter={StaticResource booleanToVisibilityConverter}}">
             <DataGrid.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Добавить" Command="{Binding AddRowCommand}"/>
+                    <MenuItem Header="Удалить"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
         </DataGrid>
-
-        <ListView x:Name="relation" DockPanel.Dock="Right" Visibility="{Binding ElementName=cbHelp, Path=IsChecked, Converter={StaticResource booleanToVisibilityConverter}}">
-            <ListView.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Добавить"/>
-                </ContextMenu>
-            </ListView.ContextMenu>
-        </ListView>
         <DockPanel x:Name="semanticGraphViewer" ClipToBounds="True" Visibility="{Binding ElementName=cbGraph, Path=IsChecked, Converter={StaticResource booleanToVisibilityConverter}}"/>
     </DockPanel>
 </Page>

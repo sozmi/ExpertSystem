@@ -1,25 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using System.Windows;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Reflection.Metadata;
+using System.Runtime.CompilerServices;
+using ClassLibraryES.Semantic;
 
 namespace WpfAppES.ViewModel.Expert.Semantic
 {
     class MainViewModel
     {
-        public ObservableCollection<RelationViewModel> Relations { get; set; } = [];
+        #region Property
+        /// <summary>
+        /// Событие изменения свойства
+        /// </summary>
+        public event PropertyChangedEventHandler? PropertyChanged;
 
-        public ICommand AddRowCommand { get; set; }
-
-        public MainViewModel()
+        /// <summary>
+        /// Изменение значения свойства
+        /// </summary>
+        /// <typeparam name="T">тип поля</typeparam>
+        /// <param name="field">поле</param>
+        /// <param name="newValue">новое значение</param>
+        /// <param name="propertyName">наименование свойства</param>
+        /// <returns></returns>
+        protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string propertyName = null)
         {
-            AddRowCommand = new RelayCommand(AddRow);
+            if (!Equals(field, newValue))
+            {
+                field = newValue;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+                return true;
+            }
+            return false;
         }
+        #endregion
 
-        private void AddRow() => Relations.Add(new RelationViewModel("Пустая строка"));
+        public ObservableCollection<Relation> Relations { get; set; } = [];
+
+        private RelayCommand? addCommand;
+        public RelayCommand AddRowCommand => addCommand ??= new RelayCommand(AddRow);
+        private void AddRow(object _) => Relations.Add(new Relation("Пустая строка"));
     }
 }

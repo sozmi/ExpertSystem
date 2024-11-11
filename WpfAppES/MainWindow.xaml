@@ -10,25 +10,25 @@
     <DockPanel LastChildFill="True">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Файл">
-                <MenuItem Header="Создать" Command="{Binding New}"/>
+                <MenuItem Header="Создать"/>
                 <TextBlock Text="Открыть"/>
                 <TextBlock Text="Сохранить"/>
                 <TextBlock Text="Сохранить как"/>
             </MenuItem>
 
             <MenuItem Header="Интерфейс">
-                <RadioButton GroupName="interface" x:Name="user" Tag="UserView"  Content="Пользователь"/>
-                <RadioButton GroupName="interface" x:Name="expert" Tag="ExpertView" Content="Эксперт"/>
+                <RadioButton HorizontalAlignment="Left" GroupName="interface" x:Name="user" Tag="UserView"  Content="Пользователь"/>
+                <RadioButton HorizontalAlignment="Left" GroupName="interface" x:Name="expert" Tag="ExpertView" Content="Эксперт"/>
             </MenuItem>
 
             <MenuItem Header="База знаний">
-                <RadioButton GroupName="knowledge" x:Name="dbLogical"  Content="Логическая" Tag="PageLogical.xaml"/>
-                <RadioButton GroupName="knowledge" x:Name="dbProduct"  Content="Продукционная" Tag="PageProduct.xaml"/>
-                <RadioButton GroupName="knowledge" x:Name="dbSemantic"  Content="Семантическая" Tag="PageSemantic.xaml"/>
-                <RadioButton GroupName="knowledge" x:Name="dbFrame"  Content="Фреймы" Tag="PageFrame.xaml"/>
+                <RadioButton HorizontalAlignment="Left" GroupName="knowledge" x:Name="dbLogical" Content="Логическая" Tag="PageLogical.xaml"/>
+                <RadioButton HorizontalAlignment="Left" GroupName="knowledge" x:Name="dbProduct" Content="Продукционная" Tag="PageProduct.xaml"/>
+                <RadioButton HorizontalAlignment="Left" GroupName="knowledge" x:Name="dbSemantic" Content="Семантическая" Tag="PageSemantic.xaml"/>
+                <RadioButton HorizontalAlignment="Left" GroupName="knowledge" x:Name="dbFrame" Content="Фреймы" Tag="PageFrame.xaml"/>
             </MenuItem>
         </Menu>
-        <Frame x:Name="frame" Content="Frame"/>
-        <!--<Frame x:Name="frame" NavigationUIVisibility="Hidden" Panel.ZIndex="1"/>-->
+
+        <Frame x:Name="frame" NavigationUIVisibility="Hidden" Panel.ZIndex="1"/>
     </DockPanel>
 </Window>
