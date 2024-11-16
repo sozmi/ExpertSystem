@@ -8,7 +8,7 @@ using ClassLibraryES.Managers;
 using ClassLibraryES.semantic_es;
 SemanticDB r = new(true);
 //Relation r = new("test");
-/*var options = new JsonSerializerOptions
+var options = new JsonSerializerOptions
 {
     Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic),
     WriteIndented = true
@@ -19,8 +19,8 @@ SemanticDB? restore = JsonSerializer.Deserialize<SemanticDB>(json);
 //Relation? restore = JsonSerializer.Deserialize<Relation>(json);
 restore?.Open();
 Console.WriteLine(restore);
-*/
 
 ;
-KnowledgeBaseManager.Get().Load(Directory.GetCurrentDirectory()+"\\Экспертные системы\\"+"de.es");
-KnowledgeBaseManager.Get();
+/*KnowledgeBaseManager.Get().Create("def");
+KnowledgeBaseManager.Get().Load(Directory.GetCurrentDirectory()+"\\Экспертные системы\\"+"def.es");
+KnowledgeBaseManager.Get();*/

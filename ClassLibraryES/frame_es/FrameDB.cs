@@ -16,7 +16,7 @@ namespace ClassLibraryES.frame_es
 
         public bool Open()
         {
-            throw new NotImplementedException();
+            return false;
         }
     }
 }

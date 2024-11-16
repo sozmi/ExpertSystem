@@ -1,17 +1,18 @@
-﻿namespace ClassLibraryES.Semantic
+﻿namespace ClassLibraryES.semantic_es
 {
-    public class Relation
+    public class RelationType
     {
-        public Relation() {
+        public RelationType()
+        {
             Id = new();
             Name = "";
         }
-        public Relation(string name)
+        public RelationType(string name)
         {
             Id = Guid.NewGuid();
             Name = name;
         }
-        public Relation(Guid Id, string Name)
+        public RelationType(Guid Id, string Name)
         {
             this.Id = Id;
             this.Name = Name;

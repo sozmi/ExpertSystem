@@ -1,28 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
-namespace ClassLibraryES.Semantic
+namespace ClassLibraryES.semantic_es
 {
     public class Association
     {
-        Relation relation;
-        Entity entity;
-        public Association(Relation relation, Entity entity)
+        public Association(RelationType relation)
         {
-            this.relation = relation;
-            this.entity = entity;
+            Relation = relation;
         }
 
-        public Association(Tuple<Guid, Guid> tuple)
-        {
+        public RelationType Relation { get; set; }
 
+        /// <summary>
+        /// Словарь связанных сущностей [id сущности] = сущность
+        /// </summary>
+        public Dictionary<Guid, Entity> Entities { get; set; } = [];
+
+        /// <summary>
+        /// Добавление ассоциативной сущности
+        /// </summary>
+        /// <param name="item">Сущность</param>
+        public void Add(Entity item)
+        {
+            Entities.Add(item.Id, item);
         }
 
-        [JsonPropertyName("association")]
-        public Tuple<Guid, Guid> GetIds => new(relation.Id, entity.Id);
+        /// <summary>
+        /// Удаление ассоциативной сущности
+        /// </summary>
+        /// <param name="id">Идентификатор сущности</param>
+        internal void Remove(Guid id)
+        {
+            Entities.Remove(id);
+        }
     }
 }

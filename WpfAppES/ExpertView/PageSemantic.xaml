@@ -4,58 +4,93 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WpfAppES.ExpertView"
-      xmlns:vmes="clr-namespace:WpfAppES.ViewModel.Expert.Semantic"
-      xmlns:vm="clr-namespace:WpfAppES.ViewModel" xmlns:hc="https://handyorg.github.io/handycontrol"
+      xmlns:vm="clr-namespace:WpfAppES.ViewModel.Expert.Semantic"
+      xmlns:sem="clr-namespace:ClassLibraryES.semantic_es;assembly=ClassLibraryES" xmlns:wpfgraphcontrol="http://mlsagl"
       mc:Ignorable="d" 
+      x:Name="page"
       d:DesignHeight="450" d:DesignWidth="800"
       Title="[Эксперт] Семантическая БД">
     <Page.DataContext>
-        <vmes:MainViewModel/>
+        <vm:MainViewModel/>
     </Page.DataContext>
     <Page.Resources>
         <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter"/>
+
+        <HierarchicalDataTemplate DataType="{x:Type sem:Entity}" 
+                                  ItemsSource="{Binding Associations.Values}">
+            <StackPanel Orientation="Horizontal" 
+                        Tag="{Binding ElementName=page}">
+                <TextBlock Text="{Binding Name}"/>
+                <StackPanel.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Редактировать" 
+                                  Command="{Binding Parent.PlacementTarget.Tag.DataContext.EditEntityCommand,  
+                                            RelativeSource={RelativeSource Self}}"
+                                            CommandParameter="{Binding Id}">
+                        </MenuItem>
+                        <MenuItem Header="Удалить" 
+                                  Command="{Binding Parent.PlacementTarget.Tag.DataContext.RemoveEntityCommand, 
+                                            RelativeSource={RelativeSource Self},
+                                            Mode=OneWay,
+                                            UpdateSourceTrigger=PropertyChanged}"
+                                  CommandParameter="{Binding Id}">
+                        </MenuItem>
+                    </ContextMenu>
+                </StackPanel.ContextMenu>
+            </StackPanel>
+        </HierarchicalDataTemplate>
+
+        <HierarchicalDataTemplate DataType="{x:Type sem:Association}" 
+                                  ItemsSource="{Binding Entities.Values}">
+            <TextBlock Text="{Binding Relation.Name}"/>
+            <HierarchicalDataTemplate.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}"/>
+                </DataTemplate>
+            </HierarchicalDataTemplate.ItemTemplate>
+        </HierarchicalDataTemplate>
+
     </Page.Resources>
 
     <DockPanel LastChildFill="True">
         <ToolBar DockPanel.Dock="Top" ToolBarTray.IsLocked="True" Padding="10">
-            <TextBlock VerticalAlignment="Center" Style="{StaticResource TextBlockDefaultPrimary}">База знаний <LineBreak/> семантической сети</TextBlock>
+            <TextBlock VerticalAlignment="Center" Style="{StaticResource TextBlockSubTitleBold}">База знаний <LineBreak/> семантической сети</TextBlock>
             <Separator Margin="10,0"/>
-            <ToggleButton x:Name="cbTree" Content="Дерево" Margin="5,0"/>
-            <ToggleButton x:Name="cbRel" Content="Отношения" Margin="5,0"/>
-            <ToggleButton x:Name="cbGraph" Content="Граф" Margin="5,0"/>
-
+            <ToggleButton x:Name="cbTree" Content="Дерево" Margin="5,0" IsChecked="True"/>
+            <ToggleButton x:Name="cbRel" Content="Отношения" Margin="5,0" IsChecked="True"/>
+            <ToggleButton x:Name="cbGraph" Content="Граф" Margin="5,0" IsChecked="True"/>
+            <Button Content="Проверка базы знаний" Style="{StaticResource ButtonPrimary}"/>
         </ToolBar>
+
         <TreeView DockPanel.Dock="Left" 
+                  MinWidth="150"
+                  ItemsSource="{Binding Entities,
+                                Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                   Visibility="{Binding ElementName=cbTree, Path=IsChecked, Converter={StaticResource booleanToVisibilityConverter}}">
             <TreeView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Добавить"/>
-                    <MenuItem Header="Удалить"/>
+                    <MenuItem Header="Добавить" Command="{Binding AddEntityCommand}"/>
                 </ContextMenu>
             </TreeView.ContextMenu>
-            <TreeViewItem Header="Птица">
-                <TreeViewItem Header="Это"/>
-                <TreeViewItem Header="Разновидность"/>
-                <TreeViewItem Header="Имеет"/>
-                <TreeViewItem Header="Может"/>
-                <TreeViewItem Header="Не может"/>
-                <TreeViewItem Header="Свойство"/>
-            </TreeViewItem>
         </TreeView>
 
         <DataGrid ItemsSource="{Binding Relations}" 
-                  CanUserAddRows="True" 
-                  CanUserDeleteRows="True" 
-                  CanUserSortColumns="True" 
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False" 
+                  CanUserDeleteRows="False" 
+                  CanUserSortColumns="False" 
                   CanUserReorderColumns="True"
                   Visibility="{Binding ElementName=cbRel, Path=IsChecked, Converter={StaticResource booleanToVisibilityConverter}}">
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Добавить" Command="{Binding AddRowCommand}"/>
-                    <MenuItem Header="Удалить"/>
+                    <MenuItem Header="Добавить" Command="{Binding AddRelationCommand}"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Типы отношений" Binding="{Binding Name}"/>
+            </DataGrid.Columns>
         </DataGrid>
-        <DockPanel x:Name="semanticGraphViewer" ClipToBounds="True" Visibility="{Binding ElementName=cbGraph, Path=IsChecked, Converter={StaticResource booleanToVisibilityConverter}}"/>
+
+        <wpfgraphcontrol:AutomaticGraphLayoutControl Graph="{Binding GraphObject,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Visibility="{Binding ElementName=cbGraph, Path=IsChecked, Converter={StaticResource booleanToVisibilityConverter}}"/>
     </DockPanel>
 </Page>
