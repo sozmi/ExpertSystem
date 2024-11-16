@@ -3,14 +3,9 @@ using System.Text.Json.Serialization;
 
 namespace ClassLibraryES.semantic_es
 {
-    public class Association
+    public class Association(RelationType relation)
     {
-        public Association(RelationType relation)
-        {
-            Relation = relation;
-        }
-
-        public RelationType Relation { get; set; }
+        public RelationType Relation { get; set; } = relation;
 
         /// <summary>
         /// Словарь связанных сущностей [id сущности] = сущность

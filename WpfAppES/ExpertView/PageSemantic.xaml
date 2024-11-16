@@ -4,14 +4,14 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WpfAppES.ExpertView"
-      xmlns:vm="clr-namespace:WpfAppES.ViewModel.Expert.Semantic"
+      xmlns:vm="clr-namespace:WpfAppES.ViewModel.Semantic"
       xmlns:sem="clr-namespace:ClassLibraryES.semantic_es;assembly=ClassLibraryES" xmlns:wpfgraphcontrol="http://mlsagl"
       mc:Ignorable="d" 
       x:Name="page"
       d:DesignHeight="450" d:DesignWidth="800"
       Title="[Эксперт] Семантическая БД">
     <Page.DataContext>
-        <vm:MainViewModel/>
+        <vm:ExpertViewModel/>
     </Page.DataContext>
     <Page.Resources>
         <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter"/>

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace WpfAppES.ViewModel
+namespace WpfAppES.ViewModel.BaseObjects
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
@@ -18,7 +18,7 @@ namespace WpfAppES.ViewModel
         /// <param name="newValue">новое значение</param>
         /// <param name="propertyName">наименование свойства</param>
         /// <returns></returns>
-        protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string propertyName = null)
+        protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string? propertyName = null)
         {
             if (!Equals(field, newValue))
             {
