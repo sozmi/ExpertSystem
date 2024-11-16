@@ -48,6 +48,11 @@ namespace ClassLibraryES.Products
             return true;
         }
 
+        public void Close()
+        {
+            throw new NotImplementedException();
+        }
+
         //public void Close()//удалить
         //{
         //    Domains.Clear();
@@ -180,7 +185,7 @@ namespace ClassLibraryES.Products
         //    public Domain GetDomain(string name)
         //    {
         //        return Domains.Values.FirstOrDefault(d => d.Name == name);
-        //    }
-        //    #endregion
-        //}
+
+        #endregion
     }
+}
