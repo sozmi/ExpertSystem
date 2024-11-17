@@ -12,6 +12,7 @@
         public Guid Id { get; set; }
         public string Name { get; set; }
 
+        [JsonIgnore]
         public Dictionary<Guid, Association> Associations { get; } = [];
 
         public void AddRelation(TRelEnt rel_)
