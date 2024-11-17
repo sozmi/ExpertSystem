@@ -45,6 +45,13 @@ namespace WpfAppES.ViewModel.Semantic
         #endregion
 
 
+            db.DeleteEntity((Guid)id);
+            Entities.Clear();
+            foreach (var ent in db.GetEntities())
+                Entities.Add(new(ent));
+            DrawGraph();
+        }
+        #endregion
 
         #region Graph
         /// <summary>
