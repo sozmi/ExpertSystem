@@ -16,8 +16,8 @@
     <Page.Resources>
         <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter"/>
 
-        <HierarchicalDataTemplate DataType="{x:Type sem:Entity}" 
-                                  ItemsSource="{Binding Associations.Values, UpdateSourceTrigger=PropertyChanged}">
+        <HierarchicalDataTemplate DataType="{x:Type vm:EntityViewModel}" 
+                                  ItemsSource="{Binding Associations, UpdateSourceTrigger=PropertyChanged}">
             <StackPanel Orientation="Horizontal" 
                         Tag="{Binding ElementName=page}">
                 <TextBlock Text="{Binding Name}"/>
@@ -64,7 +64,6 @@
 
         <TreeView DockPanel.Dock="Left" 
                   MinWidth="150"
-                  
                   ItemsSource="{Binding Entities,
                                 Mode=OneWay, 
                                 UpdateSourceTrigger=PropertyChanged}"

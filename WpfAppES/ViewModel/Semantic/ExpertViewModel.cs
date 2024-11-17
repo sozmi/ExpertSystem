@@ -1,12 +1,25 @@
 ﻿using System.Collections.ObjectModel;
 using ClassLibraryES.Managers;
 using ClassLibraryES.semantic_es;
-using Microsoft.Msagl.Core.DataStructures;
 using Microsoft.Msagl.Drawing;
 using WpfAppES.ViewModel.BaseObjects;
 
 namespace WpfAppES.ViewModel.Semantic
 {
+    class EntityViewModel : BaseViewModel
+    {
+        public EntityViewModel(Entity entity)
+        {
+            Id = entity.Id;
+            Name = entity.Name;
+            Associations = [.. entity.Associations.Values];
+        }
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public List<Association> Associations { get=> associations; set => SetProperty( ref associations, value); }
+        List<Association> associations = [];
+    }
+
     class ExpertViewModel : BaseViewModel
     {
         public ExpertViewModel()
@@ -16,7 +29,8 @@ namespace WpfAppES.ViewModel.Semantic
                 return;
 
             Relations = new(db.GetRelations());
-            Entities = new(db.GetEntities());
+            foreach (var ent in db.GetEntities())
+                Entities.Add(new(ent));
             DrawGraph();
         }
 
@@ -36,18 +50,18 @@ namespace WpfAppES.ViewModel.Semantic
         /// <summary>
         /// Коллекция типов сущностей
         /// </summary>
-        public ObservableCollection<Entity> Entities { get => entities; set => SetProperty(ref entities, value); }
-        ObservableCollection<Entity> entities = [];
+        public ObservableCollection<EntityViewModel> Entities { get => entities; set => SetProperty(ref entities, value); }
+        ObservableCollection<EntityViewModel> entities = [];
 
-        private RelationType _selectedItem;
-        public RelationType SelectedItem
+        private RelationType? _selectedItem;
+        public RelationType? SelectedItem
         {
             get => _selectedItem;
             set=> SetProperty(ref _selectedItem, value);
         }
 
-        private RelationType _selectedItem2;
-        public RelationType SelectedItem2
+        private EntityViewModel? _selectedItem2;
+        public EntityViewModel? SelectedItem2
         {
             get => _selectedItem2;
             set => SetProperty(ref _selectedItem2, value);
@@ -93,7 +107,9 @@ namespace WpfAppES.ViewModel.Semantic
             db.DeleteRelationType((Guid)id);
 
             Relations = new(db.GetRelations());
-            Entities = new(db.GetEntities());
+            Entities.Clear();
+            foreach (var ent in db.GetEntities())
+                Entities.Add(new(ent));
             DrawGraph();
         }
         #endregion
@@ -111,7 +127,7 @@ namespace WpfAppES.ViewModel.Semantic
             if (db == null) return;
             Entity ent = new("Не указано");
             db.Create(ent);
-            Entities.Add(ent);
+            Entities.Add(new(ent));
             DrawGraph();
         }
         #endregion
@@ -134,7 +150,9 @@ namespace WpfAppES.ViewModel.Semantic
             if (db == null) return;
 
             db.DeleteEntity((Guid)id);
-            Entities = new(db.GetEntities());
+            Entities.Clear();
+            foreach (var ent in db.GetEntities())
+                Entities.Add(new(ent));
             DrawGraph();
         }
         #endregion
@@ -156,9 +174,8 @@ namespace WpfAppES.ViewModel.Semantic
             }
             foreach (var ent in Entities)
             {
-                foreach (var pair in ent.Associations)
+                foreach (var association in ent.Associations)
                 {
-                    var association = pair.Value;
                     foreach (var target in association.Entities)
                         graph.AddEdge(ent.Id.ToString(),
                             association.Relation.Name,
