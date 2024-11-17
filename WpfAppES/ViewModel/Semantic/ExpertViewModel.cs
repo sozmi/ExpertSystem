@@ -34,7 +34,6 @@ namespace WpfAppES.ViewModel.Semantic
             DrawGraph();
         }
 
-
         #region Fields and properties
         /// <summary>
         /// Коллекция типов отношений
@@ -58,13 +57,6 @@ namespace WpfAppES.ViewModel.Semantic
         {
             get => _selectedItem;
             set=> SetProperty(ref _selectedItem, value);
-        }
-
-        private EntityViewModel? _selectedItem2;
-        public EntityViewModel? SelectedItem2
-        {
-            get => _selectedItem2;
-            set => SetProperty(ref _selectedItem2, value);
         }
         #endregion
 
@@ -113,6 +105,8 @@ namespace WpfAppES.ViewModel.Semantic
             DrawGraph();
         }
         #endregion
+        #region EditRelationCommand
+        #endregion
 
         #region AddEntityCommand 
         /// <summary>
@@ -131,7 +125,6 @@ namespace WpfAppES.ViewModel.Semantic
             DrawGraph();
         }
         #endregion
-
         #region RemoveEntityCommand
         /// <summary>
         /// Команда удаления сущности
@@ -156,7 +149,8 @@ namespace WpfAppES.ViewModel.Semantic
             DrawGraph();
         }
         #endregion
-
+        #region EditEntityCommand
+        #endregion
         #region Graph
         /// <summary>
         /// Заполнение и отрисовка графического изображения
