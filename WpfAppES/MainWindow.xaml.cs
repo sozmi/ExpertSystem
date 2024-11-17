@@ -52,7 +52,7 @@ namespace WpfAppES
             lastPage = rb.Tag.ToString();
             if (frame == null || lastInterface == null)
                 return;
-            frame.Navigate(new Uri($"/{lastInterface}/{lastPage}", UriKind.Relative));
+            frame.Navigate(new Uri($"/View/{lastInterface}/{lastPage}", UriKind.Relative));
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace WpfAppES
             lastInterface = rb.Tag.ToString();
             if (frame == null || lastPage == null)
                 return;
-            frame.Navigate(new Uri($"/{lastInterface}/{lastPage}", UriKind.Relative));
+            frame.Navigate(new Uri($"/View/{lastInterface}/{lastPage}", UriKind.Relative));
         }
 
         /// <summary>

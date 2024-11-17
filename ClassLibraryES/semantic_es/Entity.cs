@@ -28,5 +28,9 @@
             if (Associations[key_.Relative].Entities.Count == 0)
                 Associations.Remove(key_.Relative);
         }
+        public void RemoveRelationType(Guid idRelative_)
+        {
+            Associations.Remove(idRelative_);
+        }
     }
 }

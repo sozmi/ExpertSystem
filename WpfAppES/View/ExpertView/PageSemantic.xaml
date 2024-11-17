@@ -17,7 +17,7 @@
         <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter"/>
 
         <HierarchicalDataTemplate DataType="{x:Type sem:Entity}" 
-                                  ItemsSource="{Binding Associations.Values}">
+                                  ItemsSource="{Binding Associations.Values, UpdateSourceTrigger=PropertyChanged}">
             <StackPanel Orientation="Horizontal" 
                         Tag="{Binding ElementName=page}">
                 <TextBlock Text="{Binding Name}"/>
@@ -41,7 +41,7 @@
         </HierarchicalDataTemplate>
 
         <HierarchicalDataTemplate DataType="{x:Type sem:Association}" 
-                                  ItemsSource="{Binding Entities.Values}">
+                                  ItemsSource="{Binding Entities.Values, UpdateSourceTrigger=PropertyChanged}">
             <TextBlock Text="{Binding Relation.Name}"/>
             <HierarchicalDataTemplate.ItemTemplate>
                 <DataTemplate>
@@ -64,8 +64,10 @@
 
         <TreeView DockPanel.Dock="Left" 
                   MinWidth="150"
+                  
                   ItemsSource="{Binding Entities,
-                                Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                Mode=OneWay, 
+                                UpdateSourceTrigger=PropertyChanged}"
                   Visibility="{Binding ElementName=cbTree, Path=IsChecked, Converter={StaticResource booleanToVisibilityConverter}}">
             <TreeView.ContextMenu>
                 <ContextMenu>
@@ -74,7 +76,9 @@
             </TreeView.ContextMenu>
         </TreeView>
 
-        <DataGrid ItemsSource="{Binding Relations}" 
+        <DataGrid ItemsSource="{Binding Relations, UpdateSourceTrigger=PropertyChanged}" 
+                  SelectedItem="{Binding SelectedItem}"
+                  Tag="{Binding ElementName=page}"
                   AutoGenerateColumns="False"
                   CanUserAddRows="False" 
                   CanUserDeleteRows="False" 
@@ -83,7 +87,13 @@
                   Visibility="{Binding ElementName=cbRel, Path=IsChecked, Converter={StaticResource booleanToVisibilityConverter}}">
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Добавить" Command="{Binding AddRelationCommand}"/>
+                    <MenuItem Header="Добавить" 
+                              Command="{Binding AddRelationCommand}"/>
+                    <MenuItem Header="Удалить" 
+                              Command="{Binding RemoveRelationCommand,
+                                          Mode=OneWay,
+                                          UpdateSourceTrigger=PropertyChanged}"
+                              CommandParameter="{Binding SelectedItem.Id}"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
             <DataGrid.Columns>

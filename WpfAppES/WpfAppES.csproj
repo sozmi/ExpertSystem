@@ -29,16 +29,16 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Update="UserView\PageFrame.xaml.cs">
+    <Compile Update="View\UserView\PageFrame.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="UserView\PageLogical.xaml.cs">
+    <Compile Update="View\UserView\PageLogical.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="UserView\PageProduct.xaml.cs">
+    <Compile Update="View\UserView\PageProduct.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="UserView\PageSemantic.xaml.cs">
+    <Compile Update="View\UserView\PageSemantic.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

@@ -1,4 +1,5 @@
 ﻿using ClassLibraryES.Managers;
+using Newtonsoft.Json.Linq;
 
 namespace ClassLibraryES.semantic_es
 {
@@ -31,7 +32,7 @@ namespace ClassLibraryES.semantic_es
 
                 AddRelation(new(sneg.Id, bird.Id, it.Id));
                 AddRelation(new(bird.Id, fly.Id, can.Id));
-                AddRelation(new(bird.Id, sneg.Id, it.Id)); //Неправильное заключение, но нужно проверить циклы
+                AddRelation(new(bird.Id, sneg.Id, it.Id));
             }
         }
         public Dictionary<Guid, Entity> Entities { get; set; } = [];
@@ -47,10 +48,7 @@ namespace ClassLibraryES.semantic_es
             Links.Add(key);
             AddRelationNoKey(key);
         }
-        public void AddRelationType(RelationType relation)
-        {
-            Relations.Add(relation.Id, relation);
-        }
+
         private void AddRelationNoKey(KeyLink key)
         {
             var target = Entities[key.Id];
@@ -80,18 +78,30 @@ namespace ClassLibraryES.semantic_es
             return [.. Entities.Values];
         }
 
-        public void RemoveEntity(Guid id)
+        #region Edit Entity
+
+        public void Create(Entity newObj)
+        {
+            Entities.Add(newObj.Id, newObj);
+        }
+
+        public void Edit(Entity newObj)
+        {
+            Entities[newObj.Id] = newObj;
+        }
+
+        public void DeleteEntity(Guid id)
         {
             Entities.Remove(id);
             foreach (var key in Links.ToArray())
             {
-                if(key.Id == id)
+                if (key.Id == id)
                 {
                     //если объект является главным в связи,
                     //достаточно удалить только ключ
                     Links.Remove(key);
                 }
-                else if(key.Slave == id)
+                else if (key.Slave == id)
                 {
                     //если объект является подчиненным в связи,
                     //необходимо удалить связь из главного объекта
@@ -100,10 +110,30 @@ namespace ClassLibraryES.semantic_es
                 }
             }
         }
+        #endregion
 
-        public void AddEntity(Entity value)
+        #region Edit RelationType
+        public void Create(RelationType newObj)
         {
-            Entities.Add(value.Id,value);
+            Relations.Add(newObj.Id, newObj);
         }
+
+        public void Edit(RelationType newObj)
+        {
+            Relations[newObj.Id] = newObj;
+        }
+
+        public void DeleteRelationType(Guid id)
+        {
+            Relations.Remove(id);
+            foreach (var key in Links.ToArray())
+            {
+                if (key.Relative != id)
+                    continue;
+                Entities[key.Id].RemoveRelationType(key.Relative);
+                Links.Remove(key);
+            }
+        }
+        #endregion
     }
 }

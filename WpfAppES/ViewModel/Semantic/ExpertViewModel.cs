@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using ClassLibraryES.Managers;
 using ClassLibraryES.semantic_es;
+using Microsoft.Msagl.Core.DataStructures;
 using Microsoft.Msagl.Drawing;
 using WpfAppES.ViewModel.BaseObjects;
 
@@ -19,12 +20,13 @@ namespace WpfAppES.ViewModel.Semantic
             DrawGraph();
         }
 
+
         #region Fields and properties
         /// <summary>
         /// Коллекция типов отношений
         /// </summary>
-        public ObservableCollection<RelationType> Relations { get; set; } = [];
-
+        public ObservableCollection<RelationType> Relations { get => relations; set => SetProperty(ref relations, value); }
+        ObservableCollection<RelationType> relations = [];
         /// <summary>
         /// Графическое описание БЗ
         /// </summary>
@@ -36,6 +38,20 @@ namespace WpfAppES.ViewModel.Semantic
         /// </summary>
         public ObservableCollection<Entity> Entities { get => entities; set => SetProperty(ref entities, value); }
         ObservableCollection<Entity> entities = [];
+
+        private RelationType _selectedItem;
+        public RelationType SelectedItem
+        {
+            get => _selectedItem;
+            set=> SetProperty(ref _selectedItem, value);
+        }
+
+        private RelationType _selectedItem2;
+        public RelationType SelectedItem2
+        {
+            get => _selectedItem2;
+            set => SetProperty(ref _selectedItem2, value);
+        }
         #endregion
 
         #region AddRelationCommand
@@ -46,9 +62,39 @@ namespace WpfAppES.ViewModel.Semantic
         private RelayCommand? addRelationCommand;
         private void AddRelation(object? _)
         {
+            var db = KnowledgeBaseManager.Get().GetBase<SemanticDB>();
+            if (db == null) return;
             var rt = new RelationType("Не указано");
+            db.Create(rt);
             Relations.Add(rt);
-            KnowledgeBaseManager.Get().GetBase<SemanticDB>()?.AddRelationType(rt);
+        }
+        #endregion
+        #region RemoveRelationCommand
+        /// <summary>
+        /// Команда удаления типа связи
+        /// </summary>
+        public RelayCommand RemoveRelationCommand => removeRelationCommand ??= new(obj => RemoveRelation(obj));
+        private RelayCommand? removeRelationCommand;
+
+        private void RemoveRelation(object? obj)
+        {
+            if (obj == null)
+            {
+                new Common.MessageBox("Не выбран элемент для удаления", "Ошибка").Show();
+                return;
+            }
+
+            Guid? id = obj as Guid?;
+            if (id == null) return;
+
+            var db = KnowledgeBaseManager.Get().GetBase<SemanticDB>();
+            if (db == null) return;
+
+            db.DeleteRelationType((Guid)id);
+
+            Relations = new(db.GetRelations());
+            Entities = new(db.GetEntities());
+            DrawGraph();
         }
         #endregion
 
@@ -63,8 +109,9 @@ namespace WpfAppES.ViewModel.Semantic
         {
             var db = KnowledgeBaseManager.Get().GetBase<SemanticDB>();
             if (db == null) return;
-            db.AddEntity(new("Не указано"));
-            Entities = new(db.GetEntities());
+            Entity ent = new("Не указано");
+            db.Create(ent);
+            Entities.Add(ent);
             DrawGraph();
         }
         #endregion
@@ -86,7 +133,7 @@ namespace WpfAppES.ViewModel.Semantic
             var db = KnowledgeBaseManager.Get().GetBase<SemanticDB>();
             if (db == null) return;
 
-            db.RemoveEntity((Guid)id);
+            db.DeleteEntity((Guid)id);
             Entities = new(db.GetEntities());
             DrawGraph();
         }
