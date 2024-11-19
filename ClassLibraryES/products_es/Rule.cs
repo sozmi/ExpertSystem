@@ -4,45 +4,46 @@ using System.Collections.Generic;
 namespace ClassLibraryES.Products
 {
     /// <summary>
-    /// Правило продукционной системы
+    /// Правило продукционной системы - состоит из списка фактов-предпосылок
+    /// и одного факта-результата
     /// </summary>
     public class Rule
     {
         /// <summary>
-        /// Уникальный идентификатор правила
+        /// Уникальный идентификатор правила.
+        /// Генерируется автоматически при создании правила.
         /// </summary>
         public Guid Id { get; private set; }
 
         /// <summary>
-        /// Наименование правила
+        /// Наименование правила.
+        /// Nullable, так как может быть установлено после создания объекта.
         /// </summary>
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>
-        /// Список фактов-предпосылок
+        /// Список фактов-предпосылок, которые должны быть истинны 
+        /// для срабатывания правила.
         /// </summary>
         public List<Fact> Premises { get; private set; }
 
         /// <summary>
-        /// Факт-результат
+        /// Факт-результат, который становится истинным при срабатывании правила.
+        /// Nullable, так как может быть установлен после создания объекта.
         /// </summary>
-        public Fact Result { get; set; }
+        public Fact? Result { get; set; }
 
         public Rule()
         {
             Id = Guid.NewGuid();
-            Premises = new();
-        }
-
-        public Rule(string name)
-        {
-            Id = Guid.NewGuid();
-            Name = name;
+            Premises = new List<Fact>();
         }
 
         /// <summary>
-        /// Добавить факт-предпосылку
+        /// Добавляет новый факт-предпосылку в правило.
+        /// Предпосылка добавляется только если она еще не существует в списке.
         /// </summary>
+        /// <param name="premise">Факт-предпосылка</param>
         public void AddPremise(Fact premise)
         {
             if (!Premises.Contains(premise))
@@ -52,8 +53,11 @@ namespace ClassLibraryES.Products
         }
 
         /// <summary>
-        /// Проверить, выполняются ли все предпосылки
+        /// Проверяет, выполняются ли все предпосылки правила
+        /// в заданном наборе фактов.
         /// </summary>
+        /// <param name="facts">Набор фактов для проверки</param>
+        /// <returns>true, если все предпосылки найдены в наборе фактов; иначе false</returns>
         public bool CheckPremises(ICollection<Fact> facts)
         {
             foreach (var premise in Premises)

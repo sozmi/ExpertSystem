@@ -3,35 +3,32 @@
 namespace ClassLibraryES.Products
 {
     /// <summary>
-    /// Переменная продукционной системы
+    /// Переменная продукционной системы - описывает характеристику или свойство,
+    /// которое может принимать значения из определенного домена
     /// </summary>
     public class Variable
     {
         /// <summary>
-        /// Уникальный идентификатор переменной
+        /// Уникальный идентификатор переменной.
+        /// Генерируется автоматически при создании переменной.
         /// </summary>
         public Guid Id { get; private set; }
 
         /// <summary>
-        /// Наименование переменной
+        /// Наименование переменной.
+        /// Nullable, так как может быть установлено после создания объекта.
         /// </summary>
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>
-        /// Домен переменной
+        /// Домен переменной - множество допустимых значений.
+        /// Nullable, так как может быть установлен после создания объекта.
         /// </summary>
-        public Domain Domain { get; set; }
+        public Domain? Domain { get; set; }
 
         public Variable()
         {
             Id = Guid.NewGuid();
-        }
-
-        public Variable(string name, Domain domain)
-        {
-            Id = Guid.NewGuid();
-            Name = name;
-            Domain = domain;
         }
     }
 }

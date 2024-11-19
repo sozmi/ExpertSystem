@@ -23,10 +23,19 @@ namespace ClassLibraryES.Products
         /// </summary>
         public List<string> Values { get; private set; }
 
-        public Domain()
+        /// <summary>
+        /// Создает новый экземпляр домена с указанным именем
+        /// </summary>
+        /// <param name="name">Имя домена</param>
+        /// <exception cref="ArgumentException">Выбрасывается, если имя пустое или null</exception>
+        public Domain(string name)
         {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Name cannot be null or empty", nameof(name));
+
             Id = Guid.NewGuid();
-            Values = new();
+            Name = name;
+            Values = new List<string>();
         }
     }
 }
