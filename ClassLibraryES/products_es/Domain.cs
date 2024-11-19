@@ -35,7 +35,7 @@ namespace ClassLibraryES.Products
 
             Id = Guid.NewGuid();
             Name = name;
-            Values = new List<string>();
+            Values = new();
         }
     }
 }

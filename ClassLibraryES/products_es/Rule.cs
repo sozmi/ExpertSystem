@@ -36,7 +36,7 @@ namespace ClassLibraryES.Products
         public Rule()
         {
             Id = Guid.NewGuid();
-            Premises = new List<Fact>();
+            Premises = new();
         }
 
         /// <summary>
