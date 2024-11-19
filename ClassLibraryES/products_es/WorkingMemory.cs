@@ -63,5 +63,10 @@ namespace ClassLibraryES.products_es
         {
             return facts;
         }
+        public void RemoveFact(Fact fact)
+        {
+            facts.Remove(fact);
+        }
+
     }
 }
