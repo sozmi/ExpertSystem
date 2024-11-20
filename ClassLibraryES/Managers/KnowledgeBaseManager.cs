@@ -1,4 +1,6 @@
 ﻿using ClassLibraryES.frame_es;
+using ClassLibraryES.Products;
+using ClassLibraryES.products_es;
 using ClassLibraryES.semantic_es;
 using Newtonsoft.Json;
 using System.IO;
@@ -24,7 +26,7 @@ namespace ClassLibraryES.Managers
         private KnowledgeBaseManager()
         {
             Bases[(int)ETypeDB.eLogical] = null;
-            Bases[(int)ETypeDB.eProducts] = null;
+            Bases[(int)ETypeDB.eProducts] = new ProductionDB(true);
             Bases[(int)ETypeDB.eSemantic] = new SemanticDB(true);//TODO: это тест удалить true
             Bases[(int)ETypeDB.eFrame] = null;
 

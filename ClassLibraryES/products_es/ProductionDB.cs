@@ -10,6 +10,66 @@ namespace ClassLibraryES.Products
     /// </summary>
     public class ProductionDB : IKnowledgeBase
     {
+        public ProductionDB() { }
+
+        public ProductionDB(bool isTest = false)
+        {
+            if (isTest)
+            {
+                // Создаем домены
+                Domain colorDomain = new("Цвет");
+                colorDomain.Values.Add("красный");
+                colorDomain.Values.Add("серый");
+                Domains.Add(colorDomain.Id, colorDomain);
+
+                Domain sizeDomain = new("Размер");
+                sizeDomain.Values.Add("маленький");
+                sizeDomain.Values.Add("средний");
+                Domains.Add(sizeDomain.Id, sizeDomain);
+
+                // Создаем переменные
+                Variable birdColor = new() { Name = "Цвет птицы", Domain = colorDomain };
+                Variables.Add(birdColor.Id, birdColor);
+
+                Variable birdSize = new() { Name = "Размер птицы", Domain = sizeDomain };
+                Variables.Add(birdSize.Id, birdSize);
+
+                // Создаем факты
+                Fact colorFact = new()
+                {
+                    Variable = birdColor,
+                    Value = "красный"
+                };
+                Facts.Add(colorFact.Id, colorFact);
+
+                Fact sizeFact = new()
+                {
+                    Variable = birdSize,
+                    Value = "маленький"
+                };
+                Facts.Add(sizeFact.Id, sizeFact);
+
+                // Создаем правило: ЕСЛИ (цвет красный И размер маленький) ТО это снегирь
+                Rule birdRule = new() { Name = "Определение снегиря" };
+                birdRule.Premises.Add(colorFact);
+                birdRule.Premises.Add(sizeFact);
+
+                Domain birdDomain = new("Птица");
+                birdDomain.Values.Add("снегирь");
+                Domains.Add(birdDomain.Id, birdDomain);
+
+                Variable birdType = new() { Name = "Вид птицы", Domain = birdDomain };
+                Variables.Add(birdType.Id, birdType);
+
+                birdRule.Result = new Fact()
+                {
+                    Variable = birdType,
+                    Value = "снегирь"
+                };
+                Rules.Add(birdRule.Id, birdRule);
+            }
+        }
+
         /// <summary>
         /// Словарь всех доменов.
         /// Ключ - уникальный идентификатор домена, значение - объект домена
