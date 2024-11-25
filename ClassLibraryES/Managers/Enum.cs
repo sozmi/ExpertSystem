@@ -1,7 +1,4 @@
-﻿using ClassLibraryES.frame_es;
-using ClassLibraryES.semantic_es;
-
-namespace ClassLibraryES.Managers
+﻿namespace ClassLibraryES.Managers
 {
     public enum ETypeDB
     {

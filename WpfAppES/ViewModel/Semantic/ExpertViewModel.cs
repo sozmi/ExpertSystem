@@ -6,159 +6,56 @@ using WpfAppES.ViewModel.BaseObjects;
 
 namespace WpfAppES.ViewModel.Semantic
 {
-    class EntityViewModel : BaseViewModel
+    public interface IModelChanged
     {
-        public EntityViewModel(Entity entity)
-        {
-            Id = entity.Id;
-            Name = entity.Name;
-            Associations = [.. entity.Associations.Values];
-        }
-        public Guid Id { get; set; }
-        public string Name { get; set; }
-        public List<Association> Associations { get=> associations; set => SetProperty( ref associations, value); }
-        List<Association> associations = [];
+        public void OnGlobalChanged();
     }
 
-    class ExpertViewModel : BaseViewModel
+    class ExpertViewModel : BaseViewModel<object?>, IModelChanged
     {
-        public ExpertViewModel()
+
+        public TreeEntitiesViewModel TreeEntitiesViewModel { get => _treeEntities; set => SetProperty(ref _treeEntities, value); }
+        TreeEntitiesViewModel _treeEntities;
+        public DataGridRelationViewModel DataGridRelationViewModel { get => _dataGridRelation; set => SetProperty(ref _dataGridRelation, value); }
+        private DataGridRelationViewModel _dataGridRelation;
+
+        public ExpertViewModel() : base(null)
         {
+            TreeEntitiesViewModel = new TreeEntitiesViewModel();
+            DataGridRelationViewModel = new DataGridRelationViewModel();
+            TreeEntitiesViewModel.Subscribe(this);
+            DataGridRelationViewModel.Subscribe(this);
             var db = KnowledgeBaseManager.Get().GetBase<SemanticDB>();
             if (db == null)
                 return;
 
-            Relations = new(db.GetRelations());
-            foreach (var ent in db.GetEntities())
-                Entities.Add(new(ent));
             DrawGraph();
         }
 
         #region Fields and properties
-        /// <summary>
-        /// Коллекция типов отношений
-        /// </summary>
-        public ObservableCollection<RelationType> Relations { get => relations; set => SetProperty(ref relations, value); }
-        ObservableCollection<RelationType> relations = [];
+
         /// <summary>
         /// Графическое описание БЗ
         /// </summary>
         public Graph GraphObject { get => graphObject; set => SetProperty(ref graphObject, value); }
         private Graph graphObject = new();
 
-        /// <summary>
-        /// Коллекция типов сущностей
-        /// </summary>
-        public ObservableCollection<EntityViewModel> Entities { get => entities; set => SetProperty(ref entities, value); }
-        ObservableCollection<EntityViewModel> entities = [];
 
-        private RelationType? _selectedItem;
-        public RelationType? SelectedItem
-        {
-            get => _selectedItem;
-            set=> SetProperty(ref _selectedItem, value);
-        }
+
         #endregion
 
-        #region AddRelationCommand
-        /// <summary>
-        /// Команда добавление новых связей
-        /// </summary>
-        public RelayCommand AddRelationCommand => addRelationCommand ??= new(AddRelation);
-        private RelayCommand? addRelationCommand;
-        private void AddRelation(object? _)
-        {
-            var db = KnowledgeBaseManager.Get().GetBase<SemanticDB>();
-            if (db == null) return;
-            var rt = new RelationType("Не указано");
-            db.Create(rt);
-            Relations.Add(rt);
-        }
-        #endregion
-        #region RemoveRelationCommand
-        /// <summary>
-        /// Команда удаления типа связи
-        /// </summary>
-        public RelayCommand RemoveRelationCommand => removeRelationCommand ??= new(obj => RemoveRelation(obj));
-        private RelayCommand? removeRelationCommand;
 
-        private void RemoveRelation(object? obj)
-        {
-            if (obj == null)
-            {
-                new Common.MessageBox("Не выбран элемент для удаления", "Ошибка").Show();
-                return;
-            }
 
-            Guid? id = obj as Guid?;
-            if (id == null) return;
-
-            var db = KnowledgeBaseManager.Get().GetBase<SemanticDB>();
-            if (db == null) return;
-
-            db.DeleteRelationType((Guid)id);
-
-            Relations = new(db.GetRelations());
-            Entities.Clear();
-            foreach (var ent in db.GetEntities())
-                Entities.Add(new(ent));
-            DrawGraph();
-        }
-        #endregion
-        #region EditRelationCommand
-        #endregion
-
-        #region AddEntityCommand 
-        /// <summary>
-        /// Команда добавления новой сущности
-        /// </summary>
-        public RelayCommand AddEntityCommand => addEntityCommand ??= new(AddEntity);
-        private RelayCommand? addEntityCommand;
-
-        private void AddEntity(object? _)
-        {
-            var db = KnowledgeBaseManager.Get().GetBase<SemanticDB>();
-            if (db == null) return;
-            Entity ent = new("Не указано");
-            db.Create(ent);
-            Entities.Add(new(ent));
-            DrawGraph();
-        }
-        #endregion
-        #region RemoveEntityCommand
-        /// <summary>
-        /// Команда удаления сущности
-        /// </summary>
-        public RelayCommand RemoveEntityCommand => removeEntityCommand ??= new(obj => RemoveEntity(obj));
-        private RelayCommand? removeEntityCommand;
-
-        private void RemoveEntity(object? obj)
-        {
-            if(obj == null) return;
-
-            Guid? id = obj as Guid?;
-            if (id == null) return;
-
-            var db = KnowledgeBaseManager.Get().GetBase<SemanticDB>();
-            if (db == null) return;
-
-            db.DeleteEntity((Guid)id);
-            Entities.Clear();
-            foreach (var ent in db.GetEntities())
-                Entities.Add(new(ent));
-            DrawGraph();
-        }
-        #endregion
-        #region EditEntityCommand
-        #endregion
         #region Graph
         /// <summary>
         /// Заполнение и отрисовка графического изображения
         /// </summary>
         private void DrawGraph()
         {
+            var db = KnowledgeBaseManager.Get().GetBase<SemanticDB>();
+            if (db == null) return;
             Graph graph = new();
-            foreach (var ent in Entities)
+            foreach (var ent in db.GetEntities())
             {
                 Node n = new(ent.Id.ToString())
                 {
@@ -166,18 +63,21 @@ namespace WpfAppES.ViewModel.Semantic
                 };
                 graph.AddNode(n);
             }
-            foreach (var ent in Entities)
+            foreach (var ent in db.GetEntities())
             {
-                foreach (var association in ent.Associations)
+                foreach (var link in ent.Links.Values)
                 {
-                    foreach (var target in association.Entities)
-                        graph.AddEdge(ent.Id.ToString(),
-                            association.Relation.Name,
-                            target.Key.ToString());
+                    graph.AddEdge(ent.Id.ToString(),
+                       link.Relation.Name,
+                        link.Entity.Id.ToString());
                 }
-
             }
             GraphObject = graph;
+        }
+
+        public void OnGlobalChanged()
+        {
+            DrawGraph();
         }
     }
     #endregion

@@ -3,8 +3,31 @@ using System.Runtime.CompilerServices;
 
 namespace WpfAppES.ViewModel.BaseObjects
 {
-    public class BaseViewModel : INotifyPropertyChanged
+    public class Property<T> :BaseViewModel<T>
     {
+        public Property(PropertyChangedEventHandler propertyChanged, T val_) {
+            PropertyChanged += propertyChanged;
+            this.val = val_;
+        }
+        T val;
+        public T Value { get => val; set => SetProperty(ref val, value); }
+    }
+
+    public class BaseViewModel<TModel> : INotifyPropertyChanged
+    {
+        /// <summary>
+        /// Оригинальная модель
+        /// </summary>
+        protected TModel? original;
+
+        protected BaseViewModel()
+        {
+
+        }
+        protected BaseViewModel(TModel model)
+        { 
+            original = model;
+        }
         /// <summary>
         /// Событие изменения свойства
         /// </summary>

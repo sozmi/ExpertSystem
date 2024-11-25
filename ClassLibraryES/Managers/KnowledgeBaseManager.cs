@@ -10,8 +10,8 @@ namespace ClassLibraryES.Managers
     /// </summary>
     public class KnowledgeBaseManager
     {
-        public string PATH_TO_DIR;
-        public string PATH_TO_FILE;
+        public string PATH_TO_DIR = "";
+        public string PATH_TO_FILE = "";
         private static KnowledgeBaseManager? knowledgeBaseManager = null;
         // Список для хранения баз знаний
         private string NameES { get; set; } = "";

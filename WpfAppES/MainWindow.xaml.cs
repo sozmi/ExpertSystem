@@ -33,7 +33,7 @@ namespace WpfAppES
 
             expert.IsChecked = true;
             dbSemantic.IsChecked = true;
-            //frame.Navigate(new Uri($"StartPage.xaml", UriKind.Relative));
+            //frame.Navigate(new Uri($"View/StartPage.xaml", UriKind.Relative));
             defaultTitle = Title;
 
             ConfigHelper.Instance.SetLang("ru");

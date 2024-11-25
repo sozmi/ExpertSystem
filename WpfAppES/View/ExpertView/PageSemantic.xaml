@@ -5,7 +5,9 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WpfAppES.ExpertView"
       xmlns:vm="clr-namespace:WpfAppES.ViewModel.Semantic"
-      xmlns:sem="clr-namespace:ClassLibraryES.semantic_es;assembly=ClassLibraryES" xmlns:wpfgraphcontrol="http://mlsagl"
+      xmlns:comp="clr-namespace:WpfAppES.Components.Semantic"
+xmlns:sem="clr-namespace:ClassLibraryES.semantic_es;assembly=ClassLibraryES" 
+      xmlns:wpfgraphcontrol="http://mlsagl"
       mc:Ignorable="d" 
       x:Name="page"
       d:DesignHeight="450" d:DesignWidth="800"
@@ -13,43 +15,9 @@
     <Page.DataContext>
         <vm:ExpertViewModel/>
     </Page.DataContext>
+    
     <Page.Resources>
         <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter"/>
-
-        <HierarchicalDataTemplate DataType="{x:Type vm:EntityViewModel}" 
-                                  ItemsSource="{Binding Associations, UpdateSourceTrigger=PropertyChanged}">
-            <StackPanel Orientation="Horizontal" 
-                        Tag="{Binding ElementName=page}">
-                <TextBlock Text="{Binding Name}"/>
-                <StackPanel.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Редактировать" 
-                                  Command="{Binding Parent.PlacementTarget.Tag.DataContext.EditEntityCommand,  
-                                            RelativeSource={RelativeSource Self}}"
-                                            CommandParameter="{Binding Id}">
-                        </MenuItem>
-                        <MenuItem Header="Удалить" 
-                                  Command="{Binding Parent.PlacementTarget.Tag.DataContext.RemoveEntityCommand, 
-                                            RelativeSource={RelativeSource Self},
-                                            Mode=OneWay,
-                                            UpdateSourceTrigger=PropertyChanged}"
-                                  CommandParameter="{Binding Id}">
-                        </MenuItem>
-                    </ContextMenu>
-                </StackPanel.ContextMenu>
-            </StackPanel>
-        </HierarchicalDataTemplate>
-
-        <HierarchicalDataTemplate DataType="{x:Type sem:Association}" 
-                                  ItemsSource="{Binding Entities.Values, UpdateSourceTrigger=PropertyChanged}">
-            <TextBlock Text="{Binding Relation.Name}"/>
-            <HierarchicalDataTemplate.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Name}"/>
-                </DataTemplate>
-            </HierarchicalDataTemplate.ItemTemplate>
-        </HierarchicalDataTemplate>
-
     </Page.Resources>
 
     <DockPanel LastChildFill="True">
@@ -61,45 +29,15 @@
             <ToggleButton x:Name="cbGraph" Content="Граф" Margin="5,0" IsChecked="True"/>
             <Button Content="Проверка базы знаний" Style="{StaticResource ButtonPrimary}"/>
         </ToolBar>
+        
+        <comp:TreeEntityView DataContext="{Binding TreeEntitiesViewModel, Mode=OneWay}"
+                           Visibility="{Binding ElementName=cbTree, Path=IsChecked, Converter={StaticResource booleanToVisibilityConverter}}"/>
 
-        <TreeView DockPanel.Dock="Left" 
-                  MinWidth="150"
-                  ItemsSource="{Binding Entities,
-                                Mode=OneWay, 
-                                UpdateSourceTrigger=PropertyChanged}"
-                  Visibility="{Binding ElementName=cbTree, Path=IsChecked, Converter={StaticResource booleanToVisibilityConverter}}">
-            <TreeView.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Добавить" Command="{Binding AddEntityCommand}"/>
-                </ContextMenu>
-            </TreeView.ContextMenu>
-        </TreeView>
 
-        <DataGrid ItemsSource="{Binding Relations, UpdateSourceTrigger=PropertyChanged}" 
-                  SelectedItem="{Binding SelectedItem}"
-                  Tag="{Binding ElementName=page}"
-                  AutoGenerateColumns="False"
-                  CanUserAddRows="False" 
-                  CanUserDeleteRows="False" 
-                  CanUserSortColumns="False" 
-                  CanUserReorderColumns="True"
-                  Visibility="{Binding ElementName=cbRel, Path=IsChecked, Converter={StaticResource booleanToVisibilityConverter}}">
-            <DataGrid.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Добавить" 
-                              Command="{Binding AddRelationCommand}"/>
-                    <MenuItem Header="Удалить" 
-                              Command="{Binding RemoveRelationCommand,
-                                          Mode=OneWay,
-                                          UpdateSourceTrigger=PropertyChanged}"
-                              CommandParameter="{Binding SelectedItem.Id}"/>
-                </ContextMenu>
-            </DataGrid.ContextMenu>
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Типы отношений" Binding="{Binding Name}"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <comp:DataGridRelationView 
+            Visibility="{Binding ElementName=cbRel, Path=IsChecked, Converter={StaticResource booleanToVisibilityConverter}}"/>
 
-        <wpfgraphcontrol:AutomaticGraphLayoutControl Graph="{Binding GraphObject,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Visibility="{Binding ElementName=cbGraph, Path=IsChecked, Converter={StaticResource booleanToVisibilityConverter}}"/>
+        <wpfgraphcontrol:AutomaticGraphLayoutControl Graph="{Binding GraphObject,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                                     Visibility="{Binding ElementName=cbGraph, Path=IsChecked, Converter={StaticResource booleanToVisibilityConverter}}"/>
     </DockPanel>
 </Page>
