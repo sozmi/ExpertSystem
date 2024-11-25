@@ -10,9 +10,10 @@
     <UserControl.DataContext>
         <semantic:DataGridRelationViewModel/>
     </UserControl.DataContext>
+    
     <DataGrid x:Name="EntityesDataGrid"
-                  ItemsSource="{Binding Relations, UpdateSourceTrigger=PropertyChanged}" 
-                  SelectedItem="{Binding SelectedItem}"
+                  ItemsSource="{Binding Relations}" 
+                  SelectedItem="{Binding SelectedItem2, Mode=TwoWay}"
                   Tag="{Binding ElementName=ctrl}"
                   AutoGenerateColumns="False"
                   CanUserAddRows="False" 
@@ -27,8 +28,7 @@
                 <MenuItem Header="Удалить" 
                               Command="{Binding RemoveRelationCommand,
                                           Mode=OneWay,
-                                          UpdateSourceTrigger=PropertyChanged}"
-                              CommandParameter="{Binding SelectedItem.Id}"/>
+                                          UpdateSourceTrigger=PropertyChanged}"/>
             </ContextMenu>
         </DataGrid.ContextMenu>
         <DataGrid.Columns>

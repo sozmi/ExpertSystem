@@ -15,7 +15,7 @@ namespace WpfAppES.ViewModel.Semantic
         List<IModelChanged> modelChangeds = [];
 
         private RelationType? _selectedItem;
-        public RelationType? SelectedItem
+        public RelationType? SelectedItem2
         {
             get => _selectedItem;
             set => SetProperty(ref _selectedItem, value);
@@ -58,6 +58,7 @@ namespace WpfAppES.ViewModel.Semantic
 
         private void RemoveRelation(object? obj)
         {
+            obj = SelectedItem2.Id;
             if (obj == null)
             {
                 new Common.MessageBox("Не выбран элемент для удаления", "Ошибка").Show();
