@@ -44,9 +44,9 @@ namespace ClassLibraryES.semantic_es
         }
 
         /// <summary>
-        /// Получение пары идентификаторов (тип связи, сущность)
+        /// Получение пары идентификаторов (сущность, тип связи)
         /// </summary>
         /// <returns>Ключ отношения</returns>
-        public KeyRelative GetKey() => new(Relation.Id, Entity.Id); 
+        public KeyRelative GetKey() => new(Entity.Id, Relation.Id); 
     }
 }

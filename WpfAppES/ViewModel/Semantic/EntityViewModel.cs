@@ -37,7 +37,7 @@ namespace WpfAppES.ViewModel.Semantic
             HashSet<KeyRelative> keys = [];
             foreach (var link in Links)
             {
-                if (link.Relation == null || link.Entity == null)
+                if (link.Relation.Id == Guid.Empty || link.Entity.Id == Guid.Empty)
                 {
                     new Common.MessageBox("Присутствуют незаполненные связи","Ошибка").Show();
                     return false;
@@ -54,7 +54,6 @@ namespace WpfAppES.ViewModel.Semantic
             }
             
             var originalKeys = original.GetKeysRelative();
-            
             foreach (var link in Links)
             {
                 KeyRelative key = new(link.Entity.Id, link.Relation.Id);
@@ -84,7 +83,7 @@ namespace WpfAppES.ViewModel.Semantic
         RelayCommand addLinkCommand;
         private void AddLink(object? _)
         {
-            Link link = new();
+            Link link = new(new(Guid.Empty,""),new(Guid.Empty,""));
             Links.Add(new(link));
         }
 

@@ -1,4 +1,6 @@
-﻿namespace ClassLibraryES.semantic_es
+﻿using System;
+
+namespace ClassLibraryES.semantic_es
 {
     /// <summary>
     /// Ключ для отношения
@@ -14,7 +16,7 @@
         /// Связь
         /// </summary>
         public Guid Relative { get; set; }
-        
+
         /// <summary>
         /// Создание пустого ключа
         /// </summary>

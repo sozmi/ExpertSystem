@@ -1,7 +1,6 @@
 ﻿using ClassLibraryES.Managers;
 using ClassLibraryES.system;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 
 namespace ClassLibraryES.semantic_es
 {

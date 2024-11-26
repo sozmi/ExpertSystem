@@ -1,6 +1,7 @@
 ﻿namespace ClassLibraryES.semantic_es
 {
     using Newtonsoft.Json;
+    using static ClassLibraryES.semantic_es.KeyRelative;
 
     /// <summary>
     /// Класс с информациях о сущностях
@@ -84,7 +85,7 @@
         /// <param name="key_">Ключ связи</param>
         public void RemoveLink(KeyLink key_)
         {
-            Links.Remove(new(key_.Relative, key_.Slave));
+            Links.Remove(new(key_.Slave, key_.Relative));
         }
 
         /// <summary>
