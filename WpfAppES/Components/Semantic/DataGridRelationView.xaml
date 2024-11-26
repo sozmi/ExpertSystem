@@ -6,20 +6,20 @@
              xmlns:local="clr-namespace:WpfAppES.Components.Semantic" xmlns:semantic="clr-namespace:WpfAppES.ViewModel.Semantic"
              mc:Ignorable="d" 
              x:Name="ctrl"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="200" d:DesignWidth="300">
     <UserControl.DataContext>
         <semantic:DataGridRelationViewModel/>
     </UserControl.DataContext>
-    
+
     <DataGrid x:Name="EntityesDataGrid"
-                  ItemsSource="{Binding Relations}" 
-                  SelectedItem="{Binding SelectedItem2, Mode=TwoWay}"
-                  Tag="{Binding ElementName=ctrl}"
-                  AutoGenerateColumns="False"
-                  CanUserAddRows="False" 
-                  CanUserDeleteRows="False" 
-                  CanUserSortColumns="False" 
-                  CanUserReorderColumns="True">
+              SelectionUnit ="FullRow"
+              ItemsSource="{Binding Relations}" 
+              SelectedItem="{Binding Path=SelectedRelation, Mode=TwoWay}"
+              AutoGenerateColumns="False"
+              CanUserAddRows="False" 
+              CanUserDeleteRows="False" 
+              CanUserSortColumns="False" 
+              CanUserReorderColumns="True">
 
         <DataGrid.ContextMenu>
             <ContextMenu>

@@ -8,23 +8,22 @@ namespace WpfAppES.ViewModel.Semantic
 {
     public interface IModelChanged
     {
-        public void OnGlobalChanged();
+        public void OnGlobalChanged();//TODO: разделить на более локальные события
     }
 
     class ExpertViewModel : BaseViewModel<object?>, IModelChanged
     {
 
-        public TreeEntitiesViewModel TreeEntitiesViewModel { get => _treeEntities; set => SetProperty(ref _treeEntities, value); }
-        TreeEntitiesViewModel _treeEntities;
-        public DataGridRelationViewModel DataGridRelationViewModel { get => _dataGridRelation; set => SetProperty(ref _dataGridRelation, value); }
-        private DataGridRelationViewModel _dataGridRelation;
+        public TreeEntitiesViewModel TreeEntitiesViewModel { get; } = new();
+        public DataGridRelationViewModel DataGridRelationViewModel { get; } =new();
 
         public ExpertViewModel() : base(null)
         {
-            TreeEntitiesViewModel = new TreeEntitiesViewModel();
-            DataGridRelationViewModel = new DataGridRelationViewModel();
+            DataGridRelationViewModel = new();
             TreeEntitiesViewModel.Subscribe(this);
             DataGridRelationViewModel.Subscribe(this);
+            DataGridRelationViewModel.Subscribe(TreeEntitiesViewModel);
+
             var db = KnowledgeBaseManager.Get().GetBase<SemanticDB>();
             if (db == null)
                 return;
@@ -42,15 +41,6 @@ namespace WpfAppES.ViewModel.Semantic
 
 
 
-        #endregion
-
-
-            db.DeleteEntity((Guid)id);
-            Entities.Clear();
-            foreach (var ent in db.GetEntities())
-                Entities.Add(new(ent));
-            DrawGraph();
-        }
         #endregion
 
         #region Graph

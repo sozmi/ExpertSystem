@@ -1,13 +1,16 @@
 ﻿using ClassLibraryES.Managers;
 using ClassLibraryES.system;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace ClassLibraryES.semantic_es
 {
     public class SemanticDB : IKnowledgeBase
     {
-        public SemanticDB() { }
-        public SemanticDB(bool isTest = false)
+        public SemanticDB() 
+        {
+        }
+        public SemanticDB(bool isTest = false) : base()
         {
             if (isTest)
             {
@@ -68,10 +71,8 @@ namespace ClassLibraryES.semantic_es
         /// Словарь содержащий информацию о связях в БЗ
         /// </summary>
         [JsonProperty]
-        [JsonConverter(typeof(CustomDictionaryConverter<KeyLink,Link>))]
+        [JsonConverter(typeof(CustomDictionaryConverter<KeyLink, Link>))]
         private Dictionary<KeyLink, Link> Links { get; set; } = [];
-
-
 
         #region Interface
         public bool Open()
@@ -208,7 +209,8 @@ namespace ClassLibraryES.semantic_es
         /// Создание связи по ключу
         /// </summary>
         /// <param name="key_">Ключ связи</param>
-        public void AddLink(KeyLink key_)
+        /// <returns>Связь</returns>
+        public Link AddLink(KeyLink key_)
         {
             var target = Entities[key_.Id];
             var slave = Entities[key_.Slave];
@@ -217,6 +219,12 @@ namespace ClassLibraryES.semantic_es
             Link link = new(relation, slave);
             Links.Add(key_, link);
             target.AddLink(link);
+            return link;
+        }
+
+        public Link GetLink(KeyLink key_)
+        {
+            return Links[key_];
         }
         #endregion
     }

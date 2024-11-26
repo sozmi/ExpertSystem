@@ -7,6 +7,7 @@ namespace ClassLibraryES.semantic_es
     /// </summary>
     public class Link
     {
+        public Guid Id { get; set; } = Guid.NewGuid();
         /// <summary>
         /// Тип связи
         /// </summary>

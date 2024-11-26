@@ -12,10 +12,10 @@ namespace WpfAppES.ViewModel.Semantic
         /// </summary>
         public ObservableCollection<RelationType> Relations { get => relations; set => SetProperty(ref relations, value); }
         ObservableCollection<RelationType> relations = [];
-        List<IModelChanged> modelChangeds = [];
+        private readonly List<IModelChanged> modelChangeds = [];
 
         private RelationType? _selectedItem;
-        public RelationType? SelectedItem2
+        public RelationType? SelectedRelation
         {
             get => _selectedItem;
             set => SetProperty(ref _selectedItem, value);
@@ -56,17 +56,22 @@ namespace WpfAppES.ViewModel.Semantic
         public RelayCommand RemoveRelationCommand => removeRelationCommand ??= new(obj => RemoveRelation(obj));
         private RelayCommand? removeRelationCommand;
 
-        private void RemoveRelation(object? obj)
+        private void RemoveRelation(object _)
         {
-            obj = SelectedItem2.Id;
-            if (obj == null)
+            if (SelectedRelation == null)
             {
                 new Common.MessageBox("Не выбран элемент для удаления", "Ошибка").Show();
                 return;
             }
-            if (obj is not Guid)
+
+            if (SelectedRelation.Id == Guid.Empty)
+            {
+                new Common.MessageBox("Нельзя удалять системные связи", "Ошибка").Show();
                 return;
-            Guid id = (Guid)obj;
+            }
+
+            Guid id = SelectedRelation.Id;
+            SelectedRelation = null;
             var db = KnowledgeBaseManager.Get().GetBase<SemanticDB>();
             if (db == null) return;
 

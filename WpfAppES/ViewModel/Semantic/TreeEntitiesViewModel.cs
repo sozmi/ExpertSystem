@@ -1,19 +1,20 @@
 ﻿using ClassLibraryES.Managers;
 using ClassLibraryES.semantic_es;
 using System.Collections.ObjectModel;
+using System.Windows;
 using WpfAppES.Components.Semantic;
 using WpfAppES.ViewModel.BaseObjects;
 
 namespace WpfAppES.ViewModel.Semantic
 {
-    public class TreeEntitiesViewModel : BaseViewModel<object>
+    public class TreeEntitiesViewModel : BaseViewModel<object>, IModelChanged
     {
-        List<IModelChanged> modelChangeds = [];
+        private readonly List<IModelChanged> modelChangeds = [];
         public void Subscribe(IModelChanged modelChanged)
         {
             modelChangeds.Add(modelChanged);
         }
-        public ObservableCollection<EntityTreeViewModel> Entities { get; set; } = [];
+        public ObservableCollection<EntityNodeViewModel> Entities { get; set; } = [];
         public TreeEntitiesViewModel()
         {
             var db = KnowledgeBaseManager.Get().GetBase<SemanticDB>();
@@ -22,6 +23,7 @@ namespace WpfAppES.ViewModel.Semantic
 
             foreach (var ent in db.GetEntities())
                 Entities.Add(new(ent));
+            Subscribe(this);
         }
 
         #region AddEntityCommand 
@@ -51,13 +53,11 @@ namespace WpfAppES.ViewModel.Semantic
         public RelayCommand RemoveEntityCommand => removeEntityCommand ??= new(obj => RemoveEntity(obj));
         private RelayCommand? removeEntityCommand;
 
-        private void RemoveEntity(object? obj)
+        private void RemoveEntity(object? id)
         {
-            if (obj == null) return;
-
-            Guid? id = obj as Guid?;
-            if (id == null) return;
-
+            if (id == null || id is not Guid) 
+                return;
+            
             var db = KnowledgeBaseManager.Get().GetBase<SemanticDB>();
             if (db == null) return;
 
@@ -67,7 +67,6 @@ namespace WpfAppES.ViewModel.Semantic
                 Entities.Add(new(ent));
             foreach (IModelChanged model in modelChangeds)
                 model.OnGlobalChanged();
-            // DrawGraph();
         }
         #endregion
         #region EditEntityCommand
@@ -90,13 +89,18 @@ namespace WpfAppES.ViewModel.Semantic
             EditEntityDlg entityDlg = new(vme);
             if (entityDlg.ShowDialog() != true)
                 return;
-            vme.SendChanges();
 
-            //db.Edit(vme);
+            foreach (IModelChanged model in modelChangeds)
+                model.OnGlobalChanged();
+        }
+
+        public void OnGlobalChanged()
+        {
             Entities.Clear();
+            var db = KnowledgeBaseManager.Get().GetBase<SemanticDB>();
+            if (db == null) return;
             foreach (var ent in db.GetEntities())
                 Entities.Add(new(ent));
-            //DrawGraph();
         }
         #endregion
     }

@@ -34,7 +34,7 @@ xmlns:sem="clr-namespace:ClassLibraryES.semantic_es;assembly=ClassLibraryES"
                            Visibility="{Binding ElementName=cbTree, Path=IsChecked, Converter={StaticResource booleanToVisibilityConverter}}"/>
 
 
-        <comp:DataGridRelationView 
+        <comp:DataGridRelationView DataContext="{Binding DataGridRelationViewModel, Mode=OneWay}"
             Visibility="{Binding ElementName=cbRel, Path=IsChecked, Converter={StaticResource booleanToVisibilityConverter}}"/>
 
         <wpfgraphcontrol:AutomaticGraphLayoutControl Graph="{Binding GraphObject,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 

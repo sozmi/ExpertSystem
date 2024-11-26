@@ -5,53 +5,24 @@ using WpfAppES.ViewModel.BaseObjects;
 
 namespace WpfAppES.ViewModel.Semantic
 {
-    public class EntityTreeViewModel
-    {
-        public EntityTreeViewModel(Entity entity)
-        {
-            Id = entity.Id;
-            Name = entity.Name;
-            Dictionary<RelationType, List<Entity>> relations = [];
-            foreach (var link in entity.Links.Values)
-            {
-                if (!relations.ContainsKey(link.Relation))
-                    relations.Add(link.Relation, []);
-                relations[link.Relation].Add(link.Entity);
-            }
-            foreach (var link in relations)
-                Links.Add(new(entity, link.Key, link.Value));
-        }
-        public Guid Id { get; }
-        public string Name { get; }
-        public ObservableCollection<LinksTreeViewModel> Links { get; set; } = [];
-    }
-
     public class EntityViewModel : BaseViewModel<Entity>
     {
+        private Entity copy;
         public EntityViewModel(Entity entity) : base(entity)
         {
-            Name = entity.Name;
-            Links = [.. entity.Links.Values];
-            Dictionary<RelationType, List<Entity>> relations = [];
-            foreach (var link in entity.Links.Values)
-            {
-                if (!relations.ContainsKey(link.Relation))
-                    relations.Add(link.Relation, []);
-                relations[link.Relation].Add(link.Entity);
-            }
-            //AssociationsVM.Add(new(association));
+            copy = new(entity);
+            Name = copy.Name;
+            foreach(var link in copy.Links.Values)
+                Links.Add(new(link));
         }
 
-        public Guid Id => original.Id;
-        public static List<Entity>? AllEntities => KnowledgeBaseManager.Get()?.GetBase<SemanticDB>()?.GetEntities().ToList();
-        public static ObservableCollection<RelationType> AllRelations => new(KnowledgeBaseManager.Get()?.GetBase<SemanticDB>()?.GetRelations().ToList());
+        public Guid Id => copy.Id;
+        
         public string Name { get => name; set => SetProperty(ref name, value); }
         private string name = "";
 
-        public ObservableCollection<Link> Links { get => links; set => SetProperty(ref links, value); }
-        ObservableCollection<Link> links = [];
-
-        private List<Action> funcs = [];
+        public ObservableCollection<DataGridLinksViewModel> Links { get => links; set => SetProperty(ref links, value); }
+        ObservableCollection<DataGridLinksViewModel> links = [];
         public bool SendChanges()
         {
             if (original == null)
@@ -63,9 +34,47 @@ namespace WpfAppES.ViewModel.Semantic
             var db = KnowledgeBaseManager.Get().GetBase<SemanticDB>();
             if (db == null)
                 return false;
-            foreach (var action in funcs)
+            HashSet<KeyRelative> keys = [];
+            foreach (var link in Links)
             {
-                action();
+                if (link.Relation == null || link.Entity == null)
+                {
+                    new Common.MessageBox("Присутствуют незаполненные связи","Ошибка").Show();
+                    return false;
+                }
+
+                KeyRelative key = new(link.Entity.Id, link.Relation.Id);
+                if (keys.Contains(key))
+                {
+                    new Common.MessageBox($"Есть одинаковые связи с отношением \"{link.Relation.Name}\" к сущности \"{link.Entity.Name}\"." +
+                        $" Удалите повторы и повторите попытку.", "Ошибка").Show();
+                    return false;
+                }
+                keys.Add(key);
+            }
+            
+            var originalKeys = original.GetKeysRelative();
+            
+            foreach (var link in Links)
+            {
+                KeyRelative key = new(link.Entity.Id, link.Relation.Id);
+                if (originalKeys.Contains(key))
+                {
+                    //если в оригинале есть такая связь, можно её просто заменить
+                    var dblink = db.GetLink(new(Id, key));
+                    link.SendChanges(dblink);
+                }
+                else
+                {
+                    var dblink = db.AddLink(new(Id, key));
+                    link.SendChanges(dblink);
+                }
+                originalKeys.Remove(key);
+            }    
+            
+            foreach (var key in originalKeys)
+            {
+                db.RemoveLink(new(Id, key));
             }
 
             return true;
@@ -73,45 +82,33 @@ namespace WpfAppES.ViewModel.Semantic
 
         public RelayCommand AddLinkCommand => addLinkCommand ??= new(obj => AddLink(obj));
         RelayCommand addLinkCommand;
-
         private void AddLink(object? _)
         {
-            Links.Add(new());
+            Link link = new();
+            Links.Add(new(link));
         }
 
         public RelayCommand RemoveLinkCommand => removeLinkCommand ??= new(obj => RemoveLink(obj));
         RelayCommand removeLinkCommand;
 
-        private Link? _selectedItem;
-        public Link? SelectedItem { get; set; }
-        //public Link? SelectedItem
-        //{
-        //    get => _selectedItem;
-        //    set => SetProperty(ref _selectedItem, value);
-        //}
+        private DataGridLinksViewModel? _selectedItem;
+        public DataGridLinksViewModel? SelectedLink
+        {
+            get => _selectedItem;
+            set => SetProperty(ref _selectedItem, value);
+        }
 
         private void RemoveLink(object? _)
         {
-            Link link = SelectedItem;
-            var f = () =>
+            if (SelectedLink == null)
             {
-                var db = KnowledgeBaseManager.Get().GetBase<SemanticDB>();
-                if (db == null)
-                    return;
-                var key = new KeyLink(Id, link.GetKey());
-                db.RemoveLink(key);
-            };
-            funcs.Add(f);
-            Links.Remove(link);
-        }
+                new Common.MessageBox("Необходимо выделить связь" , "Ошибка").Show();
+                return;
+            }
 
-        private void EditRelationTypeInLink(object id, object link)
-        {
-
-        }
-
-        private void EditEntityInLink(object id, object link)
-        {
+            var index = Links.IndexOf(SelectedLink);
+            SelectedLink = null;
+            Links.RemoveAt(index);
 
         }
     }

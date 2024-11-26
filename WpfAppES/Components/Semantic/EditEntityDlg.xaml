@@ -29,7 +29,7 @@
             <TextBlock Text="Наименование:" Margin="5" VerticalAlignment="Center"/>
             <TextBox Text="{Binding Name}" Margin="5"/>
         </StackPanel>
-        
+
         <StackPanel Margin="0,5" 
                     DockPanel.Dock="Top"
                     Orientation="Horizontal">
@@ -46,7 +46,7 @@
                          Content="Целевое состояние" 
                          Margin="5" 
                          Style="{StaticResource RadioButtonIcon}"/>
-            
+
         </StackPanel>
 
         <StackPanel HorizontalAlignment="Right" 
@@ -65,7 +65,7 @@
                   AutoGenerateColumns="False"
                   Margin="5"
                   ItemsSource="{Binding Links, UpdateSourceTrigger=PropertyChanged}"
-                  SelectedItem="{Binding SelectedItem}"
+                  SelectedItem="{Binding SelectedLink}"
                   DockPanel.Dock="Left"
                   MinHeight="150"
                   SelectionUnit="FullRow"
@@ -73,13 +73,10 @@
                   CanUserAddRows="False"
                   CanUserResizeRows="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="f" Binding="{Binding Entity.Name}"></DataGridTextColumn>
-                
-                <!--<DataGridTemplateColumn Header="Тип связи" Width="Auto">
+                <DataGridTemplateColumn Header="Тип связи" Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ComboBox x:Name="cmbRelation" ItemsSource="{Binding ElementName=window, 
-                                                            Path=DataContext.AllRelations, UpdateSourceTrigger=PropertyChanged}" 
+                            <ComboBox x:Name="cmbRelation" ItemsSource="{Binding AllRelations, UpdateSourceTrigger=PropertyChanged}" 
                                       SelectedItem="{Binding Relation, UpdateSourceTrigger=PropertyChanged}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
@@ -89,27 +86,28 @@
                             </ComboBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>-->
-                <!--<DataGridTemplateColumn Header="Подчиненный" Width="*">
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Подчиненный" Width="*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <DockPanel LastChildFill="False">
                                 <ComboBox x:Name="cmbEntity"
                                           HorizontalContentAlignment="Center" 
                                           DockPanel.Dock="Left"
-                                          ItemsSource="{Binding ElementName=window, Path=DataContext.AllEntities}" SelectedItem="{Binding Entity}">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding Name}"/>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
+                                          ItemsSource="{Binding AllEntities, UpdateSourceTrigger=PropertyChanged}" 
+                                          SelectedItem="{Binding Entity, UpdateSourceTrigger=PropertyChanged}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
                             </DockPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>-->
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
-            
+
             <DataGrid.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Добавить" Command="{Binding AddLinkCommand}"/>

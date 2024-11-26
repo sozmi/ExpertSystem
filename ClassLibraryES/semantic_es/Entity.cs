@@ -35,6 +35,17 @@
             Id = Guid.NewGuid();
             Name = name;
         }
+        
+        /// <summary>
+        /// Конструктор копирования
+        /// </summary>
+        /// <param name="entity">Сущность</param>
+        public Entity(Entity entity)
+        {
+            Id = entity.Id;
+            Name = entity.Name;
+            Links = new(entity.Links);
+        }
         #endregion
 
         /// <summary>
@@ -85,6 +96,14 @@
             List<KeyLink> values = [];
             foreach (var link in Links.Values)
                 values.Add(new(Id, link.GetKey()));
+            return values;
+        }
+
+        public List<KeyRelative> GetKeysRelative()
+        {
+            List<KeyRelative> values = [];
+            foreach (var link in Links.Values)
+                values.Add(link.GetKey());
             return values;
         }
     }

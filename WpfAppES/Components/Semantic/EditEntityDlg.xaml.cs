@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using ClassLibraryES.semantic_es;
+using System.Windows;
 using WpfAppES.ViewModel.Semantic;
 
 namespace WpfAppES.Components.Semantic
@@ -16,7 +17,8 @@ namespace WpfAppES.Components.Semantic
 
         private void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = true;
+            if (((EntityViewModel)DataContext).SendChanges()) 
+                DialogResult = true;
         }
 
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
