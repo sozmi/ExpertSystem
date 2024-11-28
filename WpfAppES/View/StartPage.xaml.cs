@@ -24,5 +24,15 @@ namespace WpfAppES
         {
             InitializeComponent();
         }
+
+        private void InstructionButton_Click(object sender, RoutedEventArgs e)
+        {
+            instructionPopup.IsOpen = true;
+        }
+
+        private void ClosePopupButton_Click(object sender, RoutedEventArgs e)
+        {
+            instructionPopup.IsOpen = false;
+        }
     }
 }
