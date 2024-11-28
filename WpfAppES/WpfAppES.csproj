@@ -10,6 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Icons\ES.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Icons\ES.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Icons\logo.ico" />
   </ItemGroup>
 
