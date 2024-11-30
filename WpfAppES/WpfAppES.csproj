@@ -10,7 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Icons\logo.ico" />
+    <None Remove="Icons\ES.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Icons\logo.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -21,6 +27,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ClassLibraryES\ClassLibraryES.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Icons\ES.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
