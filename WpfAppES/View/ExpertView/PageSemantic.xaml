@@ -1,0 +1,43 @@
+﻿<Page x:Class="WpfAppES.ExpertView.PageSemantic"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WpfAppES.ExpertView"
+      xmlns:vm="clr-namespace:WpfAppES.ViewModel.Semantic"
+      xmlns:comp="clr-namespace:WpfAppES.Components.Semantic"
+xmlns:sem="clr-namespace:ClassLibraryES.semantic_es;assembly=ClassLibraryES" 
+      xmlns:wpfgraphcontrol="http://mlsagl"
+      mc:Ignorable="d" 
+      x:Name="page"
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="[Эксперт] Семантическая БД">
+    <Page.DataContext>
+        <vm:ExpertViewModel/>
+    </Page.DataContext>
+    
+    <Page.Resources>
+        <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter"/>
+    </Page.Resources>
+
+    <DockPanel LastChildFill="True">
+        <ToolBar DockPanel.Dock="Top" ToolBarTray.IsLocked="True" Padding="10">
+            <TextBlock VerticalAlignment="Center" Style="{StaticResource TextBlockSubTitleBold}">База знаний <LineBreak/> семантической сети</TextBlock>
+            <Separator Margin="10,0"/>
+            <ToggleButton x:Name="cbTree" Content="Дерево" Margin="5,0" IsChecked="True"/>
+            <ToggleButton x:Name="cbRel" Content="Отношения" Margin="5,0" IsChecked="True"/>
+            <ToggleButton x:Name="cbGraph" Content="Граф" Margin="5,0" IsChecked="True"/>
+            <Button Content="Проверка базы знаний" Style="{StaticResource ButtonPrimary}"/>
+        </ToolBar>
+        
+        <comp:TreeEntityView DataContext="{Binding TreeEntitiesViewModel, Mode=OneWay}"
+                           Visibility="{Binding ElementName=cbTree, Path=IsChecked, Converter={StaticResource booleanToVisibilityConverter}}"/>
+
+
+        <comp:DataGridRelationView DataContext="{Binding DataGridRelationViewModel, Mode=OneWay}"
+            Visibility="{Binding ElementName=cbRel, Path=IsChecked, Converter={StaticResource booleanToVisibilityConverter}}"/>
+
+        <wpfgraphcontrol:AutomaticGraphLayoutControl Graph="{Binding GraphObject,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                                     Visibility="{Binding ElementName=cbGraph, Path=IsChecked, Converter={StaticResource booleanToVisibilityConverter}}"/>
+    </DockPanel>
+</Page>
