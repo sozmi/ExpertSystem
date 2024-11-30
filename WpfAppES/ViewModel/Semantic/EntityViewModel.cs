@@ -7,16 +7,16 @@ namespace WpfAppES.ViewModel.Semantic
 {
     public class EntityViewModel : BaseViewModel<Entity>
     {
-        private Entity copy;
         public EntityViewModel(Entity entity) : base(entity)
         {
-            copy = new(entity);
-            Name = copy.Name;
-            foreach(var link in copy.Links.Values)
+            if (entity == null)
+                return;
+            Name = original.Name;
+            foreach(var link in original.Links.Values)
                 Links.Add(new(link));
         }
 
-        public Guid Id => copy.Id;
+        public Guid Id => original == null? Guid.Empty : original.Id;
         
         public string Name { get => name; set => SetProperty(ref name, value); }
         private string name = "";
