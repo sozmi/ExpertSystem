@@ -9,7 +9,7 @@ namespace WpfAppES.ViewModel.Semantic
     {
         public EntityViewModel(Entity entity) : base(entity)
         {
-            if (entity == null)
+            if (original == null)
                 return;
             Name = original.Name;
             foreach(var link in original.Links.Values)
