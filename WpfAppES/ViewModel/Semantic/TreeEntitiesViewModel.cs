@@ -1,19 +1,13 @@
 ﻿using ClassLibraryES.Managers;
 using ClassLibraryES.semantic_es;
 using System.Collections.ObjectModel;
-using System.Windows;
 using WpfAppES.Components.Semantic;
 using WpfAppES.ViewModel.BaseObjects;
 
 namespace WpfAppES.ViewModel.Semantic
 {
-    public class TreeEntitiesViewModel : BaseViewModel<object>, IModelChanged
+    public class TreeEntitiesViewModel : CollectionViewModel, IModelChanged
     {
-        private readonly List<IModelChanged> modelChangeds = [];
-        public void Subscribe(IModelChanged modelChanged)
-        {
-            modelChangeds.Add(modelChanged);
-        }
         public ObservableCollection<EntityNodeViewModel> Entities { get; set; } = [];
         public TreeEntitiesViewModel()
         {
@@ -23,7 +17,7 @@ namespace WpfAppES.ViewModel.Semantic
 
             foreach (var ent in db.GetEntities())
                 Entities.Add(new(ent));
-            Subscribe(this);
+            Subscribe(OnGlobalChanged);
         }
 
         #region AddEntityCommand 
@@ -40,8 +34,7 @@ namespace WpfAppES.ViewModel.Semantic
             Entity ent = new("Не указано");
             db.Create(ent);
             Entities.Add(new(ent));
-            foreach(IModelChanged model in modelChangeds)
-                model.OnGlobalChanged();
+            OnCollectionChanged();
             //DrawGraph();
         }
         #endregion
@@ -65,8 +58,7 @@ namespace WpfAppES.ViewModel.Semantic
             Entities.Clear();
             foreach (var ent in db.GetEntities())
                 Entities.Add(new(ent));
-            foreach (IModelChanged model in modelChangeds)
-                model.OnGlobalChanged();
+            OnCollectionChanged();
         }
         #endregion
         #region EditEntityCommand
@@ -90,8 +82,7 @@ namespace WpfAppES.ViewModel.Semantic
             if (entityDlg.ShowDialog() != true)
                 return;
 
-            foreach (IModelChanged model in modelChangeds)
-                model.OnGlobalChanged();
+            OnCollectionChanged();
         }
 
         public void OnGlobalChanged()

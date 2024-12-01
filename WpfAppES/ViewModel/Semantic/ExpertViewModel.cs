@@ -1,8 +1,6 @@
-﻿using System.Collections.ObjectModel;
-using ClassLibraryES.Managers;
+﻿using ClassLibraryES.Managers;
 using ClassLibraryES.semantic_es;
 using Microsoft.Msagl.Drawing;
-using WpfAppES.ViewModel.BaseObjects;
 
 namespace WpfAppES.ViewModel.Semantic
 {
@@ -11,18 +9,17 @@ namespace WpfAppES.ViewModel.Semantic
         public void OnGlobalChanged();//TODO: разделить на более локальные события
     }
 
-    class ExpertViewModel : BaseViewModel<object?>, IModelChanged
+    class ExpertViewModel : BaseViewModel, IModelChanged
     {
-
         public TreeEntitiesViewModel TreeEntitiesViewModel { get; } = new();
-        public DataGridRelationViewModel DataGridRelationViewModel { get; } =new();
+        public DataGridRelationViewModel DataGridRelationViewModel { get; } = new();
 
-        public ExpertViewModel() : base(null)
+        public ExpertViewModel()
         {
             DataGridRelationViewModel = new();
-            TreeEntitiesViewModel.Subscribe(this);
-            DataGridRelationViewModel.Subscribe(this);
-            DataGridRelationViewModel.Subscribe(TreeEntitiesViewModel);
+            TreeEntitiesViewModel.Subscribe(OnGlobalChanged);
+            DataGridRelationViewModel.Subscribe(OnGlobalChanged);
+            DataGridRelationViewModel.Subscribe(TreeEntitiesViewModel.OnGlobalChanged);
 
             var db = KnowledgeBaseManager.Get().GetBase<SemanticDB>();
             if (db == null)
