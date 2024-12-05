@@ -6,7 +6,7 @@ using System.IO;
 
 namespace ClassLibraryES.Managers
 {
-    public class KnowledgeBaseManager : IKnowledgeBaseChanged
+    public class KnowledgeBaseManager : IModelChanged
     {
         public string PATH_TO_DIR = "";
         public string PATH_TO_FILE = "";
@@ -16,8 +16,6 @@ namespace ClassLibraryES.Managers
         private object?[] Bases = new object?[4];
         private bool _changesMade = false;
         private bool _loaded = false;
-
-        public event Action? KnowledgeBaseChanged;
 
         private KnowledgeBaseManager()
         {
@@ -85,10 +83,9 @@ namespace ClassLibraryES.Managers
             return null;
         }
 
-        public void OnKnowledgeBaseChanged()
+        public void OnGlobalChanged()
         {
             _changesMade = true;
-            KnowledgeBaseChanged?.Invoke();
         }
 
         public void Close()
