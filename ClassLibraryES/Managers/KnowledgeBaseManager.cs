@@ -43,12 +43,45 @@ namespace ClassLibraryES.Managers
         /// <summary>
         /// Флаг, показывающий, были ли сделаны изменения.
         /// </summary>
-        private bool _changesMade = false;
+        private bool _changesMade;
 
         /// <summary>
         /// Флаг, показывающий, загружена ли текущая база знаний.
         /// </summary>
-        private bool _loaded = false;
+        private bool _loaded;
+
+        /// <summary>
+        /// Свойство, отражающее состояние изменений в базе знаний.
+        /// </summary>
+        public bool ChangesMade
+        {
+            get => _changesMade;
+            set
+            {
+                _changesMade = value;
+                if (_changesMade)
+                {
+                    // Если значение ChangesMade становится true, вызываем метод OnGlobalChanged
+                    OnGlobalChanged();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Свойство, отражающее состояние загрузки базы знаний.
+        /// </summary>
+        public bool Loaded
+        {
+            get => _loaded;
+            set
+            {
+                _loaded = value;
+                if (_loaded)
+                {
+                    // Сюда можно добавить доп код при успешной загрузки
+                }
+            }
+        }
 
         /// <summary>
         /// Конструктор класса, инициализирующий базовые объекты.
