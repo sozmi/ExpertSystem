@@ -43,12 +43,22 @@ namespace ClassLibraryES.Managers
         /// <summary>
         /// Флаг, показывающий, были ли сделаны изменения.
         /// </summary>
-        private bool _changesMade = false;
+        private bool _changesMade;
 
         /// <summary>
         /// Флаг, показывающий, загружена ли текущая база знаний.
         /// </summary>
-        private bool _loaded = false;
+        private bool _loaded;
+
+        /// <summary>
+        /// Свойство, отражающее состояние изменений в базе знаний.
+        /// </summary>
+        public bool ChangesMade => _changesMade;
+
+        /// <summary>
+        /// Свойство, отражающее состояние загрузки базы знаний.
+        /// </summary>
+        public bool Loaded => _loaded;
 
         /// <summary>
         /// Конструктор класса, инициализирующий базовые объекты.
