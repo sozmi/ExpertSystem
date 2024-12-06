@@ -5,14 +5,13 @@ using WpfAppES.ViewModel.BaseObjects;
 
 namespace WpfAppES.ViewModel.Semantic
 {
-    class DataGridRelationViewModel : BaseViewModel<object>
+    class DataGridRelationViewModel : CollectionViewModel
     {
         /// <summary>
         /// Коллекция типов отношений
         /// </summary>
         public ObservableCollection<RelationType> Relations { get => relations; set => SetProperty(ref relations, value); }
         ObservableCollection<RelationType> relations = [];
-        private readonly List<IModelChanged> modelChangeds = [];
 
         private RelationType? _selectedItem;
         public RelationType? SelectedRelation
@@ -21,10 +20,6 @@ namespace WpfAppES.ViewModel.Semantic
             set => SetProperty(ref _selectedItem, value);
         }
 
-        public void Subscribe(IModelChanged modelChanged)
-        {
-            modelChangeds.Add(modelChanged);
-        }
         public DataGridRelationViewModel()
         {
             var db = KnowledgeBaseManager.Get().GetBase<SemanticDB>();
@@ -32,6 +27,7 @@ namespace WpfAppES.ViewModel.Semantic
                 return;
             Relations = new(db.GetRelations());
         }
+
         #region AddRelationCommand
         /// <summary>
         /// Команда добавление новых связей
@@ -45,8 +41,7 @@ namespace WpfAppES.ViewModel.Semantic
             var rt = new RelationType("Не указано");
             db.Create(rt);
             Relations.Add(rt);
-            foreach (var model in modelChangeds)
-                model.OnGlobalChanged();
+            OnCollectionChanged();
         }
         #endregion
         #region RemoveRelationCommand
@@ -83,8 +78,7 @@ namespace WpfAppES.ViewModel.Semantic
                     Relations.Remove(rel);
                     break;
                 }
-            foreach (var model in modelChangeds)
-                model.OnGlobalChanged();
+            OnCollectionChanged();
         }
 
         #endregion

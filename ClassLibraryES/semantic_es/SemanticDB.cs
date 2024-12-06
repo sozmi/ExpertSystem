@@ -6,7 +6,7 @@ namespace ClassLibraryES.semantic_es
 {
     public class SemanticDB : IKnowledgeBase
     {
-        public SemanticDB() 
+        public SemanticDB()
         {
         }
         public SemanticDB(bool isTest = false) : base()
@@ -41,7 +41,7 @@ namespace ClassLibraryES.semantic_es
                 Entity bird = new("Птица");
                 Entities.Add(bird.Id, bird);
                 bird = Entities[bird.Id];
-               
+
 
                 Entity sneg = new("Снегирь");
                 Entities.Add(sneg.Id, sneg);
@@ -91,7 +91,7 @@ namespace ClassLibraryES.semantic_es
         }
         public void Close()
         {
-            
+
         }
         #endregion
 
@@ -152,13 +152,14 @@ namespace ClassLibraryES.semantic_es
         {
             foreach (var key in GetEntity(id_).GetKeysRelations())
             {
-                if (key.Id == id_)
-                {
-                    //если объект является главным в связи,
-                    //достаточно удалить только ключ
-                    Links.Remove(key);
-                }
-                else if (key.Slave == id_)
+                //если объект является главным в связи,
+                //достаточно удалить только ключ
+                Links.Remove(key);
+            }
+
+            foreach (var key in Links.Keys)
+            {
+                if (key.Slave == id_)
                 {
                     //если объект является подчиненным в связи,
                     //необходимо удалить связь из главного объекта

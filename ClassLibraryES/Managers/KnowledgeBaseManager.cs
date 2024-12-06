@@ -1,4 +1,6 @@
 ﻿using ClassLibraryES.frame_es;
+using ClassLibraryES.Products;
+using ClassLibraryES.products_es;
 using ClassLibraryES.semantic_es;
 using Newtonsoft.Json;
 using System.Reflection;
@@ -55,9 +57,9 @@ namespace ClassLibraryES.Managers
         {
             // Инициализация баз знаний
             Bases[(int)ETypeDB.eLogical] = null;
-            Bases[(int)ETypeDB.eProducts] = null;
-            Bases[(int)ETypeDB.eSemantic] = new SemanticDB(true); // Логическая база знаний
-            Bases[(int)ETypeDB.eFrame] = new FrameDB();           // Фреймовая база знаний
+            Bases[(int)ETypeDB.eProducts] = new ProductionDB(true); //Продукционая база знаний
+            Bases[(int)ETypeDB.eSemantic] = new SemanticDB(true);   //Логическая база знаний
+            Bases[(int)ETypeDB.eFrame] = new FrameDB();             //Фреймовая база знаний
 
             // Определение пути к папке для хранения экспертных систем
             PATH_TO_DIR = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\Экспертные системы";

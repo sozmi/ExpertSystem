@@ -3,16 +3,29 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:WpfAppES.ExpertView"
+      xmlns:local="clr-namespace:WpfAppES.ExpertView" xmlns:common="clr-namespace:WpfAppES.Components.Common"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="[Пользователь] Семантическая БД">
 
-    <Grid>
-        <TreeView Name="Описание">
-            <TreeViewItem Header="семантическая">
-                
-            </TreeViewItem>
-        </TreeView>
-    </Grid>
+    <DockPanel>
+        <ToolBar DockPanel.Dock="Top" ToolBarTray.IsLocked="True" Padding="10">
+            <TextBlock VerticalAlignment="Center" Style="{StaticResource TextBlockSubTitleBold}">Консультация <LineBreak/> семантической сети</TextBlock>
+            <Separator Margin="10,0"/>
+            <ToggleButton x:Name="cbSub"
+              Content="Подсистема объяснений" 
+              Margin="5,0"
+              IsChecked="True"/>
+            <ToggleButton x:Name="cbConsultant"
+              Content="Консультация" 
+              Margin="5,0"
+              IsChecked="True"/>
+        </ToolBar>
+        <common:SubsystemExplanation/>
+        <StackPanel>
+            <TextBlock>Выберите цель консультации</TextBlock>
+            <ComboBox></ComboBox>
+            <Button Content="Начать"></Button>
+        </StackPanel>
+    </DockPanel>
 </Page>

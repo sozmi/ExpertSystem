@@ -13,26 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WpfAppES
+namespace WpfAppES.Components.Common
 {
     /// <summary>
-    /// Логика взаимодействия для StartPage.xaml
+    /// Логика взаимодействия для SubsystemExplanation.xaml
     /// </summary>
-    public partial class StartPage : Page
+    public partial class SubsystemExplanation : UserControl
     {
-        public StartPage()
+        public SubsystemExplanation()
         {
             InitializeComponent();
-        }
-
-        private void InstructionButton_Click(object sender, RoutedEventArgs e)
-        {
-            instructionPopup.IsOpen = true;
-        }
-
-        private void ClosePopupButton_Click(object sender, RoutedEventArgs e)
-        {
-            instructionPopup.IsOpen = false;
         }
     }
 }
