@@ -53,35 +53,12 @@ namespace ClassLibraryES.Managers
         /// <summary>
         /// Свойство, отражающее состояние изменений в базе знаний.
         /// </summary>
-        public bool ChangesMade
-        {
-            get => _changesMade;
-            set
-            {
-                _changesMade = value;
-                if (_changesMade)
-                {
-                    // Если значение ChangesMade становится true, вызываем метод OnGlobalChanged
-                    OnGlobalChanged();
-                }
-            }
-        }
+        public bool ChangesMade => _changesMade;
 
         /// <summary>
         /// Свойство, отражающее состояние загрузки базы знаний.
         /// </summary>
-        public bool Loaded
-        {
-            get => _loaded;
-            set
-            {
-                _loaded = value;
-                if (_loaded)
-                {
-                    // Сюда можно добавить доп код при успешной загрузки
-                }
-            }
-        }
+        public bool Loaded => _loaded;
 
         /// <summary>
         /// Конструктор класса, инициализирующий базовые объекты.
