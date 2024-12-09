@@ -18,17 +18,18 @@
             <MenuItem Header="Файл">
                 <MenuItem Header="Создать" Command="New"/>
                 <MenuItem Header="Открыть" Command="Open"/>
-                <MenuItem Header="Сохранить" Command="Save"/>
-                <MenuItem Header="Сохранить как" Command="SaveAs"/>
-                <MenuItem Header="Закрыть" Command="Close"/>
+                <MenuItem x:Name="menuSave" Header="Сохранить" Command="Save" IsEnabled="False"/>
+
+                <MenuItem Header="Сохранить как" Command="SaveAs" x:Name="menuSaveAs" IsEnabled="False"/>
+                <MenuItem Header="Закрыть" Command="Close" x:Name="menuClose" IsEnabled="False"/>
             </MenuItem>
 
-            <MenuItem Header="Интерфейс">
+            <MenuItem Header="Интерфейс" x:Name="menuInterface" IsEnabled="False">
                 <RadioButton HorizontalAlignment="Left" GroupName="interface" x:Name="user" Tag="UserView"  Content="Пользователь"/>
                 <RadioButton HorizontalAlignment="Left" GroupName="interface" x:Name="expert" Tag="ExpertView" Content="Эксперт"/>
             </MenuItem>
 
-            <MenuItem Header="База знаний">
+            <MenuItem Header="База знаний" x:Name="menuKnowledge" IsEnabled="False">
                 <RadioButton HorizontalAlignment="Left" GroupName="knowledge" x:Name="dbLogical" Content="Логическая" Tag="PageLogical.xaml"/>
                 <RadioButton HorizontalAlignment="Left" GroupName="knowledge" x:Name="dbProduct" Content="Продукционная" Tag="PageProduct.xaml"/>
                 <RadioButton HorizontalAlignment="Left" GroupName="knowledge" x:Name="dbSemantic" Content="Семантическая" Tag="PageSemantic.xaml"/>
