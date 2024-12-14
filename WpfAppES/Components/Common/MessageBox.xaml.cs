@@ -18,5 +18,10 @@ namespace WpfAppES.Common
         {
             Close();
         }
+        
+        public static void Show(string question, string title)
+        {
+            new MessageBox(question, title).Show();
+        }
     }
 }

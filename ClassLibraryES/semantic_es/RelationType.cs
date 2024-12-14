@@ -12,6 +12,8 @@
         {
             Id = Guid.NewGuid();
             Name = "";
+            QuestionFrom = "";
+            QuestionTo = "";
         }
 
         /// <summary>
@@ -22,6 +24,21 @@
         {
             Id = Guid.NewGuid();
             Name = name;
+            QuestionFrom = "";
+            QuestionTo = "";
+        }
+
+        /// <summary>
+        /// Создание связи с известными параметрами и уникальным id
+        /// </summary>
+        /// <param name="name">Наименование связи</param>
+        /// <param name="question">Вопрос для связи</param>
+        public RelationType(string name, string question)
+        {
+            Id = Guid.NewGuid();
+            Name = name;
+            QuestionFrom = "";
+            QuestionTo = "";
         }
 
         /// <summary>
@@ -33,6 +50,8 @@
         {
             this.Id = Id;
             this.Name = Name;
+            this.QuestionFrom = "";
+            this.QuestionTo = "";
         }
 
         /// <summary>
@@ -44,5 +63,7 @@
         /// Наименование связи
         /// </summary>
         public string Name { get; set; }
+        public string QuestionFrom { get; set; }
+        public string QuestionTo { get; set; }
     }
 }

@@ -3,11 +3,15 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:WpfAppES.ExpertView" xmlns:common="clr-namespace:WpfAppES.Components.Common"
+      xmlns:local="clr-namespace:WpfAppES.ExpertView" 
+      xmlns:common="clr-namespace:WpfAppES.Components.Common"
+      xmlns:model ="clr-namespace:ClassLibraryES.semantic_es;assembly=ClassLibraryES"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="[Пользователь] Семантическая БД">
-
+    <Page.DataContext>
+        <model:SemanticES/>
+    </Page.DataContext>
     <DockPanel>
         <ToolBar DockPanel.Dock="Top" ToolBarTray.IsLocked="True" Padding="10">
             <TextBlock VerticalAlignment="Center" Style="{StaticResource TextBlockSubTitleBold}">Консультация <LineBreak/> семантической сети</TextBlock>
@@ -23,9 +27,20 @@
         </ToolBar>
         <common:SubsystemExplanation/>
         <StackPanel>
-            <TextBlock>Выберите цель консультации</TextBlock>
-            <ComboBox></ComboBox>
-            <Button Content="Начать"></Button>
+            <TextBlock Text="{Binding Question}"/>
+            <ComboBox ItemsSource="{Binding Answers}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Item2}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            
+            <Button Content="Начать консультацию"/>
+            <Button Content="Да"/>
+            <Button Content="Нет"/>
+            <Button Content="Не знаю"/>
         </StackPanel>
+
     </DockPanel>
 </Page>

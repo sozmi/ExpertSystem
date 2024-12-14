@@ -21,7 +21,7 @@ namespace WpfAppES.ViewModel.Semantic
             DataGridRelationViewModel.Subscribe(OnGlobalChanged);
             DataGridRelationViewModel.Subscribe(TreeEntitiesViewModel.OnGlobalChanged);
 
-            var db = KnowledgeBaseManager.Get().GetBase<SemanticDB>();
+            var db = KnowledgeBaseManager.GetBase<SemanticDB>();
             if (db == null)
                 return;
 
@@ -46,7 +46,7 @@ namespace WpfAppES.ViewModel.Semantic
         /// </summary>
         private void DrawGraph()
         {
-            var db = KnowledgeBaseManager.Get().GetBase<SemanticDB>();
+            var db = KnowledgeBaseManager.GetBase<SemanticDB>();
             if (db == null) return;
             Graph graph = new();
             foreach (var ent in db.GetEntities())

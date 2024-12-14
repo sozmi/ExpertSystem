@@ -8,15 +8,15 @@ namespace WpfAppES.ViewModel.Semantic
     {
         public DataGridLinksViewModel(Link link) : base(link)
         {
-            Relation = link.Relation;
-            Entity = link.Entity;
+            relation = link.Relation;
+            entity = link.Entity;
         }
 
-        public static List<RelationType> AllRelations => new(KnowledgeBaseManager.Get()?.GetBase<SemanticDB>()?.GetRelations().ToList());
+        public static List<RelationType> AllRelations => KnowledgeBaseManager.GetBase<SemanticDB>()?.GetRelations();
         public RelationType Relation { get => relation; set => SetProperty(ref relation, value); }
         private RelationType relation;
 
-        public static List<Entity> AllEntities => KnowledgeBaseManager.Get()?.GetBase<SemanticDB>()?.GetEntities().ToList();
+        public static List<Entity> AllEntities => KnowledgeBaseManager.GetBase<SemanticDB>()?.GetEntities();
         public Entity Entity { get => entity; set => SetProperty(ref entity, value); }
         private Entity entity;
 

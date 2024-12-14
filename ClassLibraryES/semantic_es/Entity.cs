@@ -1,8 +1,14 @@
 ﻿namespace ClassLibraryES.semantic_es
 {
     using Newtonsoft.Json;
-    using static ClassLibraryES.semantic_es.KeyRelative;
+    using System.Collections.Generic;
 
+    public enum EEntityState
+    {
+        Start,
+        Middle,
+        End
+    }
     /// <summary>
     /// Класс с информациях о сущностях
     /// </summary>
@@ -59,6 +65,8 @@
         /// </summary>
         public string Name { get; set; } = "";
 
+        public EEntityState State { get; set; } = EEntityState.Middle;
+
         /// <summary>
         /// Связи сущности
         /// </summary>
@@ -105,6 +113,14 @@
             List<KeyRelative> values = [];
             foreach (var link in Links.Values)
                 values.Add(link.GetKey());
+            return values;
+        }
+
+        public List<RelationType> GetRelationTypes()
+        {
+            List<RelationType> values = [];
+            foreach (var link in Links.Values)
+                values.Add(link.Relation);
             return values;
         }
     }

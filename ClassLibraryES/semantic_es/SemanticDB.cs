@@ -14,41 +14,45 @@ namespace ClassLibraryES.semantic_es
             if (isTest)
             {
                 //TODO: перенести создание в Test
-                RelationType it = new("это");
+                RelationType it = new("это", "Нужно определить %obj% это что(кто)?" );
                 Create(it);
-                it = Relations[it.Id];
 
-                RelationType can = new("может");
+                RelationType can = new("может", "Нужно учитывать что может делать %obj%?");
                 Create(can);
-                can = Relations[can.Id];
 
-                RelationType has = new("имеет");
+                RelationType cannot = new("не может", "Нужно учитывать что не может делать %obj%?");
+                Create(cannot);
+
+                RelationType has = new("имеет", "Нужно учитывать что имеет %obj?");
                 Create(has);
-                has = Relations[has.Id];
 
                 Entity fly = new("Летать");
                 Create(fly);
-                fly = Entities[fly.Id];
 
                 Entity wings = new("Крылья");
                 Create(wings);
-                wings = Entities[wings.Id];
 
                 Entity paws = new("Лапы");
                 Create(paws);
-                paws = Entities[paws.Id];
 
                 Entity bird = new("Птица");
-                Entities.Add(bird.Id, bird);
-                bird = Entities[bird.Id];
-
+                bird.State = EEntityState.Start;
+                Create(bird);
 
                 Entity sneg = new("Снегирь");
-                Entities.Add(sneg.Id, sneg);
+                Create(sneg);
 
-                AddLink(new(sneg.Id, bird.Id, it.Id));
+                Entity grach = new("Грач");
+                Create(grach);
+
+                Entity straus = new("Страус");
+                Create(straus);
+
                 AddLink(new(bird.Id, fly.Id, can.Id));
-                AddLink(new(bird.Id, sneg.Id, it.Id));
+                AddLink(new(sneg.Id, bird.Id,  it.Id));
+                AddLink(new(grach.Id, bird.Id, it.Id));
+                AddLink(new(straus.Id, fly.Id, cannot.Id));
+                AddLink(new(straus.Id, bird.Id,  it.Id));
                 AddLink(new(bird.Id, wings.Id, has.Id));
                 AddLink(new(bird.Id, paws.Id, has.Id));
             }

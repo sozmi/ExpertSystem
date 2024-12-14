@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfAppES.Components.Semantic"
         xmlns:vm="clr-namespace:WpfAppES.ViewModel.Semantic"
-         xmlns:sem="clr-namespace:ClassLibraryES.semantic_es;assembly=ClassLibraryES"
+        xmlns:vmbase="clr-namespace:WpfAppES.ViewModel.BaseObjects"
+        xmlns:sem="clr-namespace:ClassLibraryES.semantic_es;assembly=ClassLibraryES"
         d:DataContext="{d:DesignInstance Type=vm:EntityViewModel}"
         mc:Ignorable="d"
         x:Name="window"
@@ -33,18 +34,23 @@
         <StackPanel Margin="0,5" 
                     DockPanel.Dock="Top"
                     Orientation="Horizontal">
+            <StackPanel.Resources>
+                <vmbase:ComparisonConverter x:Key="ComparisonConverter" />
+            </StackPanel.Resources>
             <RadioButton GroupName="Target" 
+                         IsChecked="{Binding Path=State, Converter={StaticResource ComparisonConverter}, ConverterParameter={x:Static sem:EEntityState.Start}}"
              Content="Начальное состояние" 
              Margin="5"
              Style="{StaticResource RadioButtonIcon}"/>
             <RadioButton GroupName="Target" 
              Content="Промежуточное состояние" 
              Margin="5"
-             IsChecked="True" 
+             IsChecked="{Binding Path=State, Converter={StaticResource ComparisonConverter}, ConverterParameter={x:Static sem:EEntityState.Middle}}" 
              Style="{StaticResource RadioButtonIcon}"/>
             <RadioButton GroupName="Target" 
                          Content="Целевое состояние" 
                          Margin="5" 
+                         IsChecked="{Binding Path=State, Converter={StaticResource ComparisonConverter}, ConverterParameter={x:Static sem:EEntityState.End}}"
                          Style="{StaticResource RadioButtonIcon}"/>
 
         </StackPanel>

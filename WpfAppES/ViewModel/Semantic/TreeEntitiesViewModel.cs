@@ -11,7 +11,7 @@ namespace WpfAppES.ViewModel.Semantic
         public ObservableCollection<EntityNodeViewModel> Entities { get; set; } = [];
         public TreeEntitiesViewModel()
         {
-            var db = KnowledgeBaseManager.Get().GetBase<SemanticDB>();
+            var db = KnowledgeBaseManager.GetBase<SemanticDB>();
             if (db == null)
                 return;
 
@@ -29,7 +29,7 @@ namespace WpfAppES.ViewModel.Semantic
 
         private void AddEntity(object? _)
         {
-            var db = KnowledgeBaseManager.Get().GetBase<SemanticDB>();
+            var db = KnowledgeBaseManager.GetBase<SemanticDB>();
             if (db == null) return;
             Entity ent = new("Не указано");
             db.Create(ent);
@@ -48,10 +48,10 @@ namespace WpfAppES.ViewModel.Semantic
 
         private void RemoveEntity(object? id)
         {
-            if (id == null || id is not Guid) 
+            if (id == null || id is not Guid)
                 return;
-            
-            var db = KnowledgeBaseManager.Get().GetBase<SemanticDB>();
+
+            var db = KnowledgeBaseManager.GetBase<SemanticDB>();
             if (db == null) return;
 
             db.RemoveEntity((Guid)id);
@@ -75,7 +75,7 @@ namespace WpfAppES.ViewModel.Semantic
             Guid? id = obj as Guid?;
             if (id == null) return;
 
-            var db = KnowledgeBaseManager.Get().GetBase<SemanticDB>();
+            var db = KnowledgeBaseManager.GetBase<SemanticDB>();
             if (db == null) return;
             EntityViewModel vme = new(db.GetEntity((Guid)id));
             EditEntityDlg entityDlg = new(vme);
@@ -88,7 +88,7 @@ namespace WpfAppES.ViewModel.Semantic
         public void OnGlobalChanged()
         {
             Entities.Clear();
-            var db = KnowledgeBaseManager.Get().GetBase<SemanticDB>();
+            var db = KnowledgeBaseManager.GetBase<SemanticDB>();
             if (db == null) return;
             foreach (var ent in db.GetEntities())
                 Entities.Add(new(ent));

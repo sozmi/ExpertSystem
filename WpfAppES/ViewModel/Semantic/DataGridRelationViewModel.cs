@@ -22,7 +22,7 @@ namespace WpfAppES.ViewModel.Semantic
 
         public DataGridRelationViewModel()
         {
-            var db = KnowledgeBaseManager.Get().GetBase<SemanticDB>();
+            var db = KnowledgeBaseManager.GetBase<SemanticDB>();
             if (db == null)
                 return;
             Relations = new(db.GetRelations());
@@ -36,9 +36,9 @@ namespace WpfAppES.ViewModel.Semantic
         private RelayCommand? addRelationCommand;
         private void AddRelation(object? _)
         {
-            var db = KnowledgeBaseManager.Get().GetBase<SemanticDB>();
+            var db = KnowledgeBaseManager.GetBase<SemanticDB>();
             if (db == null) return;
-            var rt = new RelationType("Не указано");
+            var rt = new RelationType("Не указано", "Вопрос");
             db.Create(rt);
             Relations.Add(rt);
             OnCollectionChanged();
@@ -67,7 +67,7 @@ namespace WpfAppES.ViewModel.Semantic
 
             Guid id = SelectedRelation.Id;
             SelectedRelation = null;
-            var db = KnowledgeBaseManager.Get().GetBase<SemanticDB>();
+            var db = KnowledgeBaseManager.GetBase<SemanticDB>();
             if (db == null) return;
 
             db.RemoveRelationType(id);

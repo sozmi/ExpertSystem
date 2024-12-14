@@ -11,27 +11,30 @@ namespace WpfAppES.ViewModel.Semantic
         {
             if (original == null)
                 return;
+            Id = original.Id;
             Name = original.Name;
+            State = original.State;
             foreach(var link in original.Links.Values)
                 Links.Add(new(link));
         }
 
-        public Guid Id => original == null? Guid.Empty : original.Id;
+        public Guid Id {  get; set; }
         
         public string Name { get => name; set => SetProperty(ref name, value); }
         private string name = "";
+
+        public EEntityState State { get => state; set => SetProperty(ref state, value); }
+        private EEntityState state = EEntityState.Middle;
 
         public ObservableCollection<DataGridLinksViewModel> Links { get => links; set => SetProperty(ref links, value); }
         ObservableCollection<DataGridLinksViewModel> links = [];
         public bool SendChanges()
         {
-            if (original == null)
-                return false;
-
-            original.Name = Name;
             original.Id = Id;
+            original.Name = Name;
+            original.State = State;
 
-            var db = KnowledgeBaseManager.Get().GetBase<SemanticDB>();
+            var db = KnowledgeBaseManager.GetBase<SemanticDB>();
             if (db == null)
                 return false;
             HashSet<KeyRelative> keys = [];
@@ -39,20 +42,21 @@ namespace WpfAppES.ViewModel.Semantic
             {
                 if (link.Relation.Id == Guid.Empty || link.Entity.Id == Guid.Empty)
                 {
-                    new Common.MessageBox("Присутствуют незаполненные связи","Ошибка").Show();
+                    Common.MessageBox.Show("Присутствуют незаполненные связи", "Ошибка");
                     return false;
                 }
 
                 KeyRelative key = new(link.Entity.Id, link.Relation.Id);
                 if (keys.Contains(key))
                 {
-                    new Common.MessageBox($"Есть одинаковые связи с отношением \"{link.Relation.Name}\" к сущности \"{link.Entity.Name}\"." +
-                        $" Удалите повторы и повторите попытку.", "Ошибка").Show();
+                    Common.MessageBox.Show($"Есть одинаковые связи с отношением \"{link.Relation.Name}\" к сущности \"{link.Entity.Name}\"." +
+                        $" Удалите повторы и повторите попытку.", "Ошибка");
                     return false;
                 }
                 keys.Add(key);
             }
             
+            //TODO: это логика модели, нужно будет перенести
             var originalKeys = original.GetKeysRelative();
             foreach (var link in Links)
             {
@@ -83,7 +87,7 @@ namespace WpfAppES.ViewModel.Semantic
         RelayCommand addLinkCommand;
         private void AddLink(object? _)
         {
-            Link link = new(new(Guid.Empty,""),new(Guid.Empty,""));
+            Link link = new(new(Guid.Empty,""), new(Guid.Empty,""));
             Links.Add(new(link));
         }
 
@@ -101,7 +105,7 @@ namespace WpfAppES.ViewModel.Semantic
         {
             if (SelectedLink == null)
             {
-                new Common.MessageBox("Необходимо выделить связь" , "Ошибка").Show();
+                Common.MessageBox.Show("Необходимо выделить связь" , "Ошибка");
                 return;
             }
 
