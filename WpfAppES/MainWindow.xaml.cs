@@ -1,10 +1,12 @@
 ﻿using ClassLibraryES.Managers;
+using HandyControl.Controls;
 using HandyControl.Tools;
 using System.IO;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using WpfAppES.ViewModel.BaseObjects;
 
 namespace WpfAppES
 {
@@ -19,9 +21,15 @@ namespace WpfAppES
         /// </summary>
         readonly string defaultTitle;
 
+        // Модель представления для связи данных с интерфейсом
+        private readonly MainViewModel _viewModel = new();
         public MainWindow()
         {
             InitializeComponent();
+
+            // Устанавливаем модель представления как DataContext для привязки данных
+            DataContext = _viewModel;
+
             expert.Checked += Interface_Checked;
             user.Checked += Interface_Checked;
             dbFrame.Checked += KnowledgeDB_Checked;
@@ -29,133 +37,230 @@ namespace WpfAppES
             dbProduct.Checked += KnowledgeDB_Checked;
             dbSemantic.Checked += KnowledgeDB_Checked;
 
-            //выбор начальной страницы
-
-            expert.IsChecked = true;
-            dbSemantic.IsChecked = true;
-            //frame.Navigate(new Uri($"View/StartPage.xaml", UriKind.Relative));
+            // Устанавливаем начальную страницу
+            frame.Navigate(new Uri($"View/StartPage.xaml", UriKind.Relative));
             defaultTitle = Title;
 
             ConfigHelper.Instance.SetLang("ru");
         }
 
         /// <summary>
-        /// Событие, происходит при смене базы знаний.
-        /// Переключаем страницу на соответствующую.
-        /// Адрес страницы берется из свойства Tag
+        /// Обработчик изменения базы знаний. 
+        /// Переключает страницу, основываясь на значении свойства Tag.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void KnowledgeDB_Checked(object sender, RoutedEventArgs e)
         {
-            RadioButton rb = (RadioButton)sender;
-            lastPage = rb.Tag.ToString();
-            if (frame == null || lastInterface == null)
-                return;
-            frame.Navigate(new Uri($"/View/{lastInterface}/{lastPage}", UriKind.Relative));
+            if (sender is RadioButton rb)
+            {
+                lastPage = rb.Tag.ToString();
+                UpdatePageNavigation();
+            }
         }
 
         /// <summary>
-        /// Событие, происходит при смене интерфейса.
-        /// Переключаем страницу на соответствующую.
-        /// Адрес страницы берется из свойства Tag
+        /// Обработчик изменения интерфейса. 
+        /// Переключает страницу, основываясь на значении свойства Tag.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Interface_Checked(object sender, RoutedEventArgs e)
         {
-            RadioButton rb = (RadioButton)sender;
-            lastInterface = rb.Tag.ToString();
-            if (frame == null || lastPage == null)
-                return;
-            frame.Navigate(new Uri($"/View/{lastInterface}/{lastPage}", UriKind.Relative));
+            if (sender is RadioButton rb)
+            {
+                lastInterface = rb.Tag.ToString();
+                UpdatePageNavigation();
+            }
         }
 
         /// <summary>
-        /// Обработка создания новой ЭС
+        /// Обновляет навигацию на основе текущих значений lastInterface и lastPage.
+        /// </summary>
+        private void UpdatePageNavigation()
+        {
+            if (frame != null && lastInterface != null && lastPage != null)
+            {
+                frame.Navigate(new Uri($"/View/{lastInterface}/{lastPage}", UriKind.Relative));
+            }
+        }
+        /// <summary>
+        /// Создание новой экспертной системы.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void NewCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+            HandleUnsavedChanges();
+
             Common.Dialog dialog = new("Введите название экспертной системы", "Создание ЭС");
-            if (dialog.ShowDialog() != true)
-                return;//отменили создание новой ЭС
-            try
+            if (dialog.ShowDialog() == true)
             {
-                string nameES = dialog.ResponseText;
-                KnowledgeBaseManager.Get().Create(nameES);
-                Title = defaultTitle+ " " + nameES;
+                try
+                {
+                    string nameES = dialog.ResponseText;
+                    KnowledgeBaseManager.Get().Create(nameES);
+                    UpdateUIAfterSuccess(nameES);
+                }
+                catch (Exception ex)
+                {
+                    new Common.MessageBox(ex.Message, "Ошибка").Show();
+                }
             }
-            catch (FileLoadException ex)
-            {
-                new Common.MessageBox(ex.Message, "Ошибка").Show();
-            }
-            
         }
 
         /// <summary>
-        /// Обработка открытия существующей ЭС
+        /// Открытие существующей экспертной системы.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OpenCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            //TODO: реализовать открытие э.с. из файла и обработку ошибок
+            HandleUnsavedChanges();
+
             Microsoft.Win32.OpenFileDialog dlg = new()
             {
                 InitialDirectory = KnowledgeBaseManager.Get().PATH_TO_DIR,
                 DefaultExt = ".es",
-                Filter = "Экспертные системы  (*.es)|*.es;*.*"
+                Filter = "Экспертные системы (*.es)|*.es"
             };
-            Nullable<bool> result = dlg.ShowDialog();
-            if (result == true)
+
+            if (dlg.ShowDialog() == true)
             {
-                string filename = dlg.FileName;
-                KnowledgeBaseManager.Get().Load(filename);
+                try
+                {
+                    string fileName = dlg.FileName;
+                    KnowledgeBaseManager.Get().Load(fileName);
+                    UpdateUIAfterSuccess(Path.GetFileNameWithoutExtension(fileName));
+                }
+                catch (Exception ex)
+                {
+                    new Common.MessageBox(ex.Message, "Ошибка").Show();
+                }
             }
         }
 
         /// <summary>
-        /// Обработка сохранения ЭС с тем же названием
+        /// Сохранение текущей экспертной системы.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void SaveCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-           //TODO: реализовать сохранение и обработку ошибок
+            try
+            {
+                KnowledgeBaseManager.Get().Save();
+            }
+            catch (Exception ex)
+            {
+                new Common.MessageBox(ex.Message, "Ошибка").Show();
+            }
         }
 
-        /// <summary>
-        /// Обработка сохранения ЭС с тем же названием
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void CloseCommand_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            //TODO: реализовать закрытие э.с. и обработку ошибок
-            //TODO: при закрытии ЭС при наличии изменений нужно спросить нужно ли сохраниться 
-        }
 
         /// <summary>
-        /// Обработка сохранения в файле, выбранном пользователем
+        /// Сохранение текущей ЭС в выбранный пользователем файл.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void SaveAsCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            //TODO: реализовать сохранение как и обработку ошибок
-            Microsoft.Win32.OpenFileDialog dlg = new()
+            Microsoft.Win32.SaveFileDialog dlg = new()
             {
                 DefaultExt = ".es",
-                Filter = "Экспертные системы  (*.es)|*.es"
+                Filter = "Экспертные системы (*.es)|*.es"
             };
-            Nullable<bool> result = dlg.ShowDialog();
-            if (result == true)
-            {
-                string filename = dlg.FileName;
 
+            if (dlg.ShowDialog() == true)
+            {
+                try
+                {
+                    KnowledgeBaseManager.Get().PATH_TO_FILE = dlg.FileName;
+                    KnowledgeBaseManager.Get().Save();
+                }
+                catch (Exception ex)
+                {
+                    new Common.MessageBox(ex.Message, "Ошибка").Show();
+                }
             }
         }
+
+        /// <summary>
+        /// Закрытие текущей экспертной системы.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CloseCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            HandleUnsavedChanges();
+
+            KnowledgeBaseManager.Get().Close();
+            ResetUIToDefault();
+
+            // Сброс выбора вкладок
+            expert.IsChecked = false;
+            user.IsChecked = false;
+            dbLogical.IsChecked = false;
+            dbProduct.IsChecked = false;
+            dbSemantic.IsChecked = false;
+            dbFrame.IsChecked = false;
+
+        }
+
+        /// <summary>
+        /// Проверка на наличие несохраненных изменений.
+        /// Если они есть, предлагается сохранить.
+        /// </summary>
+        private void HandleUnsavedChanges()
+        {
+            if (KnowledgeBaseManager.Get().ChangesMade)
+            {
+                Common.MessageBox saveDialog = new("Сохранить изменения?", "Подтверждение");
+                if (saveDialog.ShowDialog() == true)
+                {
+                    try
+                    {
+                        KnowledgeBaseManager.Get().Save();
+                    }
+                    catch (Exception ex)
+                    {
+                        new Common.MessageBox(ex.Message, "Ошибка").Show();
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// Обновление интерфейса после успешной загрузки или создания ЭС.
+        /// </summary>
+        /// <param name="nameES"></param>
+        private void UpdateUIAfterSuccess(string nameES)
+        {
+            Title = $"{defaultTitle} {nameES}";
+            _viewModel.SaveEnabled = true;
+            _viewModel.InterfaceMenuVisibility = Visibility.Visible;
+            _viewModel.KnowledgeMenuVisibility = Visibility.Visible;
+            UpdatePageNavigation();
+        }
+        /// <summary>
+        /// Сброс интерфейса до начального состояния. 
+        /// </summary>
+        private void ResetUIToDefault()
+        {
+            Title = defaultTitle;
+            _viewModel.SaveEnabled = false;
+            _viewModel.InterfaceMenuVisibility = Visibility.Collapsed;
+            _viewModel.KnowledgeMenuVisibility = Visibility.Collapsed;
+            frame.Navigate(new Uri($"View/StartPage.xaml", UriKind.Relative));
+
+            // Сброс выбора вкладок
+            expert.IsChecked = false;
+            user.IsChecked = false;
+            dbLogical.IsChecked = false;
+            dbProduct.IsChecked = false;
+            dbSemantic.IsChecked = false;
+            dbFrame.IsChecked = false;
+
+        }
+
     }
 }
