@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 
 namespace WpfAppES.ViewModel.BaseObjects
 {
@@ -13,7 +6,7 @@ namespace WpfAppES.ViewModel.BaseObjects
     /// Основная модель представления для привязки данных в приложении.
     /// Обеспечивает обновление интерфейса при изменении значений свойств.
     /// </summary>
-    public class MainViewModel : INotifyPropertyChanged
+    public class MainViewModel : BaseViewModel
     {
         // Поле для хранения состояния доступности команды сохранения
         private bool _saveEnabled;
@@ -22,20 +15,13 @@ namespace WpfAppES.ViewModel.BaseObjects
         private Visibility _interfaceMenuVisibility = Visibility.Collapsed;
         private Visibility _knowledgeMenuVisibility = Visibility.Collapsed;
 
-        // Событие для уведомления интерфейса об изменении свойств.
-        public event PropertyChangedEventHandler? PropertyChanged;
-
         /// <summary>
         /// Указывает, доступна ли команда сохранения.
         /// </summary>
         public bool SaveEnabled
         {
             get => _saveEnabled;
-            set
-            {
-                _saveEnabled = value;
-                OnPropertyChanged();// Уведомляем об изменении свойства
-            }
+            set => SetProperty(ref _saveEnabled, value);
         }
 
         /// <summary>
@@ -44,11 +30,7 @@ namespace WpfAppES.ViewModel.BaseObjects
         public Visibility InterfaceMenuVisibility
         {
             get => _interfaceMenuVisibility;
-            set
-            {
-                _interfaceMenuVisibility = value;
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref _interfaceMenuVisibility, value);
         }
 
         /// <summary>
@@ -57,19 +39,7 @@ namespace WpfAppES.ViewModel.BaseObjects
         public Visibility KnowledgeMenuVisibility
         {
             get => _knowledgeMenuVisibility;
-            set
-            {
-                _knowledgeMenuVisibility = value;
-                OnPropertyChanged();
-            }
-        }
-        /// <summary>
-        /// Уведомляет об изменении значения свойства.
-        /// </summary>
-        /// <param name="propertyName">Имя измененного свойства. Определяется автоматически при вызове</param>
-        protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            set => SetProperty(ref _knowledgeMenuVisibility, value);
         }
     }
 }
