@@ -154,12 +154,22 @@ namespace ClassLibraryES.Managers
         /// </summary>
         /// <typeparam name="T">Тип базы знаний.</typeparam>
         /// <returns>База знаний указанного типа, либо null, если не найдена.</returns>
-        public T? GetBase<T>() where T : class
+        private T? GetBase<T>(bool _) where T : class
         {
             foreach (var db in Bases)
                 if (db is T)
                     return db as T;
             return null;
+        }
+
+        /// <summary>
+        /// Метод для получения конкретной базы знаний по типу.
+        /// </summary>
+        /// <typeparam name="T">Тип базы знаний.</typeparam>
+        /// <returns>База знаний указанного типа, либо null, если не найдена.</returns>
+        public static T? GetBase<T>() where T : class
+        {
+            return Get().GetBase<T>(true);
         }
 
         /// <summary>

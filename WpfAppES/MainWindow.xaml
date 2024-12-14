@@ -22,14 +22,14 @@
                 <MenuItem Header="Закрыть" Command="Close" IsEnabled="{Binding Path=SaveEnabled}"/>
             </MenuItem>
             <MenuItem Header="Интерфейс" Visibility="{Binding Path=InterfaceMenuVisibility}">
-                <RadioButton GroupName="interface" x:Name="user" Tag="UserView" Content="Пользователь"/>
-                <RadioButton GroupName="interface" x:Name="expert" Tag="ExpertView" Content="Эксперт"/>
+                <RadioButton GroupName="interface" x:Name="user" Tag="UserView" Content="Пользователь" HorizontalAlignment="Left"/>
+                <RadioButton GroupName="interface" x:Name="expert" Tag="ExpertView" Content="Эксперт" HorizontalAlignment="Left"/>
             </MenuItem>
             <MenuItem Header="База знаний" Visibility="{Binding Path=KnowledgeMenuVisibility}">
-                <RadioButton GroupName="knowledge" x:Name="dbLogical" Content="Логическая" Tag="PageLogical.xaml"/>
-                <RadioButton GroupName="knowledge" x:Name="dbProduct" Content="Продукционная" Tag="PageProduct.xaml"/>
-                <RadioButton GroupName="knowledge" x:Name="dbSemantic" Content="Семантическая" Tag="PageSemantic.xaml"/>
-                <RadioButton GroupName="knowledge" x:Name="dbFrame" Content="Фреймы" Tag="PageFrame.xaml"/>
+                <RadioButton GroupName="knowledge" x:Name="dbLogical" Content="Логическая" Tag="PageLogical.xaml" HorizontalAlignment="Left"/>
+                <RadioButton GroupName="knowledge" x:Name="dbProduct" Content="Продукционная" Tag="PageProduct.xaml" HorizontalAlignment="Left"/>
+                <RadioButton GroupName="knowledge" x:Name="dbSemantic" Content="Семантическая" Tag="PageSemantic.xaml" HorizontalAlignment="Left"/>
+                <RadioButton GroupName="knowledge" x:Name="dbFrame" Content="Фреймы" Tag="PageFrame.xaml" HorizontalAlignment="Left"/>
             </MenuItem>
         </Menu>
         <Frame x:Name="frame" NavigationUIVisibility="Hidden" Panel.ZIndex="1"/>

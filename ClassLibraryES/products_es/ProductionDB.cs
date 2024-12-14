@@ -102,7 +102,7 @@ namespace ClassLibraryES.Products
 
         public void Close()
         {
-            throw new NotImplementedException();
+            return;
         }
         #endregion
     }
