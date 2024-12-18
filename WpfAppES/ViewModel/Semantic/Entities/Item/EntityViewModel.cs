@@ -3,7 +3,7 @@ using ClassLibraryES.semantic_es;
 using System.Collections.ObjectModel;
 using WpfAppES.ViewModel.BaseObjects;
 
-namespace WpfAppES.ViewModel.Semantic.Entities
+namespace WpfAppES.ViewModel.Semantic.Entities.Item
 {
     public class EntityViewModel : BaseViewModel
     {

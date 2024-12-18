@@ -3,7 +3,7 @@ using ClassLibraryES.semantic_es;
 using System.Collections.ObjectModel;
 using WpfAppES.ViewModel.BaseObjects;
 
-namespace WpfAppES.ViewModel.Semantic
+namespace WpfAppES.ViewModel.Semantic.Relations
 {
     class DataGridRelationViewModel : CollectionViewModel
     {
@@ -13,28 +13,28 @@ namespace WpfAppES.ViewModel.Semantic
         public ObservableCollection<RelationType> Relations { get => relations; set => SetProperty(ref relations, value); }
         ObservableCollection<RelationType> relations = [];
 
+
+        public RelationType? SelectedRelation { get => _selectedItem; set => SetProperty(ref _selectedItem, value); }
         private RelationType? _selectedItem;
-        public RelationType? SelectedRelation
-        {
-            get => _selectedItem;
-            set => SetProperty(ref _selectedItem, value);
-        }
 
         public DataGridRelationViewModel()
         {
             var db = KnowledgeBaseManager.GetBase<SemanticDB>();
             if (db == null)
                 return;
-            Relations = new(db.GetRelations());
+            relations = new(db.GetRelations());
+
+            removeRelationCommand = new(RemoveRelation);
+            addRelationCommand = new(AddRelation);
         }
 
         #region AddRelationCommand
         /// <summary>
         /// Команда добавление новых связей
         /// </summary>
-        public RelayCommand AddRelationCommand => addRelationCommand ??= new(AddRelation);
-        private RelayCommand? addRelationCommand;
-        private void AddRelation(object? _)
+        public RelayAction AddRelationCommand => addRelationCommand;
+        private readonly RelayAction addRelationCommand;
+        private void AddRelation()
         {
             var db = KnowledgeBaseManager.GetBase<SemanticDB>();
             if (db == null) return;
@@ -48,20 +48,20 @@ namespace WpfAppES.ViewModel.Semantic
         /// <summary>
         /// Команда удаления типа связи
         /// </summary>
-        public RelayCommand RemoveRelationCommand => removeRelationCommand ??= new(obj => RemoveRelation(obj));
-        private RelayCommand? removeRelationCommand;
+        public RelayAction RemoveRelationCommand => removeRelationCommand;
+        private readonly RelayAction removeRelationCommand;
 
-        private void RemoveRelation(object _)
+        private void RemoveRelation()
         {
             if (SelectedRelation == null)
             {
-                new Common.MessageBox("Не выбран элемент для удаления", "Ошибка").Show();
+                Common.MessageBox.Show("Не выбран элемент для удаления", "Ошибка");
                 return;
             }
 
             if (SelectedRelation.Id == Guid.Empty)
             {
-                new Common.MessageBox("Нельзя удалять системные связи", "Ошибка").Show();
+                Common.MessageBox.Show("Нельзя удалять системные связи", "Ошибка");
                 return;
             }
 

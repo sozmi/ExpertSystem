@@ -1,11 +1,11 @@
 ﻿using ClassLibraryES.semantic_es;
 using System.Collections.ObjectModel;
 
-namespace WpfAppES.ViewModel.Semantic.Entities
+namespace WpfAppES.ViewModel.Semantic.Entities.TreeView
 {
-    public class EntityNodeViewModel
+    public class NodeEntityViewModel
     {
-        public EntityNodeViewModel(Entity entity)
+        public NodeEntityViewModel(Entity entity)
         {
             Id = entity.Id;
             Name = entity.Name;
@@ -21,6 +21,6 @@ namespace WpfAppES.ViewModel.Semantic.Entities
         }
         public Guid Id { get; }
         public string Name { get; }
-        public ObservableCollection<LinksTreeViewModel> Links { get; set; } = [];
+        public ObservableCollection<NodeLinksViewModel> Links { get; set; } = [];
     }
 };

@@ -3,19 +3,6 @@ using System.Runtime.CompilerServices;
 
 namespace WpfAppES.ViewModel.BaseObjects
 {
-    public class BaseViewModel<TModel> : BaseViewModel
-    {
-        /// <summary>
-        /// Оригинальная модель
-        /// </summary>
-        protected TModel original;
-
-        protected BaseViewModel(TModel model)
-        {
-            original = model;
-        }
-    }
-
     public class CollectionViewModel : BaseViewModel
     {
         protected event Action? CollectionChanged;

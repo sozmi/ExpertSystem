@@ -2,7 +2,8 @@
 using ClassLibraryES.semantic_es;
 using Microsoft.Msagl.Drawing;
 using WpfAppES.ViewModel.BaseObjects;
-using WpfAppES.ViewModel.Semantic.Entities;
+using WpfAppES.ViewModel.Semantic.Entities.TreeView;
+using WpfAppES.ViewModel.Semantic.Relations;
 
 namespace WpfAppES.ViewModel.Semantic
 {

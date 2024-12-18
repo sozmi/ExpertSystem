@@ -94,7 +94,9 @@ namespace ClassLibraryES.semantic_es
         }
         public void Close()
         {
-
+            Relations.Clear();
+            Entities.Clear();
+            Links.Clear();
         }
         #endregion
 
