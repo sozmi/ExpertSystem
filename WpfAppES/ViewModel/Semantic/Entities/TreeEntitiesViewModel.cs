@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using WpfAppES.Components.Semantic;
 using WpfAppES.ViewModel.BaseObjects;
 
-namespace WpfAppES.ViewModel.Semantic
+namespace WpfAppES.ViewModel.Semantic.Entities
 {
     public class TreeEntitiesViewModel : CollectionViewModel, IModelChanged
     {

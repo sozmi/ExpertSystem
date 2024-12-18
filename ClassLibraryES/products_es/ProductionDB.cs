@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using ClassLibraryES.Managers;
 
-namespace ClassLibraryES.Products
+namespace ClassLibraryES.products_es
 {
     /// <summary>
     /// Продукционная база знаний - хранилище всех элементов 

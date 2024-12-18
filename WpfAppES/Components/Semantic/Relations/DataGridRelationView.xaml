@@ -33,8 +33,6 @@
         </DataGrid.ContextMenu>
         <DataGrid.Columns>
             <DataGridTextColumn Header="Типы отношений" Binding="{Binding Name}"/>
-            <DataGridTextColumn Header="Вопрос (X --> Известная сущность)" Binding="{Binding QuestionFrom}"/>
-            <DataGridTextColumn Header="Вопрос (Известная сущность --> X)" Binding="{Binding QuestionTo}"/>
         </DataGrid.Columns>
     </DataGrid>
 </UserControl>

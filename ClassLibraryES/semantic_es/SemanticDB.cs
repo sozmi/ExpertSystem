@@ -14,7 +14,7 @@ namespace ClassLibraryES.semantic_es
             if (isTest)
             {
                 //TODO: перенести создание в Test
-                RelationType it = new("это", "Нужно определить %obj% это что(кто)?" );
+                RelationType it = new("это", "Нужно определить %obj% это что(кто)?");
                 Create(it);
 
                 RelationType can = new("может", "Нужно учитывать что может делать %obj%?");
@@ -36,7 +36,6 @@ namespace ClassLibraryES.semantic_es
                 Create(paws);
 
                 Entity bird = new("Птица");
-                bird.State = EEntityState.Start;
                 Create(bird);
 
                 Entity sneg = new("Снегирь");
@@ -49,10 +48,10 @@ namespace ClassLibraryES.semantic_es
                 Create(straus);
 
                 AddLink(new(bird.Id, fly.Id, can.Id));
-                AddLink(new(sneg.Id, bird.Id,  it.Id));
+                AddLink(new(sneg.Id, bird.Id, it.Id));
                 AddLink(new(grach.Id, bird.Id, it.Id));
                 AddLink(new(straus.Id, fly.Id, cannot.Id));
-                AddLink(new(straus.Id, bird.Id,  it.Id));
+                AddLink(new(straus.Id, bird.Id, it.Id));
                 AddLink(new(bird.Id, wings.Id, has.Id));
                 AddLink(new(bird.Id, paws.Id, has.Id));
             }
@@ -143,9 +142,25 @@ namespace ClassLibraryES.semantic_es
         /// Редактирование существующей сущности
         /// </summary>
         /// <param name="newObj_">Новая сущность</param>
-        public void Edit(Entity newObj_)
+        public void Edit(Entity newObj_, HashSet<KeyRelative> newKeys_)
         {
-            Entities[newObj_.Id] = newObj_;
+            var old = GetEntity(newObj_.Id);
+            var oldKeys = old.GetKeysRelative();
+            old.Name = newObj_.Name;
+            var id = newObj_.Id;
+            foreach (var key in newKeys_)
+            {
+                if (!oldKeys.Contains(key))
+                {
+                    //если в старой сущности нет такой связя, нужно её добавить,
+                    //иначе можно ничего не делать 
+                    AddLink(new(id, key));
+                }
+                oldKeys.Remove(key); //удаляем новые и неизменившиеся связи, чтобы остались только удаленные
+            }
+
+            foreach (var key in oldKeys)
+                RemoveLink(new(id, key));
         }
 
         /// <summary>
@@ -229,6 +244,13 @@ namespace ClassLibraryES.semantic_es
         public Link GetLink(KeyLink key_)
         {
             return Links[key_];
+        }
+
+        public void EditLink(KeyLink key_, Link newLink_)
+        {
+            var old = GetLink(key_);
+            old.Relation = newLink_.Relation;
+            old.Entity = newLink_.Entity;
         }
         #endregion
     }

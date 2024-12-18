@@ -1,7 +1,7 @@
 ﻿using ClassLibraryES.semantic_es;
 using System.Collections.ObjectModel;
 
-namespace WpfAppES.ViewModel.Semantic
+namespace WpfAppES.ViewModel.Semantic.Entities
 {
     public class EntityNodeViewModel
     {
@@ -17,7 +17,7 @@ namespace WpfAppES.ViewModel.Semantic
                 relations[link.Relation].Add(link.Entity);
             }
             foreach (var link in relations)
-                Links.Add(new(entity, link.Key, link.Value));
+                Links.Add(new(link.Key, link.Value));
         }
         public Guid Id { get; }
         public string Name { get; }

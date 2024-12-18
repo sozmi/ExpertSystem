@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ClassLibraryES.Products
+namespace ClassLibraryES.products_es
 {
     /// <summary>
     /// Правило продукционной системы - состоит из списка фактов-предпосылок

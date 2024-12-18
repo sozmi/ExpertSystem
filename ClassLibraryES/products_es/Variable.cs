@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ClassLibraryES.Products
+namespace ClassLibraryES.products_es
 {
     /// <summary>
     /// Переменная продукционной системы - описывает характеристику или свойство,

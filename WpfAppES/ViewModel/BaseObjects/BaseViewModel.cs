@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Printing;
 using System.Runtime.CompilerServices;
 
 namespace WpfAppES.ViewModel.BaseObjects
@@ -12,52 +11,52 @@ namespace WpfAppES.ViewModel.BaseObjects
         protected TModel original;
 
         protected BaseViewModel(TModel model)
-        { 
+        {
             original = model;
         }
     }
-}
 
-public class CollectionViewModel : BaseViewModel
-{
-    protected event Action? CollectionChanged;
-    public void Subscribe(Action action)
+    public class CollectionViewModel : BaseViewModel
     {
-        CollectionChanged += action;
-    }
-    protected void OnCollectionChanged()
-    {
-        CollectionChanged?.Invoke();
-    }
-}
-
-public class BaseViewModel : INotifyPropertyChanged
-{
-    protected BaseViewModel()
-    {
-    }
-
-    /// <summary>
-    /// Событие изменения свойства
-    /// </summary>
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    /// <summary>
-    /// Изменение значения свойства
-    /// </summary>
-    /// <typeparam name="T">тип поля</typeparam>
-    /// <param name="field">поле</param>
-    /// <param name="newValue">новое значение</param>
-    /// <param name="propertyName">наименование свойства</param>
-    /// <returns></returns>
-    protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string? propertyName = null)
-    {
-        if (!Equals(field, newValue))
+        protected event Action? CollectionChanged;
+        public void Subscribe(Action action)
         {
-            field = newValue;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            return true;
+            CollectionChanged += action;
         }
-        return false;
+        protected void OnCollectionChanged()
+        {
+            CollectionChanged?.Invoke();
+        }
+    }
+
+    public class BaseViewModel : INotifyPropertyChanged
+    {
+        protected BaseViewModel()
+        {
+        }
+
+        /// <summary>
+        /// Событие изменения свойства
+        /// </summary>
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        /// <summary>
+        /// Изменение значения свойства
+        /// </summary>
+        /// <typeparam name="T">тип поля</typeparam>
+        /// <param name="field">поле</param>
+        /// <param name="newValue">новое значение</param>
+        /// <param name="propertyName">наименование свойства</param>
+        /// <returns></returns>
+        protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string? propertyName = null)
+        {
+            if (!Equals(field, newValue))
+            {
+                field = newValue;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+                return true;
+            }
+            return false;
+        }
     }
 }

@@ -1,10 +1,8 @@
 ﻿using ClassLibraryES.frame_es;
-using ClassLibraryES.Products;
 using ClassLibraryES.products_es;
 using ClassLibraryES.semantic_es;
 using Newtonsoft.Json;
 using System.Reflection;
-using System.IO;
 
 namespace ClassLibraryES.Managers
 {

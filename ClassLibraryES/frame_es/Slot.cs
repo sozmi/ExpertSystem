@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ClassLibraryES
+namespace ClassLibraryES.frame_es
 {
     public class Slot
     {
-        private System.Guid id;
+        private Guid id;
         private string name;
         private string value;
 
@@ -25,15 +25,15 @@ namespace ClassLibraryES
         /// Получить значение слота\свойства
         /// </summary>
         public string Value { get => value; set => this.value = value; }
-        
+
         /// <summary>
         /// Конструктор слота\свойства
         /// </summary>
-        public Slot() 
-        { 
-            this.id = Guid.NewGuid();
-            this.name = string.Empty;
-            this.value = string.Empty;
+        public Slot()
+        {
+            id = Guid.NewGuid();
+            name = string.Empty;
+            value = string.Empty;
         }
         /// <summary>
         /// Конструктор слота\свойства
@@ -42,7 +42,7 @@ namespace ClassLibraryES
         /// <param name="value">значение слота\свойства</param>
         public Slot(string name, string value)
         {
-            this.id = new System.Guid();
+            id = new Guid();
             this.name = name;
             this.value = value;
         }

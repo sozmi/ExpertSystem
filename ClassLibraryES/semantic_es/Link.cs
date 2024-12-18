@@ -15,11 +15,6 @@ namespace ClassLibraryES.semantic_es
         public RelationType Relation { get; set; } = new("Связь не указана");
 
         /// <summary>
-        /// Вопрос
-        /// </summary>
-        public string Explanation { get; set; } = "Неизвестно";
-
-        /// <summary>
         /// Подчиненная сущность
         /// </summary>
         [JsonIgnore]

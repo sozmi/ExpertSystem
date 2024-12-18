@@ -3,12 +3,6 @@
     using Newtonsoft.Json;
     using System.Collections.Generic;
 
-    public enum EEntityState
-    {
-        Start,
-        Middle,
-        End
-    }
     /// <summary>
     /// Класс с информациях о сущностях
     /// </summary>
@@ -64,8 +58,6 @@
         /// Наименование сущности
         /// </summary>
         public string Name { get; set; } = "";
-
-        public EEntityState State { get; set; } = EEntityState.Middle;
 
         /// <summary>
         /// Связи сущности

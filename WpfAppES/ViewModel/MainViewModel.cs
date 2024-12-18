@@ -1,6 +1,7 @@
 ﻿using System.Windows;
+using WpfAppES.ViewModel.BaseObjects;
 
-namespace WpfAppES.ViewModel.BaseObjects
+namespace WpfAppES.ViewModel
 {
     /// <summary>
     /// Основная модель представления для привязки данных в приложении.

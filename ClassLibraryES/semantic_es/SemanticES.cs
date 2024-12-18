@@ -18,7 +18,6 @@ namespace ClassLibraryES.semantic_es
             if (db == null)
                 return [];
             foreach (var item in db.GetEntities())
-                if (item.State == EEntityState.Start)
                     targets.Add(new(item.Id,item.Name));
             return targets;
         }
