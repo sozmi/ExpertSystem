@@ -13,16 +13,15 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WpfAppES.UserView
+namespace WpfAppES.UserView;
+
+/// <summary>
+/// Логика взаимодействия для PageLogical.xaml
+/// </summary>
+public partial class PageLogical : Page
 {
-    /// <summary>
-    /// Логика взаимодействия для PageLogical.xaml
-    /// </summary>
-    public partial class PageLogical : Page
+    public PageLogical()
     {
-        public PageLogical()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

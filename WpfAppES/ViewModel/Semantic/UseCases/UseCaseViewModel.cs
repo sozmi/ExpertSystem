@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using WpfAppES.ViewModel.BaseObjects;
 
-namespace WpfAppES.ViewModel.Semantic.UseCases
+namespace WpfAppES.ViewModel.Semantic.UseCases;
+
+class UseCaseViewModel : BaseViewModel
 {
-    class UseCaseViewModel : BaseViewModel
-    {
-    }
+    UseCaseViewModel() { }
 }

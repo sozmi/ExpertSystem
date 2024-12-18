@@ -13,16 +13,15 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WpfAppES.Components.Common
+namespace WpfAppES.Components.Common;
+
+/// <summary>
+/// Логика взаимодействия для SubsystemExplanation.xaml
+/// </summary>
+public partial class SubsystemExplanation : UserControl
 {
-    /// <summary>
-    /// Логика взаимодействия для SubsystemExplanation.xaml
-    /// </summary>
-    public partial class SubsystemExplanation : UserControl
+    public SubsystemExplanation()
     {
-        public SubsystemExplanation()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

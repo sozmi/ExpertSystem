@@ -22,8 +22,8 @@
                 <MenuItem Header="Закрыть" Command="Close" IsEnabled="{Binding Path=SaveEnabled}"/>
             </MenuItem>
             <MenuItem Header="Интерфейс" Visibility="{Binding Path=InterfaceMenuVisibility}">
-                <RadioButton GroupName="interface" x:Name="user" Tag="UserView" Content="Пользователь" HorizontalAlignment="Left"/>
-                <RadioButton GroupName="interface" x:Name="expert" Tag="ExpertView" Content="Эксперт" HorizontalAlignment="Left"/>
+                <RadioButton GroupName="interface" x:Name="user" Tag="UserPages" Content="Пользователь" HorizontalAlignment="Left"/>
+                <RadioButton GroupName="interface" x:Name="expert" Tag="ExpertPages" Content="Эксперт" HorizontalAlignment="Left"/>
             </MenuItem>
             <MenuItem Header="База знаний" Visibility="{Binding Path=KnowledgeMenuVisibility}">
                 <RadioButton GroupName="knowledge" x:Name="dbLogical" Content="Логическая" Tag="PageLogical.xaml" HorizontalAlignment="Left"/>

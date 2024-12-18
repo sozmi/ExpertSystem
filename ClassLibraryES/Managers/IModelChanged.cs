@@ -1,13 +1,12 @@
-﻿namespace ClassLibraryES.Managers
+﻿namespace ClassLibraryES.Managers;
+
+/// <summary>
+/// Интерфейс для оповещения о глобальных изменениях в системе.
+/// </summary>
+public interface IModelChanged
 {
     /// <summary>
-    /// Интерфейс для оповещения о глобальных изменениях в системе.
+    /// Метод, который необходимо вызывать при возникновении глобального изменения.
     /// </summary>
-    public interface IModelChanged
-    {
-        /// <summary>
-        /// Метод, который необходимо вызывать при возникновении глобального изменения.
-        /// </summary>
-        void OnGlobalChanged();
-    }
+    void OnGlobalChanged();
 }

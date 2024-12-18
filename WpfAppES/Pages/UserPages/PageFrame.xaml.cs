@@ -13,16 +13,15 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WpfAppES.ExpertView
+namespace WpfAppES.UserView;
+
+/// <summary>
+/// Логика взаимодействия для PageFrame.xaml
+/// </summary>
+public partial class PageFrame : Page
 {
-    /// <summary>
-    /// Логика взаимодействия для PageProduct.xaml
-    /// </summary>
-    public partial class PageProduct : Page
+    public PageFrame()
     {
-        public PageProduct()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

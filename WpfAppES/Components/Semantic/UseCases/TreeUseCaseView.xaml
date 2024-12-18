@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="WpfAppES.Components.Semantic.UseCases.TreeUseCaseView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WpfAppES.Components.Semantic.UseCases" 
+             xmlns:usecases="clr-namespace:WpfAppES.ViewModel.Semantic.UseCases" 
+             d:DataContext="{d:DesignInstance Type=usecases:TreeUseCaseViewModel}"
+             mc:Ignorable="d" 
+             MinWidth="150" >
+    <ListBox ItemsSource="{Binding UseCases}">
+        <ListBox.ItemTemplate>
+            <DataTemplate>
+                <TextBlock Text="{Binding Name}">
+                    <TextBlock.ToolTip>
+                        <ToolTip Content="{Binding Description}"/>
+                    </TextBlock.ToolTip>
+                </TextBlock>
+            </DataTemplate>
+        </ListBox.ItemTemplate>
+
+    </ListBox>
+</UserControl>

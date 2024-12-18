@@ -12,35 +12,34 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace WpfAppES.Common
+namespace WpfAppES.Common;
+
+/// <summary>
+/// Логика взаимодействия для Dialog.xaml
+/// </summary>
+public partial class Dialog : Window
 {
-    /// <summary>
-    /// Логика взаимодействия для Dialog.xaml
-    /// </summary>
-    public partial class Dialog : Window
+    public Dialog(string question, string title)
     {
-        public Dialog(string question, string title)
-        {
-            InitializeComponent();
-            txtQuestion.Text = question;
-            txtResponse.Focus();
-            Title = title;
-        }
-        public string ResponseText
-        {
-            get { return txtResponse.Text; }
-            set { txtResponse.Text = value; }
-        }
+        InitializeComponent();
+        txtQuestion.Text = question;
+        txtResponse.Focus();
+        Title = title;
+    }
+    public string ResponseText
+    {
+        get { return txtResponse.Text; }
+        set { txtResponse.Text = value; }
+    }
 
-        private void BtnOk_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = true;
-            Close();
-        }
+    private void BtnOk_Click(object sender, RoutedEventArgs e)
+    {
+        DialogResult = true;
+        Close();
+    }
 
-        private void BtnCancel_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
+    private void BtnCancel_Click(object sender, RoutedEventArgs e)
+    {
+        Close();
     }
 }

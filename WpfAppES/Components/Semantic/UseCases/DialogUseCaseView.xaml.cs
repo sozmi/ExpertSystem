@@ -10,19 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WpfAppES.ExpertView
+namespace WpfAppES.Components.Semantic.UseCases;
+
+/// <summary>
+/// Логика взаимодействия для DialogUseCaseView.xaml
+/// </summary>
+public partial class DialogUseCaseView : Window
 {
-    /// <summary>
-    /// Логика взаимодействия для PageLogical.xaml
-    /// </summary>
-    public partial class PageLogical : Page
+    public DialogUseCaseView()
     {
-        public PageLogical()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

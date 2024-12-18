@@ -4,78 +4,79 @@ using Microsoft.Msagl.Drawing;
 using WpfAppES.ViewModel.BaseObjects;
 using WpfAppES.ViewModel.Semantic.Entities.TreeView;
 using WpfAppES.ViewModel.Semantic.Relations;
+using WpfAppES.ViewModel.Semantic.UseCases;
 
-namespace WpfAppES.ViewModel.Semantic
+namespace WpfAppES.ViewModel.Semantic;
+
+public interface IModelChanged
 {
-    public interface IModelChanged
+    public void OnGlobalChanged();//TODO: разделить на более локальные события
+}
+
+class ExpertViewModel : BaseViewModel, IModelChanged
+{
+    public TreeUseCaseViewModel TreeUseCasesViewModel { get; } = new();
+    public TreeEntitiesViewModel TreeEntitiesViewModel { get; } = new();
+    public DataGridRelationViewModel DataGridRelationViewModel { get; } = new();
+
+    public ExpertViewModel()
     {
-        public void OnGlobalChanged();//TODO: разделить на более локальные события
+        DataGridRelationViewModel = new();
+        TreeEntitiesViewModel.Subscribe(OnGlobalChanged);
+        DataGridRelationViewModel.Subscribe(OnGlobalChanged);
+        DataGridRelationViewModel.Subscribe(TreeEntitiesViewModel.OnGlobalChanged);
+
+        var db = KnowledgeBaseManager.GetBase<SemanticDB>();
+        if (db == null)
+            return;
+
+        DrawGraph();
     }
 
-    class ExpertViewModel : BaseViewModel, IModelChanged
-    {
-        public TreeEntitiesViewModel TreeEntitiesViewModel { get; } = new();
-        public DataGridRelationViewModel DataGridRelationViewModel { get; } = new();
+    #region Fields and properties
 
-        public ExpertViewModel()
-        {
-            DataGridRelationViewModel = new();
-            TreeEntitiesViewModel.Subscribe(OnGlobalChanged);
-            DataGridRelationViewModel.Subscribe(OnGlobalChanged);
-            DataGridRelationViewModel.Subscribe(TreeEntitiesViewModel.OnGlobalChanged);
-
-            var db = KnowledgeBaseManager.GetBase<SemanticDB>();
-            if (db == null)
-                return;
-
-            DrawGraph();
-        }
-
-        #region Fields and properties
-
-        /// <summary>
-        /// Графическое описание БЗ
-        /// </summary>
-        public Graph GraphObject { get => graphObject; set => SetProperty(ref graphObject, value); }
-        private Graph graphObject = new();
+    /// <summary>
+    /// Графическое описание БЗ
+    /// </summary>
+    public Graph GraphObject { get => graphObject; set => SetProperty(ref graphObject, value); }
+    private Graph graphObject = new();
 
 
 
-        #endregion
-
-        #region Graph
-        /// <summary>
-        /// Заполнение и отрисовка графического изображения
-        /// </summary>
-        private void DrawGraph()
-        {
-            var db = KnowledgeBaseManager.GetBase<SemanticDB>();
-            if (db == null) return;
-            Graph graph = new();
-            foreach (var ent in db.GetEntities())
-            {
-                Node n = new(ent.Id.ToString())
-                {
-                    LabelText = ent.Name
-                };
-                graph.AddNode(n);
-            }
-            foreach (var ent in db.GetEntities())
-            {
-                foreach (var link in ent.Links.Values)
-                {
-                    graph.AddEdge(ent.Id.ToString(),
-                       link.Relation.Name,
-                        link.Entity.Id.ToString());
-                }
-            }
-            GraphObject = graph;
-        }
-
-        public void OnGlobalChanged()
-        {
-            DrawGraph();
-        }
-    }
     #endregion
-};
+
+    #region Graph
+    /// <summary>
+    /// Заполнение и отрисовка графического изображения
+    /// </summary>
+    private void DrawGraph()
+    {
+        var db = KnowledgeBaseManager.GetBase<SemanticDB>();
+        if (db == null) return;
+        Graph graph = new();
+        foreach (var ent in db.GetEntities())
+        {
+            Node n = new(ent.Id.ToString())
+            {
+                LabelText = ent.Name
+            };
+            graph.AddNode(n);
+        }
+        foreach (var ent in db.GetEntities())
+        {
+            foreach (var link in ent.Links.Values)
+            {
+                graph.AddEdge(ent.Id.ToString(),
+                   link.Relation.Name,
+                    link.Entity.Id.ToString());
+            }
+        }
+        GraphObject = graph;
+    }
+
+    public void OnGlobalChanged()
+    {
+        DrawGraph();
+    }
+}
+#endregion

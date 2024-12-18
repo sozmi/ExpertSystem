@@ -5,9 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfAppES.Common"
         mc:Ignorable="d"
+        MaxWidth="500"
         Title="MessageBox" SizeToContent="WidthAndHeight">
-    <StackPanel Margin="5">
-        <TextBlock Name="txtQuestion" Margin="5"/>
+    <StackPanel Margin="5" >
+        <TextBlock Name="txtQuestion" Margin="5" TextWrapping="Wrap"/>
         <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Right">
             <Button Content="Ок" IsDefault="True" Margin="5" Name="btnOk" Click="BtnOk_Click" Style="{StaticResource ButtonPrimary}"/>
         </StackPanel>

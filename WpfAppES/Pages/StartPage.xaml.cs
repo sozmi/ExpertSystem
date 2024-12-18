@@ -13,15 +13,25 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WpfAppES.Components.Semantic;
+namespace WpfAppES;
 
 /// <summary>
-/// Логика взаимодействия для TreeEntityView.xaml
+/// Логика взаимодействия для StartPage.xaml
 /// </summary>
-public partial class TreeEntityView : UserControl
+public partial class StartPage : Page
 {
-    public TreeEntityView()
+    public StartPage()
     {
         InitializeComponent();
+    }
+
+    private void InstructionButton_Click(object sender, RoutedEventArgs e)
+    {
+        instructionPopup.IsOpen = true;
+    }
+
+    private void ClosePopupButton_Click(object sender, RoutedEventArgs e)
+    {
+        instructionPopup.IsOpen = false;
     }
 }
