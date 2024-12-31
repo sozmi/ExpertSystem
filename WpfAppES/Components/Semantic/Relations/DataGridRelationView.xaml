@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:semantic="clr-namespace:WpfAppES.ViewModel.Semantic.Relations"
+             xmlns:semantic="clr-namespace:WpfAppES.ViewModel.Semantic.Relations" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              x:Name="ctrl"
              d:DesignHeight="200" d:DesignWidth="300">
@@ -18,7 +19,7 @@
               AutoGenerateColumns="False"
               CanUserAddRows="False" 
               CanUserDeleteRows="False" 
-              CanUserSortColumns="False" 
+              CanUserSortColumns="False"
               CanUserReorderColumns="True">
 
         <DataGrid.ContextMenu>
@@ -34,5 +35,10 @@
         <DataGrid.Columns>
             <DataGridTextColumn Header="Типы отношений" Binding="{Binding Name}"/>
         </DataGrid.Columns>
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="CurrentCellChanged">
+                <i:InvokeCommandAction Command="{Binding EditCommand}" />
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
     </DataGrid>
 </UserControl>

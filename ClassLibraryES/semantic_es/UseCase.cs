@@ -22,5 +22,5 @@ public class UseCase
     public string Description { get; set; }
 
     public List<Question> Questions { get; set; } = [];
-    public List<Answer> Facts { get; set; } = [];
+    public List<Fact> Facts { get; set; } = [];
 }

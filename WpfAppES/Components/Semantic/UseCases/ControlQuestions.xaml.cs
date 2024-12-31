@@ -13,15 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WpfAppES.Components.Semantic.UseCases;
-
-/// <summary>
-/// Логика взаимодействия для TreeUseCaseView.xaml
-/// </summary>
-public partial class TreeUseCaseView : UserControl
+namespace WpfAppES.Components.Semantic.UseCases
 {
-    public TreeUseCaseView()
+    /// <summary>
+    /// Логика взаимодействия для ControlQuestions.xaml
+    /// </summary>
+    public partial class ControlQuestions : UserControl
     {
-        InitializeComponent();
+        public ControlQuestions()
+        {
+            InitializeComponent();
+        }
     }
 }

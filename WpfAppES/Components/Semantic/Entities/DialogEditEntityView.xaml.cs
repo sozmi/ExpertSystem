@@ -13,9 +13,7 @@ public partial class EditEntityDlg : Window
     public EditEntityDlg(Guid id)
     {
         InitializeComponent();
-        var db = KnowledgeBaseManager.GetBase<SemanticDB>();
-        if (db == null) return; 
-        DataContext = new EntityViewModel(db.GetEntity(id));
+        DataContext = new EntityViewModel(id);
     }
 
     private void ButtonSave_Click(object sender, RoutedEventArgs e)

@@ -56,38 +56,31 @@ public class SemanticDB : IKnowledgeBase
             AddLink(new(bird.Id, wings.Id, has.Id));
             AddLink(new(bird.Id, paws.Id, has.Id));
 
-            find = new(Guid.Empty, "Искомый объект");
+            Entity find = new(Guid.Empty, "Искомый объект");
+            Create(find);
+
             UseCase useCase = new("Поиск птицы")
             {
                 Description = "Поможет найти нужную птицу"
             };
-            useCase.Facts.Add(new Answer(find, Get(it.Id), GetEntity(bird.Id)));
-            Case canFly = new(new Answer(find, Get(can.Id), GetEntity(fly.Id)));
-            Case cannotFly = new(new Answer(find, Get(cannot.Id), GetEntity(fly.Id)));
-            Question qfly = new("Птица умеет летать")
-            {
-                TrueCase = canFly,
-                FalseCase = cannotFly,
-            };
-            Question qcann = new("Вы знаете что умеет/не умеет делать птица?")
-            {
-                TrueCase = new Case([]),
-                FalseCase = null
-            };
-            qcann.TrueCase.SubQuestions.Add(qfly);
 
-            Question qcan = new("Вы знаете какие  части тела есть у птицы?")
-            {
-                TrueCase = new Case([]),
-                FalseCase = null
-            };
-            qcan.TrueCase.SubQuestions.Add(qfly);
+            useCase.Facts.Add(new Fact(GetEntity(find.Id), Get(it.Id), GetEntity(bird.Id)));
+            Case canFly = new(new Fact(GetEntity(find.Id), Get(can.Id), GetEntity(fly.Id)));
+            Case cannotFly = new(new Fact(GetEntity(find.Id), Get(cannot.Id), GetEntity(fly.Id)));
+            Question qfly = new("Птица умеет летать");
+            qfly.AddCase("Да", canFly);
+            qfly.AddCase("Нет", cannotFly);
+
+            Question qcann = new("Вы знаете что умеет/не умеет делать птица?");
+            qcann.AddCase("Да", new Case([qfly]));
+            useCase.Questions.Add(qcann);
+
+            Question qcan = new("Вы знаете какие  части тела есть у птицы?");
+            qcan.AddCase("Да", new Case([qfly]));
             useCase.Questions.Add(qcan);
             UseCases.Add(useCase.Id, useCase);
         }
     }
-    [JsonProperty]
-    private Entity find;
 
     /// <summary>
     /// Словарь содержащий информацию о сущностях БЗ
@@ -166,11 +159,27 @@ public class SemanticDB : IKnowledgeBase
     /// Получение списка сущностей
     /// </summary>
     /// <returns>Список сущностей</returns>
-    public List<Entity> GetEntities() => [.. Entities.Values];
+    public List<Entity> GetEntities(bool isFilter = false)
+    {
+        List<Entity> entities = [.. Entities.Values];
+        if (isFilter)
+            entities.Remove(GetEntity(Guid.Empty));
+        return entities;
+    }
     #endregion
 
     #region UseCase
     public List<UseCase> GetUseCases() => [.. UseCases.Values];
+
+    public void Create(UseCase newUC)
+    {
+        UseCases.Add(newUC.Id, newUC);
+    }
+    public void RemoveUseCase(Guid id)
+    {
+        UseCases.Remove(id);
+    }
+    public UseCase GetUseCase(Guid id) => UseCases[id];
     #endregion
 
     #region Edit Entity
