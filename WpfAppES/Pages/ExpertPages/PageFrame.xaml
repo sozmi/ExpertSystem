@@ -4,11 +4,38 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WpfAppES.ExpertView"
+      xmlns:vm="clr-namespace:WpfAppES.ViewModel.Frame" 
+      xmlns:comp="clr-namespace:WpfAppES.Components.Frame"
       mc:Ignorable="d" 
+      x:Name="page"
       d:DesignHeight="450" d:DesignWidth="800"
       Title="[Эксперт] Фреймовая БД">
+    
+    <Page.DataContext>
+        <vm:ExpertViewModel/>
+    </Page.DataContext>
 
-    <Grid>
-        <TextBlock>фреймовая эксперт</TextBlock>
-    </Grid>
+    <Page.Resources>
+        <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter"/>
+    </Page.Resources>
+
+    <DockPanel LastChildFill="True">
+        <ToolBar DockPanel.Dock="Top" ToolBarTray.IsLocked="True" Padding="10">
+            <TextBlock VerticalAlignment="Center" Style="{StaticResource TextBlockSubTitleBold}">База знаний <LineBreak/> фреймов</TextBlock>
+            <Separator Margin="10,0"/>
+            <ToggleButton x:Name="cbSlots" Content="Слоты" Margin="5,0" IsChecked="True"/>
+            <ToggleButton x:Name="cbFrames" Content="Фреймы" Margin="5,0" IsChecked="True"/>
+            <ToggleButton x:Name="cbGraph" Content="Граф" Margin="5,0" IsChecked="True"/>
+        </ToolBar>
+
+        <comp:DataGridSlotView DataContext="{Binding DataGridSlotViewModel, Mode=OneWay}"
+                               Visibility="{Binding ElementName=cbSlots, Path=IsChecked, Converter={StaticResource booleanToVisibilityConverter}}"/>
+
+        <comp:DataGridFrameView DataContext="{Binding DataGridFrameViewModel, Mode=OneWay}"
+                                Visibility="{Binding ElementName=cbFrames, Path=IsChecked, Converter={StaticResource booleanToVisibilityConverter}}"/>
+
+        <wpfgraphcontrol:AutomaticGraphLayoutControl Graph="{Binding GraphObject,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                                     Visibility="{Binding ElementName=cbGraph, Path=IsChecked, Converter={StaticResource booleanToVisibilityConverter}}"/>
+    </DockPanel>
 </Page>
+
