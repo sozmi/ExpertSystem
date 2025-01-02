@@ -7,8 +7,11 @@ namespace WpfAppES.ViewModel.Semantic.Entities.Item;
 
 public class EntityViewModel : BaseViewModel
 {
-    public EntityViewModel(Entity entity)
+    public EntityViewModel(Guid id)
     {
+        var db = KnowledgeBaseManager.GetBase<SemanticDB>();
+        if (db == null) return;
+        Entity entity = db.GetEntity(id);
         Id = entity.Id;
         Name = entity.Name;
         foreach (var link in entity.Links.Values)
@@ -22,8 +25,8 @@ public class EntityViewModel : BaseViewModel
     public string Name { get => name; set => SetProperty(ref name, value); }
     private string name = "";
 
-    public ObservableCollection<DataGridLinksViewModel> Links { get => links; set => SetProperty(ref links, value); }
-    ObservableCollection<DataGridLinksViewModel> links = [];
+    public ObservableCollection<RowLinkViewModel> Links { get => links; set => SetProperty(ref links, value); }
+    ObservableCollection<RowLinkViewModel> links = [];
 
     public bool SaveChanges()
     {
@@ -67,8 +70,8 @@ public class EntityViewModel : BaseViewModel
     public RelayAction RemoveLinkCommand => removeLinkCommand;
     readonly RelayAction removeLinkCommand;
 
-    private DataGridLinksViewModel? _selectedItem;
-    public DataGridLinksViewModel? SelectedLink
+    private RowLinkViewModel? _selectedItem;
+    public RowLinkViewModel? SelectedLink
     {
         get => _selectedItem;
         set => SetProperty(ref _selectedItem, value);

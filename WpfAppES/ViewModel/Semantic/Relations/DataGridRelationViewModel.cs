@@ -24,16 +24,17 @@ class DataGridRelationViewModel : CollectionViewModel
             return;
         relations = new(db.GetRelations());
 
-        removeRelationCommand = new(RemoveRelation);
-        addRelationCommand = new(AddRelation);
+        RemoveRelationCommand = new(RemoveRelation);
+        AddRelationCommand = new(AddRelation);
+        EditCommand = new(EditRelation);
     }
 
     #region AddRelationCommand
     /// <summary>
     /// Команда добавление новых связей
     /// </summary>
-    public RelayAction AddRelationCommand => addRelationCommand;
-    private readonly RelayAction addRelationCommand;
+    public RelayAction? AddRelationCommand { get; private set; }
+
     private void AddRelation()
     {
         var db = KnowledgeBaseManager.GetBase<SemanticDB>();
@@ -48,20 +49,13 @@ class DataGridRelationViewModel : CollectionViewModel
     /// <summary>
     /// Команда удаления типа связи
     /// </summary>
-    public RelayAction RemoveRelationCommand => removeRelationCommand;
-    private readonly RelayAction removeRelationCommand;
+    public RelayAction? RemoveRelationCommand { get; private set; }
 
     private void RemoveRelation()
     {
         if (SelectedRelation == null)
         {
             Common.MessageBox.Show("Не выбран элемент для удаления", "Ошибка");
-            return;
-        }
-
-        if (SelectedRelation.Id == Guid.Empty)
-        {
-            Common.MessageBox.Show("Нельзя удалять системные связи", "Ошибка");
             return;
         }
 
@@ -83,6 +77,11 @@ class DataGridRelationViewModel : CollectionViewModel
 
     #endregion
     #region EditRelationCommand
+    public RelayAction? EditCommand { get; private set; }
+    private void EditRelation()
+    {
+        OnCollectionChanged();
+    }
     #endregion
 
 }

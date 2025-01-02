@@ -1,0 +1,135 @@
+﻿<UserControl x:Class="WpfAppES.Components.Semantic.UseCases.ControlQuestions"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WpfAppES.Components.Semantic.UseCases" 
+             xmlns:usecases="clr-namespace:WpfAppES.ViewModel.Semantic.UseCases"
+             xmlns:baseobjects="clr-namespace:WpfAppES.ViewModel.BaseObjects"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:h="https://handyorg.github.io/handycontrol"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=usecases:ControlQuestionsViewModel}"
+             d:DesignHeight="450" 
+             d:DesignWidth="800">
+    
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter"/>
+        <baseobjects:NullToVisibilityConverter x:Key="nullToVisibilityConverter"/>
+    </UserControl.Resources>
+    
+    <StackPanel Orientation="Horizontal">
+        <TreeView x:Name="treeview" 
+                  MinWidth="200"
+                  ItemsSource="{Binding Questions}">
+            <TreeView.Resources>
+
+                <HierarchicalDataTemplate DataType="{x:Type usecases:NodeQuestionViewModel}"
+                                          ItemsSource="{Binding Cases}">
+                    <TextBlock Text="{Binding Text}"/>
+                </HierarchicalDataTemplate>
+
+                <HierarchicalDataTemplate DataType="{x:Type usecases:CaseViewModel}" 
+                                          ItemsSource="{Binding SubQuestions}">
+                    <TextBlock Text="{Binding TextVariant}"/>
+                </HierarchicalDataTemplate>
+            </TreeView.Resources>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectedItemChanged">
+                    <i:InvokeCommandAction Command="{Binding SelectedItemChanged}" 
+                                           CommandParameter="{Binding SelectedItem, ElementName=treeview}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <TreeView.ContextMenu>
+                <ContextMenu>
+
+                    <MenuItem Header="Добавить корневой вопрос" Command="{Binding AddRootQuestion}"/>
+                    <MenuItem Header="Добавить вопрос" Command="{Binding AddQuestion}" 
+                              Visibility="{Binding SelectedCase, Converter={StaticResource nullToVisibilityConverter}}"/>
+                    <MenuItem Header="Удалить вопрос" Command="{Binding RemoveQuestion}"
+                              Visibility="{Binding SelectedQuestion, Converter={StaticResource nullToVisibilityConverter}}"/>
+                    <Separator/>
+                    <MenuItem Header="Добавить ответ"
+                              Visibility="{Binding SelectedQuestion, Converter={StaticResource nullToVisibilityConverter}}">
+                        <MenuItem Header="Да" Command="{Binding AddCase}" CommandParameter="Да"/>
+                        <MenuItem Header="Нет" Command="{Binding AddCase}" CommandParameter="Нет"/>
+                        <MenuItem Header="Не знаю" Command="{Binding AddCase}" CommandParameter="Не знаю"/>
+                        <MenuItem Header="Другой" Command="{Binding AddCase}" CommandParameter="Не указан"/>
+                    </MenuItem>
+                    
+                    <MenuItem Header="Удалить ответ" 
+                              Command="{Binding RemoveCase}"
+                              Visibility="{Binding SelectedCase, Converter={StaticResource nullToVisibilityConverter}}"/>
+
+                </ContextMenu>
+            </TreeView.ContextMenu>
+        </TreeView>
+
+        <StackPanel Margin="10" Visibility="{Binding SelectedCase, Mode=OneWay, Converter={StaticResource nullToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}">
+
+            <TextBox h:TitleElement.Title="Вопрос"
+                     Style="{StaticResource TextBoxExtend}"
+                     Text="{Binding SelectedCase.Parent.Text}"/>
+            
+            <TextBox h:TitleElement.Title="Ответ"
+                     Style="{StaticResource TextBoxExtend}"
+                     Text="{Binding SelectedCase.TextVariant}"/>
+            
+            <CheckBox Content="Продолжаем опрос" IsChecked="{Binding SelectedCase.ContinueAsk, Converter={StaticResource booleanToVisibilityConverter}}">
+                <CheckBox.ToolTip>
+                    <ToolTip>
+                        <TextBlock Text="В случае если флаг не взведен, прекращаем опрос, иначе спрашиваем следующий вопрос из текущей иерархии"></TextBlock>
+                    </ToolTip>
+                </CheckBox.ToolTip>
+            </CheckBox>
+            
+            <Expander Header="Блок известных фактов">
+                <local:DataGridFacts DataContext="{Binding SelectedCase.FactsViewModel}"/>
+            </Expander>
+
+            <Expander Header="Блок подвопросов">
+                <DataGrid ItemsSource="{Binding SelectedCase.SubQuestions}"
+                          SelectionUnit="FullRow"
+                          AutoGenerateColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Вопросы" Binding="{Binding Text}"/>
+                    </DataGrid.Columns>
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Добавить" Command="{Binding AddQuestion}"/>
+                            <MenuItem Header="Удалить" Command="{Binding RemoveQuestion}"/>
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+                </DataGrid>
+            </Expander>
+
+        </StackPanel>
+
+        <StackPanel 
+            Margin="10"
+            Visibility="{Binding SelectedQuestion, Mode=OneWay, Converter={StaticResource nullToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}">
+
+            <TextBox h:TitleElement.Title="Вопрос"
+                     Style="{StaticResource TextBoxExtend}"
+                     Text="{Binding SelectedQuestion.Text}"/>
+
+            <Expander Header="Блок ответов">
+                <DataGrid x:Name="dg2"
+                          ItemsSource="{Binding SelectedQuestion.Cases}"
+                          SelectionUnit="FullRow"
+                          AutoGenerateColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Ответы" Binding="{Binding TextVariant}"/>
+                    </DataGrid.Columns>
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Добавить" Command="{Binding AddCase}"/>
+                            <MenuItem Header="Удалить" Command="{Binding RemoveCase}"/>
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+                </DataGrid>
+            </Expander>
+
+        </StackPanel>
+    </StackPanel>
+</UserControl>

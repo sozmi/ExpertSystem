@@ -4,9 +4,9 @@ using WpfAppES.ViewModel.BaseObjects;
 
 namespace WpfAppES.ViewModel.Semantic.Entities.Item;
 
-public class DataGridLinksViewModel : BaseViewModel
+public class RowLinkViewModel : BaseViewModel
 {
-    public DataGridLinksViewModel(Link link)
+    public RowLinkViewModel(Link link)
     {
         relation = link.Relation;
         entity = link.Entity;

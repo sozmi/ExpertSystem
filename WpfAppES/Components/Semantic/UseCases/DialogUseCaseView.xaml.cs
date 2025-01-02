@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WpfAppES.ViewModel.Semantic.Entities.Item;
+using WpfAppES.ViewModel.Semantic.UseCases;
 
 namespace WpfAppES.Components.Semantic.UseCases;
 
@@ -19,8 +21,20 @@ namespace WpfAppES.Components.Semantic.UseCases;
 /// </summary>
 public partial class DialogUseCaseView : Window
 {
-    public DialogUseCaseView()
+    public DialogUseCaseView(Guid id)
     {
         InitializeComponent();
+        DataContext = new UseCaseViewModel(id);
+    }
+
+    private void ButtonSave_Click(object sender, RoutedEventArgs e)
+    {
+        if (((UseCaseViewModel)DataContext).SaveChanges())
+            DialogResult = true;
+    }
+
+    private void ButtonCancel_Click(object sender, RoutedEventArgs e)
+    {
+        Close();
     }
 }

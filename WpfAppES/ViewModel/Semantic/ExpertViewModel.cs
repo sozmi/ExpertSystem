@@ -15,7 +15,7 @@ public interface IModelChanged
 
 class ExpertViewModel : BaseViewModel, IModelChanged
 {
-    public TreeUseCaseViewModel TreeUseCasesViewModel { get; } = new();
+    public DataGridUseCasesViewModel DataGridUseCasesViewModel { get; } = new();
     public TreeEntitiesViewModel TreeEntitiesViewModel { get; } = new();
     public DataGridRelationViewModel DataGridRelationViewModel { get; } = new();
 
