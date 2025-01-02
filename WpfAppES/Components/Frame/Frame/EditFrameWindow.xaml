@@ -1,0 +1,49 @@
+﻿<Window x:Class="WpfAppES.Components.Frame.Frame.EditFrameWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfAppES.Components.Frame.Frame"
+        mc:Ignorable="d"
+        Title="Редактирование фрейма" Height="400" Width="600">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Vertical" Grid.Row="0" Margin="0 0 0 10">
+            <TextBlock Text="ID" FontWeight="Bold"/>
+            <TextBox Text="{Binding Frame.Id}" IsReadOnly="True"/>
+
+            <TextBlock Text="Название" FontWeight="Bold"/>
+            <TextBox Text="{Binding Frame.Name}"/>
+
+            <TextBlock Text="Родитель" FontWeight="Bold"/>
+            <ComboBox ItemsSource="{Binding ParentFrames}" SelectedItem="{Binding Frame.Parent}" DisplayMemberPath="Name"/>
+        </StackPanel>
+
+        <DataGrid ItemsSource="{Binding Frame.Slots}"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  Grid.Row="1">
+            <DataGrid.Columns>
+                <DataGridComboBoxColumn Header="Слот" SelectedItemBinding="{Binding Slot}" ItemsSource="{Binding DataContext.AllSlots, RelativeSource={RelativeSource AncestorType=Window}}" DisplayMemberPath="Name"/>
+                <DataGridComboBoxColumn Header="Значение" SelectedItemBinding="{Binding Value}" ItemsSource="{Binding DataContext.AllValues, RelativeSource={RelativeSource AncestorType=Window}}"/>
+            </DataGrid.Columns>
+
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Добавить" Command="{Binding AddSlotPairCommand}"/>
+                    <MenuItem Header="Удалить" Command="{Binding RemoveSlotPairCommand}"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="2" Margin="0 10 0 0">
+            <Button Content="Сохранить" Command="{Binding SaveCommand}"  Style="{StaticResource ButtonPrimary}" Margin="0 0 10 0" Click="Button_Click"/>
+            <Button Content="Отмена" Command="{Binding CancelCommand}"/>
+        </StackPanel>
+    </Grid>
+</Window>
