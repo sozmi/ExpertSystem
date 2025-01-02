@@ -18,12 +18,19 @@ public class Fact
 }
 public class Case
 {
+    public Case()
+    {
+
+    }
     public Case(string name_)
     {
         Name = name_;
     }
-    public List<Fact>? Facts { get; set; }
-    public List<Question>? SubQuestions { get; set; }
+    public List<Fact> Facts { get; set; } = [];
+    public List<Question> Questions { get; set; } = [];
+    /// <summary>
+    /// Продолжить опрос по текущей иерархии, или вернуться на уровень выше. True - продолжить
+    /// </summary>
     public bool AskContinue { get; set; }
     public string Name {  get; set; }
     public Case(Fact fact_, bool continueAsk_ = true)
@@ -35,7 +42,7 @@ public class Case
 
     public Case(List<Question> list_, bool oneAnswer_ = true)
     {
-        SubQuestions = list_;
+        Questions = list_;
         AskContinue = oneAnswer_;
     }
 }
@@ -52,7 +59,6 @@ public class Question
        Text = text;
     }
 
-    public Guid Id { get; set; }
     public string Text { get; set; }
 
     public List<Case> Cases { get; set; } = [];

@@ -8,42 +8,30 @@ namespace WpfAppES.ViewModel.Semantic.UseCases
     {
         public CaseViewModel(Case case_, NodeQuestionViewModel parent)
         {
-            TextVariant = case_.Name;
+            _text = case_.Name;
             Parent = parent;
-            if (case_.Facts != null)
-                FactsViewModel = new(case_.Facts);
-
-            if (case_.SubQuestions != null)
-                foreach (var f in case_.SubQuestions)
-                    SubQuestions.Add(new(f));
-            AddCommand = new(PerformAdd);
-            RemoveCommand = new(PerformRemove);
+            FactsViewModel = new(case_.Facts);
+            
+            foreach (var f in case_.Questions)
+                SubQuestions.Add(new(f));
         }
         public NodeQuestionViewModel Parent { get; set; }
-        public string TextVariant { get; set; }
+        public string TextVariant { get => _text; set => SetProperty(ref _text, value); }
+        private string _text;
         public bool ContinueAsk { get; set; } = false;
         public DataGridFactsViewModel FactsViewModel { get; }
         public ObservableCollection<NodeQuestionViewModel> SubQuestions { get; } = [];
 
-        public RelayAction AddCommand { get; private set; }
-
-        private void PerformAdd()
+        public static implicit operator Case(CaseViewModel v)
         {
-            SubQuestions.Add(new(new("Не указан")));
-        }
-
-        public NodeQuestionViewModel? SelectedQuestion { get => selectedQuestion; set => SetProperty(ref selectedQuestion, value); }
-        private NodeQuestionViewModel? selectedQuestion;
-
-        public RelayAction RemoveCommand { get; private set; }
-
-        private void PerformRemove()
-        {
-            if (SelectedQuestion == null)
-                return;
-            int index = SubQuestions.IndexOf(SelectedQuestion);
-            SelectedQuestion = null;
-            SubQuestions.RemoveAt(index);
+            Case c = new()
+            {
+                Facts = v.FactsViewModel,
+                Questions = [.. v.SubQuestions],
+                AskContinue = v.ContinueAsk,
+                Name = v.TextVariant
+            };
+            return c;
         }
     }
 }

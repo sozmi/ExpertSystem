@@ -42,5 +42,11 @@ namespace WpfAppES.ViewModel.Semantic.UseCases
             SelectedFact = null;
             Facts.RemoveAt(index);
         }
+
+        public static implicit operator List<Fact>(DataGridFactsViewModel v)
+        {
+            List<Fact> list = [.. v.Facts];
+            return list;
+        }
     }
 }

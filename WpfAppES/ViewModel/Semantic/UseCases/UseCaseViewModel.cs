@@ -37,6 +37,20 @@ public class UseCaseViewModel : BaseViewModel
 
     public bool SaveChanges()
     {
-        return false;
+        UseCase n = new()
+        {
+            Id = Id,
+            Name = Name,
+            Description = Description,
+            Facts = FactsViewModel,
+            Questions = QuestionsViewModel
+        };
+
+        var db = KnowledgeBaseManager.GetBase<SemanticDB>();
+        if (db == null)
+            return false;
+
+        db.Edit(n);
+        return true;
     }
 }

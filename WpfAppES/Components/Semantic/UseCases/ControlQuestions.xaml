@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:WpfAppES.Components.Semantic.UseCases" 
              xmlns:usecases="clr-namespace:WpfAppES.ViewModel.Semantic.UseCases"
              xmlns:baseobjects="clr-namespace:WpfAppES.ViewModel.BaseObjects"
-             xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:h="https://handyorg.github.io/handycontrol"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=usecases:ControlQuestionsViewModel}"
              d:DesignHeight="450" 
@@ -42,7 +43,7 @@
             <TreeView.ContextMenu>
                 <ContextMenu>
 
-                    <MenuItem Header="Добавить корневой вопрос" Command="{Binding AddQuestion}"/>
+                    <MenuItem Header="Добавить корневой вопрос" Command="{Binding AddRootQuestion}"/>
                     <MenuItem Header="Добавить вопрос" Command="{Binding AddQuestion}" 
                               Visibility="{Binding SelectedCase, Converter={StaticResource nullToVisibilityConverter}}"/>
                     <MenuItem Header="Удалить вопрос" Command="{Binding RemoveQuestion}"
@@ -64,13 +65,16 @@
             </TreeView.ContextMenu>
         </TreeView>
 
-        <StackPanel x:Name="st"
-                    Visibility="{Binding SelectedCase, Converter={StaticResource nullToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}">
+        <StackPanel Margin="10" Visibility="{Binding SelectedCase, Mode=OneWay, Converter={StaticResource nullToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}">
 
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Ответ на вопрос: "/>
-                <TextBox Title Text="{Binding SelectedCase.TextVariant}"/>
-            </StackPanel>
+            <TextBox h:TitleElement.Title="Вопрос"
+                     Style="{StaticResource TextBoxExtend}"
+                     Text="{Binding SelectedCase.Parent.Text}"/>
+            
+            <TextBox h:TitleElement.Title="Ответ"
+                     Style="{StaticResource TextBoxExtend}"
+                     Text="{Binding SelectedCase.TextVariant}"/>
+            
             <CheckBox Content="Продолжаем опрос" IsChecked="{Binding SelectedCase.ContinueAsk, Converter={StaticResource booleanToVisibilityConverter}}">
                 <CheckBox.ToolTip>
                     <ToolTip>
@@ -84,9 +88,7 @@
             </Expander>
 
             <Expander Header="Блок подвопросов">
-                <DataGrid x:Name="dg"
-                          ItemsSource="{Binding SelectedCase.SubQuestions}"
-                          SelectedItem="{Binding SelectedQuestion}"
+                <DataGrid ItemsSource="{Binding SelectedCase.SubQuestions}"
                           SelectionUnit="FullRow"
                           AutoGenerateColumns="False">
                     <DataGrid.Columns>
@@ -94,9 +96,35 @@
                     </DataGrid.Columns>
                     <DataGrid.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Header="Добавить" Command="{Binding AddCommand}"/>
-                            <MenuItem Header="Удалить" Command="{Binding RemoveCommand}" 
-                                      CommandParameter="{Binding SelectedQuestion}"/>
+                            <MenuItem Header="Добавить" Command="{Binding AddQuestion}"/>
+                            <MenuItem Header="Удалить" Command="{Binding RemoveQuestion}"/>
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+                </DataGrid>
+            </Expander>
+
+        </StackPanel>
+
+        <StackPanel 
+            Margin="10"
+            Visibility="{Binding SelectedQuestion, Mode=OneWay, Converter={StaticResource nullToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}">
+
+            <TextBox h:TitleElement.Title="Вопрос"
+                     Style="{StaticResource TextBoxExtend}"
+                     Text="{Binding SelectedQuestion.Text}"/>
+
+            <Expander Header="Блок ответов">
+                <DataGrid x:Name="dg2"
+                          ItemsSource="{Binding SelectedQuestion.Cases}"
+                          SelectionUnit="FullRow"
+                          AutoGenerateColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Ответы" Binding="{Binding TextVariant}"/>
+                    </DataGrid.Columns>
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Добавить" Command="{Binding AddCase}"/>
+                            <MenuItem Header="Удалить" Command="{Binding RemoveCase}"/>
                         </ContextMenu>
                     </DataGrid.ContextMenu>
                 </DataGrid>

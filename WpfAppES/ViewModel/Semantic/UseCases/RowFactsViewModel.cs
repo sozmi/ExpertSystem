@@ -34,5 +34,16 @@ namespace WpfAppES.ViewModel.Semantic.UseCases
 
         public Entity To { get => to; set => SetProperty(ref to, value); }
         private Entity to;
+
+        public static implicit operator Fact(RowFactsViewModel v)
+        {
+            Fact f = new()
+            {
+                From = v.From,
+                Relation = v.Relation,
+                To = v.To
+            };
+            return f;
+        }
     }
 }

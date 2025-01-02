@@ -25,6 +25,7 @@ namespace WpfAppES.ViewModel.Semantic.UseCases
             RemoveQuestion = new(PerformRemoveQuestion);
             AddCase = new(PerformAddCase);
             RemoveCase = new(PerformRemoveCase);
+            AddRootQuestion = new(PerformAddRootQuestion);
         }
 
         public ObservableCollection<NodeQuestionViewModel> Questions { get => _questions; set => SetProperty(ref _questions, value); }
@@ -38,8 +39,8 @@ namespace WpfAppES.ViewModel.Semantic.UseCases
 
             if (commandParameter is CaseViewModel c)
             {
-                SelectedCase = c;
                 SelectedQuestion = null;
+                SelectedCase = c;
             }
             else if (commandParameter is NodeQuestionViewModel q)
             {
@@ -63,12 +64,13 @@ namespace WpfAppES.ViewModel.Semantic.UseCases
 
         private void PerformAddQuestion()
         {
-            if (SelectedQuestion == null)
-                Questions.Add(new(new("Не указан")));
             if (SelectedCase != null)
                 SelectedCase.SubQuestions.Add(new(new("Не указан")));
-
-
+        }
+        public RelayAction AddRootQuestion { get; private set; }
+        private void PerformAddRootQuestion()
+        {
+            Questions.Add(new(new("Не указан")));
         }
 
         public RelayCommand AddCase { get; private set; }
@@ -116,6 +118,12 @@ namespace WpfAppES.ViewModel.Semantic.UseCases
             SelectedCase = null;
             Questions[indexQ].Cases.RemoveAt(indexC);
            
+        }
+
+        public static implicit operator List<Question>(ControlQuestionsViewModel v)
+        {
+            List<Question> list = [.. v.Questions];
+            return list;
         }
     }
 }

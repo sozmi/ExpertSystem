@@ -9,6 +9,9 @@ public class SemanticDB : IKnowledgeBase
 {
     public SemanticDB(bool isTest = false) : base()
     {
+        Entity find = new(Guid.Empty, "Искомый объект");
+        Create(find);
+
         if (isTest)
         {
             
@@ -55,9 +58,6 @@ public class SemanticDB : IKnowledgeBase
             AddLink(new(straus.Id, bird.Id, it.Id));
             AddLink(new(bird.Id, wings.Id, has.Id));
             AddLink(new(bird.Id, paws.Id, has.Id));
-
-            Entity find = new(Guid.Empty, "Искомый объект");
-            Create(find);
 
             UseCase useCase = new("Поиск птицы")
             {
@@ -159,7 +159,7 @@ public class SemanticDB : IKnowledgeBase
     /// Получение списка сущностей
     /// </summary>
     /// <returns>Список сущностей</returns>
-    public List<Entity> GetEntities(bool isFilter = false)
+    public List<Entity> GetEntities(bool isFilter = true)
     {
         List<Entity> entities = [.. Entities.Values];
         if (isFilter)
@@ -180,6 +180,15 @@ public class SemanticDB : IKnowledgeBase
         UseCases.Remove(id);
     }
     public UseCase GetUseCase(Guid id) => UseCases[id];
+
+    /// <summary>
+    /// Редактирование существующего варианта использования
+    /// </summary>
+    /// <param name="newObj_">Новый вариант использования</param>
+    public void Edit(UseCase newObj_)
+    {
+        UseCases[newObj_.Id] = newObj_;
+    }
     #endregion
 
     #region Edit Entity

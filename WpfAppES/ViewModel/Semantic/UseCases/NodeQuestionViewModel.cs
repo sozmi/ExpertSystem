@@ -17,9 +17,17 @@ namespace WpfAppES.ViewModel.Semantic.UseCases
             foreach (var c in question.Cases)
                 if(c != null)
                     Cases.Add(new(c, this));
-            Text = question.Text;
+            _text = question.Text;
         }
-        public string Text { get; set; }
+        public string Text { get => _text; set => SetProperty(ref _text, value); }
+        private string _text;
         public ObservableCollection<CaseViewModel> Cases { get; set; } = [];
+        public static implicit operator Question(NodeQuestionViewModel v)
+        {
+            Question q = new();
+            q.Text = v.Text;
+            q.Cases =[.. v.Cases];
+            return q;
+        }
     }
 }
