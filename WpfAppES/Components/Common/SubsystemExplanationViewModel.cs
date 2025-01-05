@@ -1,15 +1,14 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows.Input;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace WpfAppES.Components.Common
 {
-    public class SubsystemExplanationViewModel : BaseViewModel
+    public class SubsystemExplanationViewModel : INotifyPropertyChanged
     {
-        private ObservableCollection<string> _questionsAndAnswers = new ObservableCollection<string>();
+        private List<string> _questionsAndAnswers = new List<string>();
 
-        public ICommand AddQuestionAnswerCommand { get; set; }
-
-        public ObservableCollection<string> QuestionsAndAnswers
+        public List<string> QuestionsAndAnswers
         {
             get => _questionsAndAnswers;
             set
@@ -24,22 +23,33 @@ namespace WpfAppES.Components.Common
 
         public SubsystemExplanationViewModel()
         {
-            AddQuestionAnswerCommand = new RelayCommand(AddQuestionAnswer);
+            // Инициализация списка QuestionsAndAnswers тестовыми данными
+            QuestionsAndAnswers = new List<string>
+            {
+                "Это",
+                "Тестовые",
+                "Данные",
+                "Для",
+                "Списка"
+            };
+
+            // Инициализация события PropertyChanged
+            PropertyChanged += delegate { };
         }
 
-        private void AddQuestionAnswer(object? parameters)
-        {
-            var args = parameters as string[];
-            if (args is not null && args.Length == 3)
-            {
-                var systemMessage = args[0];
-                var userAction = args[1];
-                var explanation = args[2];
+        public event PropertyChangedEventHandler? PropertyChanged;
 
-                QuestionsAndAnswers.Add(systemMessage);
-                QuestionsAndAnswers.Add(userAction);
-                QuestionsAndAnswers.Add(explanation);
-            }
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void AddQuestionAnswer(string systemMessage, string userAction, string explanation)
+        {
+            QuestionsAndAnswers.Add(systemMessage);
+            QuestionsAndAnswers.Add(userAction);
+            QuestionsAndAnswers.Add(explanation);
+            OnPropertyChanged(nameof(QuestionsAndAnswers));
         }
     }
 }
