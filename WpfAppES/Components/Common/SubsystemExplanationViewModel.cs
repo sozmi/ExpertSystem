@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -6,9 +6,9 @@ namespace WpfAppES.Components.Common
 {
     public class SubsystemExplanationViewModel : INotifyPropertyChanged
     {
-        private List<string> _questionsAndAnswers = new List<string>();
+        private ObservableCollection<string> _questionsAndAnswers = new ObservableCollection<string>();
 
-        public List<string> QuestionsAndAnswers
+        public ObservableCollection<string> QuestionsAndAnswers
         {
             get => _questionsAndAnswers;
             set
@@ -17,6 +17,8 @@ namespace WpfAppES.Components.Common
                 {
                     _questionsAndAnswers = value;
                     OnPropertyChanged(nameof(QuestionsAndAnswers));
+                    // OnPropertyChanged теперь нужен только при замене всего списка целиком,
+                    // а не при добавлении/удалении отдельных элементов.
                 }
             }
         }
@@ -24,7 +26,7 @@ namespace WpfAppES.Components.Common
         public SubsystemExplanationViewModel()
         {
             // Инициализация списка QuestionsAndAnswers тестовыми данными
-            QuestionsAndAnswers = new List<string>
+            QuestionsAndAnswers = new ObservableCollection<string>
             {
                 "Это",
                 "Тестовые",
@@ -46,10 +48,9 @@ namespace WpfAppES.Components.Common
 
         private void AddQuestionAnswer(string systemMessage, string userAction, string explanation)
         {
-            QuestionsAndAnswers.Add(systemMessage);
-            QuestionsAndAnswers.Add(userAction);
-            QuestionsAndAnswers.Add(explanation);
-            OnPropertyChanged(nameof(QuestionsAndAnswers));
+            QuestionsAndAnswers.Add(systemMessage);   // Добавляем элемент без вызова OnPropertyChanged
+            QuestionsAndAnswers.Add(userAction);      // Добавляем элемент без вызова OnPropertyChanged
+            QuestionsAndAnswers.Add(explanation);     // Добавляем элемент без вызова OnPropertyChanged
         }
     }
 }
