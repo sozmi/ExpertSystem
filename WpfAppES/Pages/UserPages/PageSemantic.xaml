@@ -25,7 +25,7 @@
               Margin="5,0"
               IsChecked="True"/>
         </ToolBar>
-        <common:SubsystemExplanation/>
+        <common:SubsystemExplanationControl/>
         <StackPanel>
             <TextBlock Text="{Binding Question}"/>
             <ComboBox ItemsSource="{Binding Answers}">

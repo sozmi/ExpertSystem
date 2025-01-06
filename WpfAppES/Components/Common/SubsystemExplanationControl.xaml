@@ -8,6 +8,16 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
+    <UserControl.Resources>
+        <!-- Определение шаблона для каждого Expandera -->
+        <DataTemplate x:Key="QAItemTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Question}" FontWeight="Bold" Margin="0,0,10,0"/>
+                <TextBlock Text="{Binding Answer}"/>
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+
     <UserControl.DataContext>
         <viewmodel:SubsystemExplanationViewModel />
     </UserControl.DataContext>
@@ -21,9 +31,17 @@
             <ColumnDefinition Width="Auto" MinWidth="400" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+
         <TextBlock Grid.Row="0" TextWrapping="WrapWithOverflow" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="16" FontWeight="Bold">Вопросы и ответы</TextBlock>
-        <ScrollViewer Grid.Row="1" Grid.ColumnSpan="2">
-            <ListBox ItemsSource="{Binding QuestionsAndAnswers}" Margin="10"/>
+
+        <ScrollViewer Grid.ColumnSpan="2" Margin="0,265,0,0" Grid.RowSpan="2">
+            <ItemsControl ItemsSource="{Binding QuestionsAndAnswers}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Expander Header="{Binding Question}" Content="{Binding}" ContentTemplate="{StaticResource QAItemTemplate}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </ScrollViewer>
     </Grid>
 </UserControl>
