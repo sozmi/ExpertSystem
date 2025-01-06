@@ -1,26 +1,18 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using WpfAppES.ViewModel.BaseObjects;
 
 namespace WpfAppES.Components.Common
 {
-    public class SubsystemExplanationViewModel : INotifyPropertyChanged
+    public class SubsystemExplanationViewModel : BaseViewModel
     {
         private ObservableCollection<string> _questionsAndAnswers = new ObservableCollection<string>();
 
         public ObservableCollection<string> QuestionsAndAnswers
         {
             get => _questionsAndAnswers;
-            set
-            {
-                if (_questionsAndAnswers != value)
-                {
-                    _questionsAndAnswers = value;
-                    OnPropertyChanged(nameof(QuestionsAndAnswers));
-                    // OnPropertyChanged теперь нужен только при замене всего списка целиком,
-                    // а не при добавлении/удалении отдельных элементов.
-                }
-            }
+            set => SetProperty(ref _questionsAndAnswers, value);
         }
 
         public SubsystemExplanationViewModel()
@@ -34,16 +26,6 @@ namespace WpfAppES.Components.Common
                 "Для",
                 "Списка"
             };
-
-            // Инициализация события PropertyChanged
-            PropertyChanged += delegate { };
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private void AddQuestionAnswer(string systemMessage, string userAction, string explanation)
