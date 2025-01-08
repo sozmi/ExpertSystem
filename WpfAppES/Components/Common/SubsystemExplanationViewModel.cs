@@ -27,9 +27,9 @@ namespace WpfAppES.Components.Common
             };
         }
 
-        private void AddQuestionAnswer(string question, string answer)
+        private void AddQuestionAnswer(string question, string answer, string explanation)
         {
-            QuestionsAndAnswers.Add(new QuestionAnswerPair { Question = question, Answer = answer });
+            QuestionsAndAnswers.Add(new QuestionAnswerPair { Question = question, Answer = answer, Explanation = explanation });
         }
     }
 
@@ -37,5 +37,6 @@ namespace WpfAppES.Components.Common
     {
         public string? Question { get; set; }
         public string? Answer { get; set; }
+        public string? Explanation { get; set; }
     }
 }

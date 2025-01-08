@@ -11,9 +11,10 @@
     <UserControl.Resources>
         <!-- Определение шаблона для каждого Expandera -->
         <DataTemplate x:Key="QAItemTemplate">
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Vertical">
                 <TextBlock Text="{Binding Question}" FontWeight="Bold" Margin="0,0,10,0"/>
                 <TextBlock Text="{Binding Answer}"/>
+                <TextBlock Text="{Binding Explanation}"/>
             </StackPanel>
         </DataTemplate>
     </UserControl.Resources>
