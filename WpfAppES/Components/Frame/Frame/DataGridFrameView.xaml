@@ -6,14 +6,31 @@
              xmlns:local="clr-namespace:WpfAppES.Components.Frame.Frame"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="400">
+    
+    <UserControl.Resources>
+        <Style TargetType="GroupBox">
+            <Setter Property="HeaderTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <Border Background="White" Padding="3">
+                            <TextBlock Text="{Binding}" Foreground="Black"/>
+                        </Border>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    
     <Grid>
-        <DataGrid ItemsSource="{Binding Frames}"
+        <GroupBox Header="Фреймы" >
+            <DataGrid ItemsSource="{Binding Frames}"
                   AutoGenerateColumns="False"
-                  CanUserAddRows="False">
+                  CanUserAddRows="False"
+                  ColumnWidth="200">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding Id}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="ID" Binding="{Binding Id}" IsReadOnly="True" Visibility="Hidden"/>
                 <DataGridTextColumn Header="Название" Binding="{Binding Name}"/>
-                <DataGridTextColumn Header="Родитель" Binding="{Binding Parent.Name}"/>
+                    <DataGridTextColumn Header="Родитель" Binding="{Binding Parent.Name}" Visibility="Hidden"/>
             </DataGrid.Columns>
 
             <DataGrid.ContextMenu>
@@ -24,5 +41,6 @@
                 </ContextMenu>
             </DataGrid.ContextMenu>
         </DataGrid>
+        </GroupBox>
     </Grid>
 </UserControl>
