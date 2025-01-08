@@ -12,7 +12,6 @@ namespace ClassLibraryES.semantic_es;
 public class SemanticES
 {
     static Case target;
-    int idxQuestion = 0;
     public static List<UseCase> GetTargetConsult()
     {
         var db = KnowledgeBaseManager.GetBase<SemanticDB>();

@@ -63,21 +63,27 @@ public class SemanticDB : IKnowledgeBase
             {
                 Description = "Поможет найти нужную птицу"
             };
-
             useCase.Facts.Add(new Fact(GetEntity(find.Id), Get(it.Id), GetEntity(bird.Id)));
-            Case canFly = new(new Fact(GetEntity(find.Id), Get(can.Id), GetEntity(fly.Id)));
-            Case cannotFly = new(new Fact(GetEntity(find.Id), Get(cannot.Id), GetEntity(fly.Id)));
+            
+            
             Question qfly = new("Птица умеет летать");
-            qfly.AddCase("Да", canFly);
-            qfly.AddCase("Нет", cannotFly);
+            Case canFly = new("Да", new Fact(GetEntity(find.Id), Get(can.Id), GetEntity(fly.Id)));
+            qfly.AddCase(canFly);
 
-            Question qcann = new("Вы знаете что умеет/не умеет делать птица?");
-            qcann.AddCase("Да", new Case([qfly]));
-            useCase.Questions.Add(qcann);
+            Case cannotFly = new("Нет", new Fact(GetEntity(find.Id), Get(cannot.Id), GetEntity(fly.Id)));
+            qfly.AddCase(cannotFly);
+            useCase.Questions.Add(qfly);
 
-            Question qcan = new("Вы знаете какие  части тела есть у птицы?");
-            qcan.AddCase("Да", new Case([qfly]));
-            useCase.Questions.Add(qcan);
+            Question qdo = new("Вы знаете что умеет/не умеет делать птица?");
+            qdo.AddCase(new("Да", qfly));
+            useCase.Questions.Add(qdo);
+
+            Question qhas = new("Вы знаете какие  части тела есть у птицы?");
+            Question qlap = new Question("У птицы есть лапы?");
+            qlap.AddCase(new("Да", new Fact(GetEntity(bird.Id), Get(has.Id), GetEntity(paws.Id))));
+            qhas.AddCase(new("Да", qlap));
+            useCase.Questions.Add(qhas);
+
             UseCases.Add(useCase.Id, useCase);
         }
     }

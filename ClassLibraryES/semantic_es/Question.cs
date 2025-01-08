@@ -20,11 +20,12 @@ public class Case
 {
     public Case()
     {
-
+        Name = string.Empty;
     }
-    public Case(string name_)
+    public Case(string name_, bool continueAsk_ = true)
     {
         Name = name_;
+        AskContinue = continueAsk_;
     }
     public List<Fact> Facts { get; set; } = [];
     public List<Question> Questions { get; set; } = [];
@@ -33,17 +34,14 @@ public class Case
     /// </summary>
     public bool AskContinue { get; set; }
     public string Name {  get; set; }
-    public Case(Fact fact_, bool continueAsk_ = true)
+    public Case(string name_, Fact fact_, bool continueAsk_ = true) : this(name_, continueAsk_)
     {
-        Facts = [];
         Facts.Add(fact_);
-        AskContinue = continueAsk_;
     }
 
-    public Case(List<Question> list_, bool oneAnswer_ = true)
+    public Case(string name_, Question question_, bool continueAsk_ = true) : this(name_, continueAsk_)
     {
-        Questions = list_;
-        AskContinue = oneAnswer_;
+        Questions.Add(question_);
     }
 }
 
@@ -63,9 +61,8 @@ public class Question
 
     public List<Case> Cases { get; set; } = [];
 
-    public void AddCase(string name, Case case_)
+    public void AddCase(Case case_)
     {
-        case_.Name = name;
         Cases.Add(case_);
     }
 }
