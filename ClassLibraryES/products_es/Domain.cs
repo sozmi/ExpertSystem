@@ -23,27 +23,26 @@ public class Domain
     /// </summary>
     public List<string> Values { get; private set; }
 
-        /// <summary>
-        /// Создает новый экземпляр домена с указанным именем
-        /// </summary>
-        /// <param name="name">Имя домена</param>
-        /// <exception cref="ArgumentException">Выбрасывается, если имя пустое или null</exception>
-        public Domain(string name)
-        {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("Название домена не может быть пустым", nameof(name));
-            Id = Guid.NewGuid();
-            Name = name;
-            Values = new();
-        }
+    /// <summary>
+    /// Создает новый экземпляр домена с указанным именем
+    /// </summary>
+    /// <param name="name">Имя домена</param>
+    /// <exception cref="ArgumentException">Выбрасывается, если имя пустое или null</exception>
+    public Domain(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException("Название домена не может быть пустым", nameof(name));
+        Id = Guid.NewGuid();
+        Name = name;
+        Values = new();
+    }
 
-        /// <summary>
-        /// Добавляет набор значений в домен
-        /// </summary>
-        /// <param name="values">Коллекция значений для добавления</param>
-        public void AddRange(IEnumerable<string> values)
-        {
-            Values.AddRange(values);
-        }
+    /// <summary>
+    /// Добавляет набор значений в домен
+    /// </summary>
+    /// <param name="values">Коллекция значений для добавления</param>
+    public void AddRange(IEnumerable<string> values)
+    {
+        Values.AddRange(values);
     }
 }
