@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-
 namespace ClassLibraryES.Products
 {
     /// <summary>
@@ -12,17 +11,14 @@ namespace ClassLibraryES.Products
         /// Уникальный идентификатор домена
         /// </summary>
         public Guid Id { get; private set; }
-
         /// <summary>
         /// Наименование домена
         /// </summary>
         public string Name { get; set; }
-
         /// <summary>
         /// Список допустимых значений домена
         /// </summary>
         public List<string> Values { get; private set; }
-
         /// <summary>
         /// Создает новый экземпляр домена с указанным именем
         /// </summary>
@@ -31,8 +27,7 @@ namespace ClassLibraryES.Products
         public Domain(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("Name cannot be null or empty", nameof(name));
-
+                throw new ArgumentException("Название домена не может быть пустым", nameof(name));
             Id = Guid.NewGuid();
             Name = name;
             Values = new();
