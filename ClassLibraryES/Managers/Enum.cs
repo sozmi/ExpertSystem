@@ -1,17 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace ClassLibraryES.Managers;
 
-namespace ClassLibraryES.Managers
+/// <summary>
+/// Перечисление типов баз знаний, используемых в экспертной системе.
+/// </summary>
+public enum ETypeDB
 {
-    enum ETypeDB
-    {
-        eLogical = 0,
-        eProducts = 1,
-        eSemantic = 2,
-        eFrame = 3,
-        eCommonCount = 4
-    }
+    /// <summary>
+    /// Логическая база знаний.
+    /// </summary>
+    eLogical = 0,
+
+    /// <summary>
+    /// Продукционная база знаний.
+    /// </summary>
+    eProducts = 1,
+
+    /// <summary>
+    /// Семантическая база знаний.
+    /// </summary>
+    eSemantic = 2,
+
+    /// <summary>
+    /// Фреймовая база знаний.
+    /// </summary>
+    eFrame = 3,
+
+    /// <summary>
+    /// Общее количество возможных типов баз знаний.
+    /// </summary>
+    eCommonCount = 4
 }

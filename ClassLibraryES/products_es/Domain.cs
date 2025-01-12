@@ -1,26 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-namespace ClassLibraryES.Products
+
+namespace ClassLibraryES.products_es;
+
+/// <summary>
+/// Домен - множество допустимых значений для переменной
+/// </summary>
+public class Domain
 {
     /// <summary>
-    /// Домен - множество допустимых значений для переменной
+    /// Уникальный идентификатор домена
     /// </summary>
-    public class Domain
-    {
-        /// <summary>
-        /// Уникальный идентификатор домена
-        /// </summary>
-        public Guid Id { get; private set; }
+    public Guid Id { get; private set; }
 
-        /// <summary>
-        /// Наименование домена
-        /// </summary>
-        public string Name { get; set; }
+    /// <summary>
+    /// Наименование домена
+    /// </summary>
+    public string Name { get; set; }
 
-        /// <summary>
-        /// Список допустимых значений домена
-        /// </summary>
-        public List<string> Values { get; private set; }
+    /// <summary>
+    /// Список допустимых значений домена
+    /// </summary>
+    public List<string> Values { get; private set; }
 
         /// <summary>
         /// Создает новый экземпляр домена с указанным именем

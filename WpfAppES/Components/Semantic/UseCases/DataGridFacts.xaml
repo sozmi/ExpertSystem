@@ -1,0 +1,73 @@
+﻿<UserControl x:Class="WpfAppES.Components.Semantic.UseCases.DataGridFacts"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WpfAppES.Components.Semantic.UseCases" 
+             xmlns:usecases="clr-namespace:WpfAppES.ViewModel.Semantic.UseCases" 
+             d:DataContext="{d:DesignInstance Type=usecases:DataGridFactsViewModel}"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    
+    <DataGrid ItemsSource="{Binding Facts, UpdateSourceTrigger=PropertyChanged}"
+          SelectedItem="{Binding SelectedFact}"
+          DockPanel.Dock="Left"
+          MinHeight="150"
+          SelectionUnit="FullRow"
+          AutoGenerateColumns="False"
+          CanUserDeleteRows="False" 
+          CanUserAddRows="False"
+          CanUserResizeRows="True">
+        <DataGrid.Columns>
+            <DataGridTemplateColumn Header="Откуда" Width="Auto">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <ComboBox ItemsSource="{Binding AllEntities, UpdateSourceTrigger=PropertyChanged}" 
+                              SelectedItem="{Binding From, UpdateSourceTrigger=PropertyChanged}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTemplateColumn Header="Тип связи" Width="Auto">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <ComboBox ItemsSource="{Binding AllRelations, UpdateSourceTrigger=PropertyChanged}" 
+                              SelectedItem="{Binding Relation, UpdateSourceTrigger=PropertyChanged}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTemplateColumn Header="Куда" Width="Auto">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <ComboBox ItemsSource="{Binding AllEntities, UpdateSourceTrigger=PropertyChanged}" 
+                                  SelectedItem="{Binding To, UpdateSourceTrigger=PropertyChanged}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+        </DataGrid.Columns>
+        <DataGrid.ContextMenu>
+            <ContextMenu>
+                <MenuItem Header="Добавить" Command="{Binding AddCommand}"/>
+                <MenuItem Header="Удалить" 
+                      Command="{Binding RemoveCommand}"/>
+            </ContextMenu>
+        </DataGrid.ContextMenu>
+    </DataGrid>
+</UserControl>

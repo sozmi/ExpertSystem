@@ -1,6 +1,5 @@
 ﻿using System;
-namespace ClassLibraryES.Products
-{
+namespace ClassLibraryES.products_es
     /// <summary>
     /// Факт продукционной системы - это пара "переменная-значение",
     /// которая представляет собой утверждение о некотором свойстве объекта

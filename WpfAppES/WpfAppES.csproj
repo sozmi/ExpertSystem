@@ -10,17 +10,30 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Icons\logo.ico" />
+    <None Remove="Icons\ES.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Icons\logo.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutomaticGraphLayout.WpfGraphControl" Version="1.1.12" />
     <PackageReference Include="HandyControl" Version="3.5.1" />
-    <PackageReference Include="System.Drawing.Common" Version="8.0.10" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
+    <PackageReference Include="System.Drawing.Common" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ClassLibraryES\ClassLibraryES.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Icons\ES.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -29,22 +42,18 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Update="UserView\PageFrame.xaml.cs">
+    <Compile Update="Pages\UserPages\PageFrame.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="UserView\PageLogical.xaml.cs">
+    <Compile Update="Pages\UserPages\PageLogical.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="UserView\PageProduct.xaml.cs">
+    <Compile Update="Pages\UserPages\PageProduct.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="UserView\PageSemantic.xaml.cs">
+    <Compile Update="Pages\UserPages\PageSemantic.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ViewModel\User\" />
   </ItemGroup>
 
 </Project>

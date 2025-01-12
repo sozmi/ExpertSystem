@@ -1,5 +1,5 @@
 ﻿using System;
-namespace ClassLibraryES.Products
+namespace ClassLibraryES.products_es
 {
     public class Variable
     {

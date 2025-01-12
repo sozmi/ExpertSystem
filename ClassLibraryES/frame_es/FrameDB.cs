@@ -5,18 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClassLibraryES.frame_es
-{
-    public class FrameDB : IKnowledgeBase
-    {
-        public void Close()
-        {
-            throw new NotImplementedException();
-        }
+namespace ClassLibraryES.frame_es;
 
-        public bool Open()
-        {
-            throw new NotImplementedException();
-        }
+public class FrameDB : IKnowledgeBase
+{
+    public void Close()
+    {
+        return;
+    }
+
+    public bool Open()
+    {
+        return false;
     }
 }

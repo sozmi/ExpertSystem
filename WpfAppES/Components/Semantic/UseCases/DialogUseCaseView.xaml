@@ -1,0 +1,59 @@
+﻿<Window x:Class="WpfAppES.Components.Semantic.UseCases.DialogUseCaseView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfAppES.Components.Semantic.UseCases" 
+        xmlns:usecases="clr-namespace:WpfAppES.ViewModel.Semantic.UseCases"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
+        xmlns:baseobjects="clr-namespace:WpfAppES.ViewModel.BaseObjects"
+        xmlns:h="https://handyorg.github.io/handycontrol"
+        d:DataContext="{d:DesignInstance Type=usecases:UseCaseViewModel}"
+        mc:Ignorable="d"
+        Title="DialogUseCaseView" SizeToContent="WidthAndHeight">
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top" >
+            <GroupBox Header="Описание варианта использования"
+                      Width="300"
+                      Margin="5">
+                <StackPanel>
+
+                    <TextBox h:TitleElement.Title="Идентификатор" 
+                             Style="{StaticResource TextBoxExtend}"
+                             Text="{Binding Id, Mode=OneTime}"
+                             IsEnabled="False"
+                             IsReadOnly="True"/>
+
+                    <TextBox h:TitleElement.Title="Наименование"
+                             Style="{StaticResource TextBoxExtend}"
+                             Text="{Binding Name}"/>
+
+                    <TextBox h:TitleElement.Title="Описание"
+                             Style="{StaticResource TextBoxExtend}"
+                             Text="{Binding Description}" 
+                             TextWrapping="Wrap"/>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="Блок известных фактов" Margin="5">
+                <local:DataGridFacts DataContext="{Binding FactsViewModel}"/>
+            </GroupBox>
+        </DockPanel>
+
+        <StackPanel HorizontalAlignment="Right" 
+                Margin="0,0,10,0"
+                DockPanel.Dock="Bottom"
+                Orientation="Horizontal">
+            <Button Margin="5,0,10,0"
+                Content="Сохранить" 
+                Style="{StaticResource ButtonPrimary}"
+                Click="ButtonSave_Click"/>
+            <Button Content="Отмена"
+                Click="ButtonCancel_Click"/>
+        </StackPanel>
+
+        <GroupBox Header="Блок вопросов">
+            <local:ControlQuestions DataContext="{Binding QuestionsViewModel}"/>
+        </GroupBox>
+    </DockPanel>
+</Window>

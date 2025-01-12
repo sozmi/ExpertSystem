@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-namespace ClassLibraryES.Products
+namespace ClassLibraryES.products_es
 {
     public class Rule
     {
@@ -9,11 +9,11 @@ namespace ClassLibraryES.Products
         public List<Fact> Premises { get; private set; }
         public Fact? Result { get; set; }
 
-        public Rule()
-        {
-            Id = Guid.NewGuid();
-            Premises = new();
-        }
+    public Rule()
+    {
+        Id = Guid.NewGuid();
+        Premises = new();
+    }
 
         public void AddPremise(Fact premise)
         {
