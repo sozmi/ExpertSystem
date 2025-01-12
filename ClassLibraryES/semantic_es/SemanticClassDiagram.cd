@@ -1,18 +1,52 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="ClassLibraryES.Semantic.Relation">
-    <Position X="2" Y="1.75" Width="1.5" />
+  <Class Name="ClassLibraryES.semantic_es.Entity">
+    <Position X="3.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAGAACAAAAAAAAAAAAAAAQAAAAAAgAACAAABAAAAAA=</HashCode>
+      <FileName>semantic_es\Entity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClassLibraryES.semantic_es.SemanticDB">
+    <Position X="0.75" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAIQBAAAAFAAAQAAgAAEACiAEAAACAAAA=</HashCode>
+      <FileName>semantic_es\SemanticDB.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Entities" />
+      <Property Name="Relations" />
+      <Property Name="Links" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClassLibraryES.semantic_es.Link">
+    <Position X="5.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAAQAAAgAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>semantic_es\Link.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClassLibraryES.semantic_es.RelationType">
+    <Position X="5.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Semantic\Relation.cs</FileName>
+      <FileName>semantic_es\RelationType.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ClassLibraryES.Entity">
-    <Position X="4" Y="1.75" Width="1.5" />
+  <Struct Name="ClassLibraryES.semantic_es.KeyRelative">
+    <Position X="8" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AACCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Entity.cs</FileName>
+      <HashCode>EAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>semantic_es\Keys.cs</FileName>
     </TypeIdentifier>
-  </Class>
+  </Struct>
+  <Struct Name="ClassLibraryES.semantic_es.KeyLink">
+    <Position X="8" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAgCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>semantic_es\Keys.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

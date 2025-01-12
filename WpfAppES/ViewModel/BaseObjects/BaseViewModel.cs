@@ -1,13 +1,33 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using ClassLibraryES.Semantic;
 
-namespace WpfAppES.ViewModel.Expert.Semantic
+namespace WpfAppES.ViewModel.BaseObjects
 {
-    class MainViewModel
+    public class Property<T> :BaseViewModel<T>
     {
-        #region Property
+        public Property(PropertyChangedEventHandler propertyChanged, T val_) {
+            PropertyChanged += propertyChanged;
+            this.val = val_;
+        }
+        T val;
+        public T Value { get => val; set => SetProperty(ref val, value); }
+    }
+
+    public class BaseViewModel<TModel> : INotifyPropertyChanged
+    {
+        /// <summary>
+        /// Оригинальная модель
+        /// </summary>
+        protected TModel? original;
+
+        protected BaseViewModel()
+        {
+
+        }
+        protected BaseViewModel(TModel model)
+        { 
+            original = model;
+        }
         /// <summary>
         /// Событие изменения свойства
         /// </summary>
@@ -21,7 +41,7 @@ namespace WpfAppES.ViewModel.Expert.Semantic
         /// <param name="newValue">новое значение</param>
         /// <param name="propertyName">наименование свойства</param>
         /// <returns></returns>
-        protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string propertyName = null)
+        protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string? propertyName = null)
         {
             if (!Equals(field, newValue))
             {
@@ -31,12 +51,5 @@ namespace WpfAppES.ViewModel.Expert.Semantic
             }
             return false;
         }
-        #endregion
-
-        public ObservableCollection<Relation> Relations { get; set; } = [];
-
-        private RelayCommand? addCommand;
-        public RelayCommand AddRowCommand => addCommand ??= new RelayCommand(AddRow);
-        private void AddRow(object _) => Relations.Add(new Relation("Пустая строка"));
     }
 }

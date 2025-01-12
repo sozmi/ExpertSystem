@@ -1,26 +1,14 @@
-﻿// See https://aka.ms/new-console-template for more information
-using System;
-using System.Text.Encodings.Web;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Text.Unicode;
-using ClassLibraryES.Managers;
-using ClassLibraryES.semantic_es;
+﻿using ClassLibraryES.semantic_es;
+using Newtonsoft.Json;
 SemanticDB r = new(true);
-//Relation r = new("test");
-/*var options = new JsonSerializerOptions
-{
-    Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic),
-    WriteIndented = true
-};
-string json = JsonSerializer.Serialize(r, options);
+
+string json = JsonConvert.SerializeObject(r, Formatting.Indented);
 Console.WriteLine(json);
-SemanticDB? restore = JsonSerializer.Deserialize<SemanticDB>(json);
-//Relation? restore = JsonSerializer.Deserialize<Relation>(json);
+SemanticDB? restore = JsonConvert.DeserializeObject<SemanticDB>(json);
 restore?.Open();
 Console.WriteLine(restore);
-*/
 
 ;
-KnowledgeBaseManager.Get().Load(Directory.GetCurrentDirectory()+"\\Экспертные системы\\"+"de.es");
-KnowledgeBaseManager.Get();
+/*KnowledgeBaseManager.Get().Create("def");
+KnowledgeBaseManager.Get().Load(Directory.GetCurrentDirectory()+"\\Экспертные системы\\"+"def.es");
+KnowledgeBaseManager.Get();*/

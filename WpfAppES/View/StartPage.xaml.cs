@@ -10,24 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WpfAppES.Common
+namespace WpfAppES
 {
     /// <summary>
-    /// Логика взаимодействия для MessageBox.xaml
+    /// Логика взаимодействия для StartPage.xaml
     /// </summary>
-    public partial class MessageBox : Window
+    public partial class StartPage : Page
     {
-        public MessageBox(string question, string title)
+        public StartPage()
         {
             InitializeComponent();
-            txtQuestion.Text = question;
-            Title = title;
-        }
-        private void BtnOk_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
         }
     }
 }

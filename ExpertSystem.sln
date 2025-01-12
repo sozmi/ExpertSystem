@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleTests", "ConsoleTest
 		{77024257-025C-49DD-B801-632BE50C2759} = {77024257-025C-49DD-B801-632BE50C2759}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProjectES", "TestProjectES\TestProjectES.csproj", "{A456C03B-8FF9-437F-91DF-F72505BF305A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,12 +41,16 @@ Global
 		{9A4C8A1A-B605-400B-8ECD-69C01B71975B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A4C8A1A-B605-400B-8ECD-69C01B71975B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9A4C8A1A-B605-400B-8ECD-69C01B71975B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A456C03B-8FF9-437F-91DF-F72505BF305A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A456C03B-8FF9-437F-91DF-F72505BF305A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A456C03B-8FF9-437F-91DF-F72505BF305A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A456C03B-8FF9-437F-91DF-F72505BF305A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_NeutralResourcesLanguage = ru-RU
 		SolutionGuid = {585D2DA5-1F81-462C-88AA-1B98A6DD3F19}
+		RESX_NeutralResourcesLanguage = ru-RU
 	EndGlobalSection
 EndGlobal

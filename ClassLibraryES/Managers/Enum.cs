@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ClassLibraryES.Managers
+﻿namespace ClassLibraryES.Managers
 {
-    enum ETypeDB
+    public enum ETypeDB
     {
         eLogical = 0,
         eProducts = 1,

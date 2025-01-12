@@ -14,7 +14,11 @@ namespace WpfAppES
     public partial class MainWindow : System.Windows.Window
     {
         string? lastPage, lastInterface;
-        string defaultTitle;
+        /// <summary>
+        /// Название приложения
+        /// </summary>
+        readonly string defaultTitle;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -25,31 +29,53 @@ namespace WpfAppES
             dbProduct.Checked += KnowledgeDB_Checked;
             dbSemantic.Checked += KnowledgeDB_Checked;
 
+            //выбор начальной страницы
+
             expert.IsChecked = true;
             dbSemantic.IsChecked = true;
+            //frame.Navigate(new Uri($"View/StartPage.xaml", UriKind.Relative));
             defaultTitle = Title;
 
             ConfigHelper.Instance.SetLang("ru");
         }
 
+        /// <summary>
+        /// Событие, происходит при смене базы знаний.
+        /// Переключаем страницу на соответствующую.
+        /// Адрес страницы берется из свойства Tag
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void KnowledgeDB_Checked(object sender, RoutedEventArgs e)
         {
             RadioButton rb = (RadioButton)sender;
             lastPage = rb.Tag.ToString();
             if (frame == null || lastInterface == null)
                 return;
-            frame.Navigate(new Uri($"/{lastInterface}/{lastPage}", UriKind.Relative));
+            frame.Navigate(new Uri($"/View/{lastInterface}/{lastPage}", UriKind.Relative));
         }
 
+        /// <summary>
+        /// Событие, происходит при смене интерфейса.
+        /// Переключаем страницу на соответствующую.
+        /// Адрес страницы берется из свойства Tag
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Interface_Checked(object sender, RoutedEventArgs e)
         {
             RadioButton rb = (RadioButton)sender;
             lastInterface = rb.Tag.ToString();
             if (frame == null || lastPage == null)
                 return;
-            frame.Navigate(new Uri($"/{lastInterface}/{lastPage}", UriKind.Relative));
+            frame.Navigate(new Uri($"/View/{lastInterface}/{lastPage}", UriKind.Relative));
         }
 
+        /// <summary>
+        /// Обработка создания новой ЭС
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void NewCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Common.Dialog dialog = new("Введите название экспертной системы", "Создание ЭС");
@@ -68,6 +94,11 @@ namespace WpfAppES
             
         }
 
+        /// <summary>
+        /// Обработка открытия существующей ЭС
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OpenCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             //TODO: реализовать открытие э.с. из файла и обработку ошибок
@@ -81,22 +112,36 @@ namespace WpfAppES
             if (result == true)
             {
                 string filename = dlg.FileName;
-                MessageBox.Show(filename);
-                //KnowledgeBaseManager.Get().Open();
-
+                KnowledgeBaseManager.Get().Load(filename);
             }
         }
 
+        /// <summary>
+        /// Обработка сохранения ЭС с тем же названием
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SaveCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
            //TODO: реализовать сохранение и обработку ошибок
         }
 
+        /// <summary>
+        /// Обработка сохранения ЭС с тем же названием
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CloseCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             //TODO: реализовать закрытие э.с. и обработку ошибок
+            //TODO: при закрытии ЭС при наличии изменений нужно спросить нужно ли сохраниться 
         }
 
+        /// <summary>
+        /// Обработка сохранения в файле, выбранном пользователем
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SaveAsCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             //TODO: реализовать сохранение как и обработку ошибок
