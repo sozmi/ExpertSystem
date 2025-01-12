@@ -112,6 +112,11 @@ namespace ClassLibraryES.Products
             var addedValues = newValues.Except(oldValues).ToList();
             var removedValues = oldValues.Except(newValues).ToList();
 
+            // Обновляем значения существующего домена вместо замены объекта
+            oldDomain.Name = newDomain.Name;
+            oldDomain.Values.Clear();
+            oldDomain.Values.AddRange(newDomain.Values);
+
             // Находим все переменные, использующие этот домен
             var affectedVariables = Variables.Values.Where(v => v.Domain?.Id == newDomain.Id);
 
@@ -135,8 +140,6 @@ namespace ClassLibraryES.Products
                     Facts.Remove(fact.Id);
                 }
             }
-
-            Domains[newDomain.Id] = newDomain;
         }
 
         /// <summary>
@@ -181,10 +184,13 @@ namespace ClassLibraryES.Products
         /// <summary>
         /// Обновить существующую переменную
         /// </summary>
-        public void UpdateVariable(Variable variable)
+        public void UpdateVariable(Variable newVariable)
         {
-            if (Variables.ContainsKey(variable.Id))
-                Variables[variable.Id] = variable;
+            if (!Variables.ContainsKey(newVariable.Id))
+                return;
+
+            var existingVariable = Variables[newVariable.Id];
+            existingVariable.Update(newVariable.Name, newVariable.Domain);
         }
 
         /// <summary>
@@ -229,10 +235,13 @@ namespace ClassLibraryES.Products
         /// <summary>
         /// Обновить существующее правило
         /// </summary>
-        public void UpdateRule(Rule rule)
+        public void UpdateRule(Rule newRule)
         {
-            if (Rules.ContainsKey(rule.Id))
-                Rules[rule.Id] = rule;
+            if (!Rules.ContainsKey(newRule.Id))
+                return;
+
+            var existingRule = Rules[newRule.Id];
+            existingRule.Update(newRule.Name, newRule.Result, newRule.Premises);
         }
 
         /// <summary>

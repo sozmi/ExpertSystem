@@ -11,14 +11,17 @@ namespace ClassLibraryES.Products
         /// Уникальный идентификатор домена
         /// </summary>
         public Guid Id { get; private set; }
+
         /// <summary>
         /// Наименование домена
         /// </summary>
         public string Name { get; set; }
+
         /// <summary>
         /// Список допустимых значений домена
         /// </summary>
         public List<string> Values { get; private set; }
+
         /// <summary>
         /// Создает новый экземпляр домена с указанным именем
         /// </summary>
@@ -31,6 +34,15 @@ namespace ClassLibraryES.Products
             Id = Guid.NewGuid();
             Name = name;
             Values = new();
+        }
+
+        /// <summary>
+        /// Добавляет набор значений в домен
+        /// </summary>
+        /// <param name="values">Коллекция значений для добавления</param>
+        public void AddRange(IEnumerable<string> values)
+        {
+            Values.AddRange(values);
         }
     }
 }
