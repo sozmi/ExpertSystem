@@ -1,5 +1,4 @@
 ﻿using System;
-
 namespace ClassLibraryES.products_es;
 
 /// <summary>
@@ -13,17 +12,14 @@ public class Fact
     /// Генерируется автоматически при создании факта.
     /// </summary>
     public Guid Id { get; private set; }
-
     /// <summary>
     /// Переменная факта - описывает свойство или характеристику объекта.
     /// </summary>
     public Variable? Variable { get; set; }
-
     /// <summary>
     /// Значение переменной - конкретное значение свойства объекта.
     /// </summary>
     public string? Value { get; set; }
-
     /// <summary>
     /// Создает новый факт с пустыми значениями переменной и значения.
     /// Используется когда значения будут установлены позже.
@@ -32,7 +28,6 @@ public class Fact
     {
         Id = Guid.NewGuid();
     }
-
     /// <summary>
     /// Создает новый факт с указанной переменной и значением.
     /// </summary>
@@ -43,5 +38,15 @@ public class Fact
         Id = Guid.NewGuid();
         Variable = variable;
         Value = value;
+    }
+
+    /// <summary>
+    /// Возвращает строковое представление факта
+    /// </summary>
+    public override string ToString()
+    {
+        if (Variable == null || Value == null || string.IsNullOrEmpty(Variable.Name))
+            return "Недействительный факт";
+        return $"{Variable.Name}:{Value}";
     }
 }

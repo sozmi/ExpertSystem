@@ -31,10 +31,18 @@ public class Domain
     public Domain(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Name cannot be null or empty", nameof(name));
-
+            throw new ArgumentException("Название домена не может быть пустым", nameof(name));
         Id = Guid.NewGuid();
         Name = name;
         Values = new();
+    }
+
+    /// <summary>
+    /// Добавляет набор значений в домен
+    /// </summary>
+    /// <param name="values">Коллекция значений для добавления</param>
+    public void AddRange(IEnumerable<string> values)
+    {
+        Values.AddRange(values);
     }
 }
