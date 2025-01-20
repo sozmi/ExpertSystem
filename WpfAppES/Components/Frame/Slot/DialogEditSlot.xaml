@@ -1,0 +1,45 @@
+﻿<Window x:Class="WpfAppES.Components.Frame.Slot.EditSlotWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfAppES.Components.Frame.Slot"
+        mc:Ignorable="d"
+        Title="Редактирование слота" Height="300" Width="400">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Vertical" Grid.Row="0" Margin="0 0 0 10">
+            <TextBlock Text="ID" FontWeight="Bold"/>
+            <TextBox Text="{Binding Slot.Id}" IsReadOnly="True"/>
+
+            <TextBlock Text="Название" FontWeight="Bold"/>
+            <TextBox Text="{Binding Slot.Name}"/>
+        </StackPanel>
+
+        <DataGrid ItemsSource="{Binding Slot.Values}"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  Grid.Row="1">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Значение" Binding="{Binding}"/>
+            </DataGrid.Columns>
+
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Добавить" Command="{Binding AddValueCommand}"/>
+                    <MenuItem Header="Удалить" Command="{Binding RemoveValueCommand}"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="2" Margin="0 10 0 0">
+            <Button Content="Сохранить" Command="{Binding SaveCommand}"  Style="{StaticResource ButtonPrimary}" Margin="0 0 10 0" Click="Button_Click"/>
+            <Button Content="Отмена" Command="{Binding CancelCommand}"/>
+        </StackPanel>
+    </Grid>
+</Window>
