@@ -10,6 +10,7 @@ public class Resolution
 {
     protected List<Consent> consents;
     protected List<string> predicates;
+    protected string explain = "";
 
     public Resolution(List<Consent> consents)
     {
@@ -18,11 +19,18 @@ public class Resolution
         predicates = CreatePredicates();
     }
 
+    public string GetExp()
+    {
+        return explain;
+    }
+
     public bool Method(Consent consent)
     {
         var dnfs = DNFForm(); // Получение дизъюнктивных форм
         var noConsentRes = $"!{consent.Who}({consent.Object})"; // Строка с отрицанием целевого выражения
         var knf = KNFForm(dnfs, noConsentRes); // Получение конъюнктивной формы
+
+        explain = knf;
 
         return SearchResolvent(knf) == ""; // Проверка, удовлетворена ли цель
     }
